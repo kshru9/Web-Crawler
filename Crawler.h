@@ -60,10 +60,9 @@ void Crawler::runCrawler()
     discoveredSites[currentSite] = true;
 
     // TODO: downloader
-    set<string> linkedSites;
 
     // Get urls from parser
-    linkedSites = getLinks(httpsDownloader((currentSite)), maxLinks);
+    set<string> linkedSites = getLinks(httpsDownloader((currentSite)), maxLinks);
 
     cout << "Links returned: " << linkedSites.size() << endl;
 

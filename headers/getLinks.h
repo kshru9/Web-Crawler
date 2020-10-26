@@ -25,18 +25,9 @@ set<string> getLinks(string html, int maxLinks)
   {
     // A string starting from "https://" is considered as a link
     // A link should not contain \<>{}
-    if (
-        regex_match(i, exp) &&
-        i.size() > 7 && // so that next one doesn't fails
-        i.substr(0, 8) == "https://" &&
-        i.find('\\') == string::npos &&
-        i.find('<') == string::npos &&
-        i.find('>') == string::npos &&
-        i.find('{') == string::npos &&
-        i.find('}') == string::npos
-		){
+    if(regex_match(i, exp)){
       links.insert(i);
-      if (links.size() > maxLinks)
+      if (links.size() >= maxLinks)
       {
         break;
       }
