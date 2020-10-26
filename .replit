@@ -1,0 +1,2 @@
+language = "cpp"
+run = "g++ main.cpp -lssl"
