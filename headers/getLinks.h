@@ -13,12 +13,16 @@ set<string> getLinks(string html, int maxLinks);
 set<string> getLinks(string html, int maxLinks)
 {
   // Extracting all the links from the html file
-  const regex url_re(R"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", icase);
+  
+	// this part
+	const regex url_re(R"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", icase);
+
   set<string> res_1 = {
 		sregex_token_iterator(html.begin(), html.end(), url_re, 1),
 		sregex_token_iterator{}};
 
   regex exp(".*\\..*");
+	
 
   set<string> links;
   for (string i : res_1)

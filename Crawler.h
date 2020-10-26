@@ -1,11 +1,14 @@
 #include <map>
 #include <queue>
 #include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 #include "headers/httpsDownloader.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
+
+void sort(map<string, int>& M);
 
 class Crawler
 {
@@ -17,6 +20,7 @@ public:
 
   queue<string> mainQueue;
   map<string, bool> discoveredSites;
+  map<string, int> ranker;
 
 	// Constructor
   Crawler(int dL, int mL, int pL)
@@ -59,6 +63,8 @@ void Crawler::runCrawler()
 
     discoveredSites[currentSite] = true;
 
+    ranker[getDomain(currentSite)] +=1;
+
     // TODO: downloader
 
     // Get urls from parser
@@ -82,5 +88,28 @@ void Crawler::runCrawler()
 }
 
 void Crawler::showResults(){
-	
+  system("clear");
+  cout << "Web rankings" << endl;
+
+  sort(ranker);
+  // for (auto i: ranker){
+  //   cout << i.first << "\t" << i.second << endl;
+  // }
 }
+
+void sort(map<string, int>& M) 
+{
+    // Here if greater<int> is used to make 
+    // sure that elements are stored in 
+    // descending order of keys. 
+    multimap<int, string, greater <int> > MM; 
+
+    for (auto& it : M){
+      MM.insert(make_pair(it.second, it.first));
+    }
+
+    // begin() returns to the first value of multimap. 
+    multimap<int,string> :: iterator it; 
+    for (it=MM.begin() ; it!=MM.end() ; it++) 
+        cout << (*it).second << "\t" << (*it).first << endl; 
+} 
