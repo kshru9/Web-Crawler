@@ -10,9 +10,11 @@ string replaceFirstOccurrence(string& s, const string& toReplace, const string& 
 }
 
 string getDomain(string url){
-    // Removing http:// or https://
+    // Removing http://, https:// and htts://
     regex exp1("https*://");
+    regex exp2("htts://");
     url = regex_replace(url, exp1, "");
+    url = regex_replace(url,exp2,"");
     
     // Removing anything after first /
     size_t a = url.find_first_of("/");

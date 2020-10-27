@@ -1,0 +1,144 @@
+Crawler initialized
+Crawler initialised.
+Processing: https://www.google.com/
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 11
+Link no. 1 processed.
+
+Processing: https://accounts.google.com/ServiceLogin?hl=en&passive=true&ce.com/shopping?hl=en&source=og&tab=wf
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 5
+Link no. 2 processed.
+
+Processing: https://books.google.com/bkshp?hl=en&tab=wp
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 11
+Link no. 3 processed.
+
+Processing: https://docs.google.com/document/?usp=docs_alc
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 4 processed.
+
+Processing: https://drive.google.com/?tab=wo
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 5 processed.
+
+Processing: https://mail.google.com/mail/?tab=wm
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 6 processed.
+
+Processing: https://maps.google.com/maps?hl=en&tab=wl
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 7 processed.
+
+Processing: https://news.google.com/?tab=wn
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 8 processed.
+
+Processing: https://photos.google.com/?tab=wq&pageId=none
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 9 processed.
+
+Processing: https://play.google.com/?hl=en&tab=w8
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 10 processed.
+
+Processing: https://www.blogger.com/?tab=wj
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 11 processed.
+
+Processing: https://www.google.com/calendar?tab=wc
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 12 processed.
+
+Processing: https://accounts.google.com/AccountChooser?hl=en&amp;source=og
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 13 processed.
+
+Processing: https://accounts.google.com/SignUp?continue=https%3A%2F%2Faccounts.google.com%2FManageAccount%3Fnc%3D1&amp;hl=en
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 14 processed.
+
+Processing: https://accounts.google.com/TOS?loc=US&hl=en
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 15 processed.
+
+Processing: https://accounts.google.com/signin/usernamerecovery?hl=en
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 3
+Link no. 16 processed.
+
+Processing: https://www.google.com/intl/en/about
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 17 processed.
+
+Processing: https://books.google.com/bkshp?hl=en&tab=pp
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 11
+Link no. 18 processed.
+
+Processing: https://drive.google.com/?tab=po
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 0
+Link no. 19 processed.
+
+Processing: https://mail.google.com/mail/?tab=pm
+Calling Downloader.
+File Downloaded.
+getLinks() called.
+Links returned: 1
+Link no. 20 processed.
+
+Crawling completed.
+

@@ -1,2 +1,2 @@
 language = "cpp"
-run = "g++ main.cpp -lssl"
+run = "g++ -std=c++14 main.cpp -lssl && ./a.out 1000 10 20"

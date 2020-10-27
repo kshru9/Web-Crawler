@@ -1,14 +1,10 @@
 #include <map>
 #include <queue>
 #include <iostream>
-#include <bits/stdc++.h>
 #include <string>
 using namespace std;
 
-
-#include "headers/httpsDownloader.h"
-#include "headers/httpDownloader.h"
-//
+#include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
 
@@ -18,8 +14,11 @@ class Crawler
 {
   // setting public for testing purposes
 public:
-  int maxLinks = 0;
-	int pagesLimit = 0;
+	ofstream log;
+
+  int maxLinks;
+	int pagesLimit;
+	int depthLimit;
   string intialLink = "https://www.google.com/";
 
   queue<string> mainQueue;
@@ -28,11 +27,18 @@ public:
   int totalVisitedPages = 0;
 
 	// Constructor
-  Crawler(int mL, int pL)
+  Crawler(int dL, int mL, int pL)
   {
+		this->depthLimit = dL;
     this->maxLinks = mL;
 		this->pagesLimit = pL;
   }
+
+	// Destructor
+	~Crawler()
+	{
+		log.close();
+	}
 
 	// Public functions
   void initialize();
@@ -44,69 +50,95 @@ public:
 // Initialize the Crawler.
 void Crawler::initialize()
 {
+	log.open("logs.txt");
+	log << "Crawler initialized" << endl;
+
   // Add initial urls
   mainQueue.push(intialLink);
 }
 
+
+
 // Start a crawler to discover a specific website.
 void Crawler::runCrawler()
 {
-	
-  cout << "Crawler initialised." << endl;
-  ofstream lout("links.txt");
+  log << "Crawler initialised." << endl;
 
+  ofstream lout("links.txt");
+  // Only discover more if haven't reached the depthLimit
   while (
 		!mainQueue.empty() && 
-		totalVisitedPages<=pagesLimit
+		mainQueue.size() < depthLimit && 
+		totalVisitedPages<pagesLimit
 	){
-    cout << "Current depth:" << mainQueue.size() << endl; //$
-		system("clear");
-    string currentSite = mainQueue.front();
+		string currentSite = mainQueue.front();
     mainQueue.pop();
 
-    discoveredSites[currentSite] = true;
+		log << "Processing: " << currentSite << endl;
 
-    // Get urls from parser
-    set<string> linkedSites = getLinks(httpsDownloader((currentSite)), maxLinks);
+    // Download the website html
+		log << "Calling Downloader." << endl;
+		string html = httpsDownloader(currentSite);
+		log << "File Downloaded." << endl;
 
-    cout << "Links returned: " << linkedSites.size() << endl;
+		system("clear");
+    cout << "Size of mainQueue:" << mainQueue.size() << endl;
+    cout << "Link no :" << totalVisitedPages+1 << endl;
+		cout << "HTML file length: " << html.size() << endl;
 
+
+
+		// Get urls from the getLinks()
+		log << "getLinks() called." << endl;
+    set<string> linkedSites = getLinks(html, maxLinks);
+    log << "Links returned: " << linkedSites.size() << endl;
+
+
+		// Pushing links into mainQueue if they are unvisited
     for (auto i : linkedSites)
     {
-      ranker[getDomain(i)] +=1;
+			ranker[getDomain(i)]++;
       if (!discoveredSites[i])
       {
+				discoveredSites[i] = true;
         mainQueue.push(i);
-        lout << i << endl;
       }
     }
 		totalVisitedPages++;
+		
+		log << "Link no. " << totalVisitedPages << " processed." << endl << endl;
+		// end of crawler loop
   }
 
-  cout << "Crawling completed." << endl;
+  log << "Crawling completed." << endl << endl;
   lout.close();
 }
 
-void Crawler::showResults(){
-  // system("clear");
 
-  cout << "---------------------------------------------" << endl;
+void Crawler::showResults(){
+  system("clear");
+
+  cout << "-----------------------------------------------------" << endl;
   cout << "Parameters:" << endl;
-  cout << "---------------------------------------------" << endl;
-  cout << "Max Links extracted from a website:" << maxLinks << endl;
-  cout << "Max pages downloaded:" << pagesLimit << endl;
+  cout << "-----------------------------------------------------" << endl;
+  cout << "Max Links extracted from a website:" << "\t" << maxLinks << endl;
+  cout << "Max pages downloaded:" << "\t" << pagesLimit << endl;
 
   cout << "" << endl;
   
-  cout << "---------------------------------------------" << endl;
-  cout << "Web rankings" << "(" << "Total Visited Websites:" << "\t" << totalVisitedPages-1 << ")" << endl;
-  cout << "---------------------------------------------" << endl;
+  cout << "-----------------------------------------------------" << endl;
+  cout << "Web rankings" << "\t" << "(" << "Total Visited Websites:" << "\t" << totalVisitedPages << ")" << endl;
+  cout << "-----------------------------------------------------" << endl;
   
   sort(ranker);
 }
 
 void sort(map<string, int>& M) 
 {
+
+		for(auto i: M){
+			cout << i.first << " " << i.second << endl;
+		}
     // Here if greater<int> is used to make 
     // sure that elements are stored in 
     // descending order of keys. 
@@ -119,5 +151,13 @@ void sort(map<string, int>& M)
     // begin() returns to the first value of multimap. 
     multimap<int,string> :: iterator it; 
     for (it=MM.begin() ; it!=MM.end() ; it++) 
-        cout << (*it).second << "\t" << (*it).first << endl; 
+        cout << (*it).second << " : " << (*it).first << endl; 
 } 
+
+
+/*
+bool ishttp(string website)
+{
+  return website.compare(0, 8, "https://");
+}
+*/
