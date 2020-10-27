@@ -2,9 +2,13 @@
 #include <queue>
 #include <iostream>
 #include <bits/stdc++.h>
+#include <string>
 using namespace std;
 
+
 #include "headers/httpsDownloader.h"
+#include "headers/httpDownloader.h"
+//
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
 
@@ -14,18 +18,18 @@ class Crawler
 {
   // setting public for testing purposes
 public:
-  int depthLimit = 0;
   int maxLinks = 0;
 	int pagesLimit = 0;
+  string intialLink = "https://www.google.com/";
 
   queue<string> mainQueue;
   map<string, bool> discoveredSites;
   map<string, int> ranker;
+  int totalVisitedPages = 0;
 
 	// Constructor
-  Crawler(int dL, int mL, int pL)
+  Crawler(int mL, int pL)
   {
-    this->depthLimit = dL;
     this->maxLinks = mL;
 		this->pagesLimit = pL;
   }
@@ -41,20 +45,19 @@ public:
 void Crawler::initialize()
 {
   // Add initial urls
-  mainQueue.push("https://www.linkedin.com/");
+  mainQueue.push(intialLink);
 }
 
 // Start a crawler to discover a specific website.
 void Crawler::runCrawler()
 {
-	int totalVisitedPages = 0;
+	
   cout << "Crawler initialised." << endl;
   ofstream lout("links.txt");
 
-  // Only discover more if haven't reached the depthLimit
   while (
 		!mainQueue.empty() && 
-		mainQueue.size() < depthLimit && totalVisitedPages<=pagesLimit
+		totalVisitedPages<=pagesLimit
 	){
     cout << "Current depth:" << mainQueue.size() << endl; //$
 		system("clear");
@@ -63,10 +66,6 @@ void Crawler::runCrawler()
 
     discoveredSites[currentSite] = true;
 
-    ranker[getDomain(currentSite)] +=1;
-
-    // TODO: downloader
-
     // Get urls from parser
     set<string> linkedSites = getLinks(httpsDownloader((currentSite)), maxLinks);
 
@@ -74,6 +73,7 @@ void Crawler::runCrawler()
 
     for (auto i : linkedSites)
     {
+      ranker[getDomain(i)] +=1;
       if (!discoveredSites[i])
       {
         mainQueue.push(i);
@@ -88,13 +88,21 @@ void Crawler::runCrawler()
 }
 
 void Crawler::showResults(){
-  system("clear");
-  cout << "Web rankings" << endl;
+  // system("clear");
 
+  cout << "---------------------------------------------" << endl;
+  cout << "Parameters:" << endl;
+  cout << "---------------------------------------------" << endl;
+  cout << "Max Links extracted from a website:" << maxLinks << endl;
+  cout << "Max pages downloaded:" << pagesLimit << endl;
+
+  cout << "" << endl;
+  
+  cout << "---------------------------------------------" << endl;
+  cout << "Web rankings" << "(" << "Total Visited Websites:" << "\t" << totalVisitedPages-1 << ")" << endl;
+  cout << "---------------------------------------------" << endl;
+  
   sort(ranker);
-  // for (auto i: ranker){
-  //   cout << i.first << "\t" << i.second << endl;
-  // }
 }
 
 void sort(map<string, int>& M) 

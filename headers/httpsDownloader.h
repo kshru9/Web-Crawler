@@ -12,14 +12,15 @@
 using namespace std;
 
 string httpsDownloader(string url);
-string getHostPathFromUrl(string url);
-string getHostnameFromUrl(string url);
+string getHostPathFromUrl1(string url);
+//
+string getHostnameFromUrl1(string url);
 
 string httpsDownloader(string url){
     // first connect to the remote as usual, but use the port 443 instead of 80
     int sock, port = 443;
-    string path = getHostPathFromUrl(url);
-    string hostname = getHostnameFromUrl(url);
+    string path = getHostPathFromUrl1(url);
+    string hostname = getHostnameFromUrl1(url);
     cout << "hostname: " << hostname << endl;
     cout << "path: " << path << endl;
 
@@ -54,10 +55,11 @@ string httpsDownloader(string url){
 
 
 
+
     // initialize OpenSSL - do this once and stash ssl_ctx in a global var
     SSL_load_error_strings();
-    SSL_library_init();
     SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv23_client_method());
+    SSL_library_init();
 
     // create an SSL connection and attach it to the socket
     SSL *conn = SSL_new(ssl_ctx);
@@ -71,6 +73,7 @@ string httpsDownloader(string url){
         return "SSL_connect() failed.";
     }
     
+		
     // now proceed with HTTP traffic, 
     //     using SSL_read instead of recv() and
     //     SSL_write instead of send(), 
@@ -105,7 +108,7 @@ string httpsDownloader(string url){
 }
 
 
-string getHostnameFromUrl(string url)
+string getHostnameFromUrl1(string url)
 {
     int offset = 0;
     offset = offset == 0 && url.compare(0, 8, "https://") == 0 ? 8 : offset;
@@ -116,7 +119,7 @@ string getHostnameFromUrl(string url)
 
     return domain;
 }
-string getHostPathFromUrl(string url)
+string getHostPathFromUrl1(string url)
 {
     int offset = 0;
     offset = offset == 0 && url.compare(0, 8, "https://") == 0 ? 8 : offset;

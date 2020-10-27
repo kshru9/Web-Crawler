@@ -9,6 +9,7 @@
 #include <queue>
 #include <map>
 #include <set>
+#include <unistd.h>
 
 #include "Crawler.h"
 
@@ -17,8 +18,10 @@ using namespace std::regex_constants;
 
 int main(int argc, const char *argv[])
 {
-  // Crawler(depthLimit, maxLinks, pagesLimit)
-  Crawler myCrawler(1000, 10, 5);
+
+  // Crawler( maxLinks, pagesLimit)
+  //Crawler myCrawler(10, 5, "https://www.google.com/");
+  Crawler myCrawler(stoi(argv[1]), stoi(argv[2]));
 
   //config = readConfigFile();
 

@@ -27,9 +27,14 @@ set<string> getLinks(string html, int maxLinks)
   set<string> links;
   for (string i : res_1)
   {
-    // A string starting from "https://" is considered as a link
-    // A link should not contain \<>{}
-    if(regex_match(i, exp)){
+    // A link should not contain /\<>{}
+    if(
+        regex_match(i, exp) && 
+        (i.find('#')) && 
+        (i.find('/')) && 
+        (i.find('.')) && 
+        (i.find("mailto:"))
+    ){
       links.insert(i);
       if (links.size() >= maxLinks)
       {
