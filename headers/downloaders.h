@@ -76,6 +76,10 @@ string httpDownloader(string url){
         {
             Response += string(recv_data);
             totalBytesRead += bytesRead;
+						if(Response.size()>500000){
+							Response = "";
+							break;
+						}
         }
         else
         {
@@ -201,7 +205,8 @@ string httpsDownloader(string url){
         totalBytesRead+=bytesRead;
         httpResponse+=string(ptr);
 				if(httpResponse.size()>500000){
-					return "";
+					httpResponse = "";
+					break;
 				}
     } while(bytesRead);
 

@@ -40,7 +40,6 @@ set<string> getLinks(string html, int maxLinks)
         i.find('{') == string::npos &&
         i.find('}') == string::npos &&
         i.find(' ') == string::npos
-
 		){
       links.insert(i);
       if (links.size() > maxLinks)

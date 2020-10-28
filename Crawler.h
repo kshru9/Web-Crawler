@@ -97,6 +97,7 @@ void Crawler::runCrawler()
 		// Pushing links into mainQueue if they are unvisited
     for (auto i : linkedSites)
     {
+			lout << i << endl;
 			ranker[getDomain(i)]++;
       if (!discoveredSites[i])
       {
@@ -135,10 +136,6 @@ void Crawler::showResults(){
 
 void sort(map<string, int>& M) 
 {
-
-		for(auto i: M){
-			cout << i.first << " " << i.second << endl;
-		}
     // Here if greater<int> is used to make 
     // sure that elements are stored in 
     // descending order of keys. 
