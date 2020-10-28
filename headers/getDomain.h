@@ -4,9 +4,9 @@ using namespace std;
 
 string replaceFirstOccurrence(string& s, const string& toReplace, const string& replaceWith)
 {
-    size_t pos = s.find(toReplace);
-    if (pos == string::npos) return s;
-    return s.replace(pos, toReplace.length(), replaceWith);
+	size_t pos = s.find(toReplace);
+	if (pos == string::npos) return s;
+	return s.replace(pos, toReplace.length(), replaceWith);
 }
 
 string getDomain(string url){
