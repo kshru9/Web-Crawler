@@ -1,20 +1,19 @@
-#include <map>
-#include <queue>
 #include <iostream>
 #include <string>
-#include <sys/stat.h> 
+#include <queue>
+#include <map>
+#include <sys/stat.h>
+
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
 using namespace std;
 
-bool ishttp(string);
-
 class Crawler
 {
   // setting public for testing purposes
 public:
-  ofstream log; // logging
+  ofstream log;  // logging
   ofstream lout; // links dumping
 
   // Parameters declaration
@@ -53,20 +52,25 @@ public:
   }
 
   // Public functions
+
+  // Initialize the Crawler.
   void initialize();
+  // Downloads a website and save it in buffer folder
   void fileDownloader(string url);
+  // Parse a file from the buffer and update parameters{concurrency part}
   void parseFile(string filename);
+  // Start a crawler to discover a specific website.
   void runCrawler();
+  // Show the results of the crawling
   void showResults();
 };
 
-// Initialize the Crawler.
 void Crawler::initialize()
 {
   log.open("logs.txt");
   log << "Crawler initialized" << endl;
-  
-  // for dumping links 
+
+  // for dumping links
   lout.open("links.txt");
 
   // Add initial urls
@@ -79,12 +83,12 @@ void Crawler::initialize()
   mkdir("buffer", 07770);
 }
 
-// Downloads a website and save it in buffer folder 
-void Crawler::fileDownloader(string url){
+void Crawler::fileDownloader(string url)
+{
   string html;
   // check if the downloaded website is http
   // then use appropriate HTML downloader
-  if (ishttp(url))
+  if (url.compare(0, 8, "https://"))
   {
     html = httpDownloader(url);
   }
@@ -104,8 +108,8 @@ void Crawler::fileDownloader(string url){
   fileQueue.push(filename);
 }
 
-// Parse a file from the buffer and update parameters
-void Crawler::parseFile(string filename){
+void Crawler::parseFile(string filename)
+{
   ifstream f(filename); //taking file as inputstream
   string html;
   ostringstream ss;
@@ -114,10 +118,8 @@ void Crawler::parseFile(string filename){
   f.close();
 
   // Deleting the file using system command
-  string com = "rm ./buffer/"+filename;
+  string com = "rm ./buffer/" + filename;
   system(com.c_str());
-  
-
 
   // Get urls from the getLinks()
   log << "getLinks() called." << endl;
@@ -138,21 +140,19 @@ void Crawler::parseFile(string filename){
   totalVisitedPages++;
 }
 
-// Start a crawler to discover a specific website.
 void Crawler::runCrawler()
 {
   log << "Crawler initialised." << endl;
 
   while (!linkQueue.empty() && totalVisitedPages < pagesLimit)
   {
-    // Decide first that if we need to 
+    // Decide first that if we need to
     // 1. Download a file
     // 2. Parse a file
     // Appropriately create a thread and call the producer and consumer functions
     // For downloading purpose, we can use the parent thread temporarily
     // Or the initialize can just download 10-20 websites serially{as told by prakash}
     // MAJOR WORK is remaining here.
-
 
     // Ordering the download for the website
     string currentSite = linkQueue.front();
@@ -164,11 +164,11 @@ void Crawler::runCrawler()
     fileQueue.pop();
     parseFile(filename);
 
-
     // end of crawler loop
   }
 
-  log << "Crawling completed." << endl << endl;
+  log << "Crawling completed." << endl
+      << endl;
 }
 
 void Crawler::showResults()
@@ -209,9 +209,4 @@ void Crawler::showResults()
   {
     cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
   }
-}
-
-bool ishttp(string website)
-{
-  return website.compare(0, 8, "https://");
 }
