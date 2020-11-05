@@ -2,176 +2,203 @@
 #include <queue>
 #include <iostream>
 #include <string>
-using namespace std;
-
+#include <sys/stat.h> 
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
+using namespace std;
 
-void sort(map<string, int>&);
 bool ishttp(string);
 
 class Crawler
 {
   // setting public for testing purposes
 public:
-	ofstream log;
+  ofstream log; // logging
+  ofstream lout; // links dumping
 
-
-	//int depthLimit;
   // Parameters declaration
   int maxLinks;
-	int pagesLimit;
+  int pagesLimit;
   string intialLink = "https://www.google.com";
 
   // queue for storing linked websites
   queue<string> mainQueue;
   // map for storing visited websites
   map<string, bool> discoveredSites;
-  // map for a simple website ranker 
+  // map for a simple website ranker
   map<string, int> ranker;
 
-  // for storing html pages downloaded till now
+  // for storing total processed pages till now
   int totalVisitedPages = 0;
 
-	// Constructor
+  // for storing total downloaded pages
+  int totalDownloadPages = 0;
+
+  // Constructor
   Crawler(int mL, int pL)
   {
-		//this->depthLimit = dL;
     this->maxLinks = mL;
-		this->pagesLimit = pL;
+    this->pagesLimit = pL;
   }
 
-	// Destructor
-	~Crawler()
-	{
-		log.close();
-	}
+  // Destructor
+  ~Crawler()
+  {
+    log.close();
+    lout.close();
+  }
 
-	// Public functions
+  // Public functions
   void initialize();
+  void fileDownloader(string url);
+  void parseFile(string filename);
   void runCrawler();
   void showResults();
 };
 
-
 // Initialize the Crawler.
 void Crawler::initialize()
 {
-	log.open("logs.txt");
-	log << "Crawler initialized" << endl;
+  log.open("logs.txt");
+  log << "Crawler initialized" << endl;
+  
+  // for dumping links 
+  lout.open("links.txt");
 
   // Add initial urls
   mainQueue.push(intialLink);
+
+  // Deleting old instance of buffer directory
+  system("rm -d buffer");
+
+  // Creating the buffer directory
+  mkdir("buffer", 07770);
 }
 
+// Downloads a website and save it in buffer folder 
+void Crawler::fileDownloader(string url){
+  string html;
+  // check if the downloaded website is http
+  // then use appropriate HTML downloader
+  if (ishttp(url))
+  {
+    html = httpDownloader(url);
+  }
+  else
+  {
+    html = httpsDownloader(url);
+  }
+  log << "File Downloaded." << endl;
 
+  // !!!Attendion: try acquiring lock for totalDownloadPages
+  ofstream fout("./buffer/htmlFile_" + to_string(totalDownloadPages++) + ".html");
+  fout << html << endl;
+  fout.close();
+}
+
+// Parse a file from the buffer and update parameters
+void Crawler::parseFile(string filename){
+  ifstream f(filename); //taking file as inputstream
+  string html;
+  ostringstream ss;
+  ss << f.rdbuf();
+  html = ss.str();
+  f.close();
+
+  // Deleting the file using system command
+  string com = "rm ./buffer/"+filename;
+  system(com.c_str());
+  
+  // Get urls from the getLinks()
+  log << "getLinks() called." << endl;
+  set<string> linkedSites = getLinks(html, maxLinks);
+  log << "Links returned: " << linkedSites.size() << endl;
+
+  // Pushing links into mainQueue if they are unvisited
+  for (auto i : linkedSites)
+  {
+    lout << i << endl;
+    ranker[getDomain(i)]++;
+    if (!discoveredSites[i])
+    {
+      discoveredSites[i] = true;
+      mainQueue.push(i);
+    }
+  }
+  totalVisitedPages++;
+}
 
 // Start a crawler to discover a specific website.
 void Crawler::runCrawler()
 {
   log << "Crawler initialised." << endl;
 
-  ofstream lout("links.txt");
+  while (!mainQueue.empty() && totalVisitedPages < pagesLimit)
+  {
+    // Decide first that if we need to 
+    // 1. Download a file
+    // 2. Parse a file
+    // Appropriately create a thread and call the producer and consumer functions
+    // For downloading purpose, we can use the parent thread temporarily
+    // Or the initialize can just download 10-20 websites serially{as told by prakash}
 
-  // Only discover more if haven't reached the depthLimit
-  while (
-		!mainQueue.empty() && 
-		// mainQueue.size() < depthLimit && 
-		totalVisitedPages<pagesLimit
-	){
 
-    // pop the front website in queue
-		string currentSite = mainQueue.front();
+    // Ordering the download for the website
+    string currentSite = mainQueue.front();
     mainQueue.pop();
+    fileDownloader(currentSite);
 
-		log << "Processing: " << currentSite << endl;
-
-    // Download the website html
-		log << "Calling Downloader." << endl;
-
-		string html;
-
-    // check if the downloaded website is http 
-    // then use appropriate HTML downloader
-		if(ishttp(currentSite))
-		{
-			html = httpDownloader(currentSite);
-		} else {
-			html = httpsDownloader(currentSite);
-		}
-
-		log << "File Downloaded." << endl;
-
-		system("clear");
-    cout << "Size of mainQueue:" << mainQueue.size() << endl;
-    cout << "Link no :" << totalVisitedPages+1 << endl;
-		cout << "HTML file length: " << html.size() << endl;
-
-		// Get urls from the getLinks()
-		log << "getLinks() called." << endl;
-    set<string> linkedSites = getLinks(html, maxLinks);
-    log << "Links returned: " << linkedSites.size() << endl;
+    // Calling the parser thing
+    string filename = NULL; // get the first filename somehow
+    parseFile(filename);
 
 
-		// Pushing links into mainQueue if they are unvisited
-    for (auto i : linkedSites)
-    {
-			lout << i << endl;
-			ranker[getDomain(i)]++;
-      if (!discoveredSites[i])
-      {
-				discoveredSites[i] = true;
-        mainQueue.push(i);
-      }
-    }
-		totalVisitedPages++;
-		
-		log << "Link no. " << totalVisitedPages << " processed." << endl << endl;
-		// end of crawler loop
+    // end of crawler loop
   }
 
   log << "Crawling completed." << endl << endl;
-  lout.close();
 }
 
-
-void Crawler::showResults(){
+void Crawler::showResults()
+{
   system("clear");
 
   cout << "-----------------------------------------------------" << endl;
   cout << "Parameters:" << endl;
   cout << "-----------------------------------------------------" << endl;
-  cout << "Max Links extracted from a website:" << "\t" << maxLinks << endl;
-  cout << "Max pages downloaded:" << "\t" << pagesLimit << endl;
+  cout << "Max Links extracted from a website:"
+       << "\t" << maxLinks << endl;
+  cout << "Max pages downloaded:"
+       << "\t" << pagesLimit << endl;
 
   cout << "" << endl;
-  
+
   cout << "-----------------------------------------------------" << endl;
-  cout << "Web rankings" << "\t" << "(" << "Total Visited Websites:" << "\t" << totalVisitedPages << ")" << endl;
+  cout << "Web rankings"
+       << "\t"
+       << "("
+       << "Total Visited Websites:"
+       << "\t" << totalVisitedPages << ")" << endl;
   cout << "-----------------------------------------------------" << endl;
-  
-  sort(ranker);
+
+  map<int, string, greater<int>> mm;
+
+  for (auto &it : ranker)
+  {
+    mm[it.second] = it.first;
+  }
+
+  int r = 1;
+  cout << "Rank"
+       << "\t"
+       << "Domain Name" << endl;
+  cout << "" << endl;
+  for (auto i : mm)
+  {
+    cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
+  }
 }
-
-void sort(map<string, int>& M) 
-{
-	// Here if greater<int> is used to make 
-	// sure that elements are stored in 
-	// descending order of keys. 
-	multimap<int, string, greater <int> > MM; 
-
-	for (auto& it : M){
-		MM.insert(make_pair(it.second, it.first));
-	}
-
-	int r = 1;
-  cout << "Rank" << "\t" << "Domain Name" << endl;
-  cout << "" << endl;
-	for(auto i: MM){
-		cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
-	}
-} 
 
 bool ishttp(string website)
 {
