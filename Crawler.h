@@ -23,7 +23,10 @@ public:
   string intialLink = "https://www.google.com";
 
   // queue for storing linked websites
-  queue<string> mainQueue;
+  queue<string> linkQueue;
+  // queue for storing downloaded filenames
+  queue<string> fileQueue;
+
   // map for storing visited websites
   map<string, bool> discoveredSites;
   // map for a simple website ranker
@@ -67,7 +70,7 @@ void Crawler::initialize()
   lout.open("links.txt");
 
   // Add initial urls
-  mainQueue.push(intialLink);
+  linkQueue.push(intialLink);
 
   // Deleting old instance of buffer directory
   system("rm -d buffer");
@@ -92,9 +95,13 @@ void Crawler::fileDownloader(string url){
   log << "File Downloaded." << endl;
 
   // !!!Attendion: try acquiring lock for totalDownloadPages
-  ofstream fout("./buffer/htmlFile_" + to_string(totalDownloadPages++) + ".html");
+  string filename = "./buffer/htmlFile_" + to_string(totalDownloadPages++) + ".html";
+  ofstream fout(filename);
   fout << html << endl;
   fout.close();
+
+  // !!!Attention: Acquire lock
+  fileQueue.push(filename);
 }
 
 // Parse a file from the buffer and update parameters
@@ -110,12 +117,14 @@ void Crawler::parseFile(string filename){
   string com = "rm ./buffer/"+filename;
   system(com.c_str());
   
+
+
   // Get urls from the getLinks()
   log << "getLinks() called." << endl;
   set<string> linkedSites = getLinks(html, maxLinks);
   log << "Links returned: " << linkedSites.size() << endl;
 
-  // Pushing links into mainQueue if they are unvisited
+  // Pushing links into linkQueue if they are unvisited
   for (auto i : linkedSites)
   {
     lout << i << endl;
@@ -123,7 +132,7 @@ void Crawler::parseFile(string filename){
     if (!discoveredSites[i])
     {
       discoveredSites[i] = true;
-      mainQueue.push(i);
+      linkQueue.push(i);
     }
   }
   totalVisitedPages++;
@@ -134,7 +143,7 @@ void Crawler::runCrawler()
 {
   log << "Crawler initialised." << endl;
 
-  while (!mainQueue.empty() && totalVisitedPages < pagesLimit)
+  while (!linkQueue.empty() && totalVisitedPages < pagesLimit)
   {
     // Decide first that if we need to 
     // 1. Download a file
@@ -142,15 +151,17 @@ void Crawler::runCrawler()
     // Appropriately create a thread and call the producer and consumer functions
     // For downloading purpose, we can use the parent thread temporarily
     // Or the initialize can just download 10-20 websites serially{as told by prakash}
+    // MAJOR WORK is remaining here.
 
 
     // Ordering the download for the website
-    string currentSite = mainQueue.front();
-    mainQueue.pop();
+    string currentSite = linkQueue.front();
+    linkQueue.pop();
     fileDownloader(currentSite);
 
     // Calling the parser thing
-    string filename = NULL; // get the first filename somehow
+    string filename = fileQueue.front();
+    fileQueue.pop();
     parseFile(filename);
 
 
