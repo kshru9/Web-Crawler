@@ -13,10 +13,10 @@
 
 using namespace std;
 
-string httpDownloader(string url);
+string httpDownloader(string);
 string httpsDownloader(string);
 
-string getHostnameFromUrl(string url);
+string getHostnameFromUrl(string);
 string getHostPathFromUrl(string);
 
 string httpDownloader(string url){

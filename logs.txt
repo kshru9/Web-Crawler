@@ -1,6 +1,6 @@
 Crawler initialized
 Crawler initialised.
-Processing: https://www.google.com/
+Processing: https://www.google.com
 Calling Downloader.
 File Downloaded.
 getLinks() called.
@@ -18,7 +18,7 @@ Processing: https://books.google.com/bkshp
 Calling Downloader.
 File Downloaded.
 getLinks() called.
-Links returned: 18
+Links returned: 17
 Link no. 3 processed.
 
 Processing: https://docs.google.com/document/
@@ -28,187 +28,47 @@ getLinks() called.
 Links returned: 1
 Link no. 4 processed.
 
-Processing: https://drive.google.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 5 processed.
-
 Processing: https://mail.google.com/mail/
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 1
-Link no. 6 processed.
+Link no. 5 processed.
 
 Processing: https://maps.google.com/maps
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 1
-Link no. 7 processed.
+Link no. 6 processed.
 
 Processing: https://news.google.com/
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 0
-Link no. 8 processed.
+Link no. 7 processed.
 
 Processing: https://photos.google.com/
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 0
-Link no. 9 processed.
+Link no. 8 processed.
 
 Processing: https://play.google.com/
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 0
-Link no. 10 processed.
-
-Processing: https://www.blogger.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 11 processed.
-
-Processing: https://www.google.com/calendar
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 12 processed.
-
-Processing: https://www.google.com/finance
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 13 processed.
-
-Processing: https://www.google.com/imghp
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 19
-Link no. 14 processed.
-
-Processing: https://www.google.com/intl/en/about/products
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 15 processed.
-
-Processing: https://www.google.com/shopping
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 16 processed.
-
-Processing: https://www.google.com/url
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 17 processed.
-
-Processing: https://www.youtube.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 18 processed.
-
-Processing: https://accounts.google.com/AccountChooser
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 19 processed.
-
-Processing: https://accounts.google.com/SignUp
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 20 processed.
-
-Processing: https://accounts.google.com/TOS
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 21 processed.
-
-Processing: https://accounts.google.com/signin/usernamerecovery
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 3
-Link no. 22 processed.
-
-Processing: https://www.google.com/intl/en/about
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 23 processed.
+Link no. 9 processed.
 
 Processing: https://translate.google.com/
 Calling Downloader.
 File Downloaded.
 getLinks() called.
 Links returned: 5
-Link no. 24 processed.
-
-Processing: https://www.google.com/accounts/Login
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 25 processed.
-
-Processing: https://www.google.com/webhp
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 17
-Link no. 26 processed.
-
-Processing: https://docs.google.com/document/create
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 27 processed.
-
-Processing: https://www.google.com/maps
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 28 processed.
-
-Processing: https://calendar.google.com/calendar
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 29 processed.
-
-Processing: https://about.google/intl/en/products
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 30 processed.
+Link no. 10 processed.
 
 Crawling completed.
 

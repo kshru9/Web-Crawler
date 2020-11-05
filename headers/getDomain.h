@@ -17,23 +17,28 @@ string getDomain(string url){
     url = regex_replace(url,exp2,"");
     
     // Removing anything after first /
-    size_t a = url.find_first_of("/");
-    if(a != string::npos)url.erase(a);
+    size_t t = url.find_first_of("/");
+    if(t != string::npos)url.erase(t);
     
     
-    a = url.find_first_of("#");
-    if(a != string::npos)url.erase(a);
+    t = url.find_first_of("#");
+    if(t != string::npos)url.erase(t);
     
-    a = url.find_first_of("?");
-    if(a != string::npos)url.erase(a);
+    t = url.find_first_of("?");
+    if(t != string::npos)url.erase(t);
     
-    // url = replaceFirstOccurrence(url, "www.", "");
-    
+
+    if(url.size()>3)
+		if(url.substr(0, 4) == "www."){
+		url = replaceFirstOccurrence(url, "www.", "");
+
+		}
+    return url;
+
     // consider domain from the first identified '.' in the link
-    a = url.find('.');
-    if(a != string::npos){
-        url = url.substr(a+1, url.length()-1);
+    t = url.find('.');
+    if(t != string::npos){
+        url = url.substr(t+1, url.length()-1);
     }  
     
-    return url;
 }

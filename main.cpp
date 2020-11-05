@@ -16,8 +16,8 @@ using namespace std;
 
 int main(int argc, const char *argv[])
 {
-  // Crawler(depthLimit, maxLinks, pagesLimit)
-  Crawler myCrawler(stoi(argv[1]), stoi(argv[2]), stoi(argv[3]));
+  // Crawler(maxLinks, pagesLimit)
+  Crawler myCrawler(stoi(argv[1]), stoi(argv[2]));
 
   myCrawler.initialize();
   myCrawler.runCrawler();

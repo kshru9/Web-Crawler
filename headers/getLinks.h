@@ -24,19 +24,18 @@ set<string> getLinks(string html, int maxLinks)
   // Extracting all the links from the html file
   const regex url_re(R"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", icase);
 
+  // Storing the href tag links from the html downloaded
   set<string> res_1 = {
 		sregex_token_iterator(html.begin(), html.end(), url_re, 1),
 		sregex_token_iterator{}};
 
-  regex exp(".*\\..*");
+  regex exp(".*\\..*"); // regex for URL within <a href> tag
 
   set<string> links;
 
 
   for (string i : res_1)
-  {
-    // A string starting from "https://" is considered as a link
-    // A link should not contain \<>{}
+  {    
 		string a = i;
 
 		size_t t = a.find_first_of("?");
@@ -48,7 +47,11 @@ set<string> getLinks(string html, int maxLinks)
 		t = a.find_first_of(";");
     if(t != string::npos)a.erase(t);
     
-
+		t = a.find_first_of("=");
+    if(t != string::npos)a.erase(t);
+    
+    // A string starting from "https://" is considered as a link
+    // A link should not contain \<>{}
     if(
         regex_match(a, exp) &&
         a.size() > 7 && // so that next one doesn't fails
@@ -68,7 +71,7 @@ set<string> getLinks(string html, int maxLinks)
       }
     }
   }
-
 	cout << "getLinks() returned." << endl;
+  
   return links;
 }
