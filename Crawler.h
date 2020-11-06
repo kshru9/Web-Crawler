@@ -19,12 +19,9 @@ public:
   // Parameters declaration
   int maxLinks;
   int pagesLimit;
-  string intialLink = "https://www.google.com";
 
   // queue for storing linked websites
   queue<string> linkQueue;
-  // queue for storing downloaded filenames
-  queue<string> fileQueue;
 
   // map for storing visited websites
   map<string, bool> discoveredSites;
@@ -56,13 +53,15 @@ public:
   // Initialize the Crawler.
   void initialize();
   // Downloads a website and save it in buffer folder
-  void fileDownloader(string url);
+  string downloader(string url);
   // Parse a file from the buffer and update parameters{concurrency part}
   void parseFile(string filename);
   // Start a crawler to discover a specific website.
   void runCrawler();
   // Show the results of the crawling
   void showResults();
+
+  void childThread(string url);
 };
 
 void Crawler::initialize()
@@ -73,60 +72,64 @@ void Crawler::initialize()
   // for dumping links
   lout.open("links.txt");
 
-  // Add initial urls
-  linkQueue.push(intialLink);
-
-  // Deleting old instance of buffer directory
-  system("rm -d buffer");
-
-  // Creating the buffer directory
-  mkdir("buffer", 07770);
-}
-
-void Crawler::fileDownloader(string url)
-{
-  string html;
-  // check if the downloaded website is http
-  // then use appropriate HTML downloader
-  if (url.compare(0, 8, "https://"))
+  // Add initial urls from initialLinks.txt
+  ifstream lin("initialLinks.txt");
+  if (lin)
   {
-    html = httpDownloader(url);
+    int n;
+    lin >> n;
+    string a;
+    for (int i = 0; i < n; i++)
+    {
+      lin >> a;
+      if (a != "")
+      {
+        linkQueue.push(a);
+      }
+      else
+      {
+        break;
+      }
+    }
   }
   else
   {
-    html = httpsDownloader(url);
+    cout << "Error reading file: \"initialLinks.txt\"" << endl;
+    linkQueue.push("https://www.google.com");
   }
-  log << "File Downloaded." << endl;
-
-  // !!!Attendion: try acquiring lock for totalDownloadPages
-  string filename = "./buffer/htmlFile_" + to_string(totalDownloadPages++) + ".html";
-  ofstream fout(filename);
-  fout << html << endl;
-  fout.close();
-
-  // !!!Attention: Acquire lock
-  fileQueue.push(filename);
 }
 
-void Crawler::parseFile(string filename)
+string Crawler::downloader(string url)
 {
-  ifstream f(filename); //taking file as inputstream
   string html;
-  ostringstream ss;
-  ss << f.rdbuf();
-  html = ss.str();
-  f.close();
+  // check if the downloaded website is http, then use appropriate HTML downloader
+  if (url.substr(0, 8) == string("https://"))
+  {
+    html = httpsDownloader(url);
+  }
+  else
+  {
+    html = httpDownloader(url);
+  }
 
-  // Deleting the file using system command
-  string com = "rm ./buffer/" + filename;
-  system(com.c_str());
+  return html;
+}
 
-  // Get urls from the getLinks()
-  log << "getLinks() called." << endl;
+void Crawler::childThread(string url)
+{
+  // downloading the file
+  string html = downloader(url);
+  log << "file downloaded." << endl;
+  cout << "file downloaded." << endl;
+
+  // extracting all the links from it
   set<string> linkedSites = getLinks(html, maxLinks);
-  log << "Links returned: " << linkedSites.size() << endl;
+  log << "links extracted." << endl;
+  cout << "links extracted." << endl;
 
-  // Pushing links into linkQueue if they are unvisited
+
+  // updating the shared variables
+  // lock(linkedQueue, linkedSites, discoveredSites, totalVisitedPages)
   for (auto i : linkedSites)
   {
     lout << i << endl;
@@ -138,31 +141,26 @@ void Crawler::parseFile(string filename)
     }
   }
   totalVisitedPages++;
+  cout << "shared variables updated." << endl;
+  log << "shared variables updated." << endl;
+  // unlock()
 }
 
 void Crawler::runCrawler()
 {
-  log << "Crawler initialised." << endl;
-
   while (!linkQueue.empty() && totalVisitedPages < pagesLimit)
   {
-    // Decide first that if we need to
-    // 1. Download a file
-    // 2. Parse a file
-    // Appropriately create a thread and call the producer and consumer functions
-    // For downloading purpose, we can use the parent thread temporarily
-    // Or the initialize can just download 10-20 websites serially{as told by prakash}
-    // MAJOR WORK is remaining here.
-
-    // Ordering the download for the website
+    // Creating a thread
+    // lock(linkQueue)
     string currentSite = linkQueue.front();
     linkQueue.pop();
-    fileDownloader(currentSite);
+    // unlock()
 
-    // Calling the parser thing
-    string filename = fileQueue.front();
-    fileQueue.pop();
-    parseFile(filename);
+
+    childThread(currentSite);
+
+
+
 
     // end of crawler loop
   }
@@ -173,7 +171,7 @@ void Crawler::runCrawler()
 
 void Crawler::showResults()
 {
-  system("clear");
+  // system("clear");
 
   cout << "-----------------------------------------------------" << endl;
   cout << "Parameters:" << endl;

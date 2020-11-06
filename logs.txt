@@ -1,74 +1,9 @@
 Crawler initialized
-Crawler initialised.
-Processing: https://www.google.com
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 17
-Link no. 1 processed.
-
-Processing: https://accounts.google.com/ServiceLogin
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 5
-Link no. 2 processed.
-
-Processing: https://books.google.com/bkshp
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 17
-Link no. 3 processed.
-
-Processing: https://docs.google.com/document/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 4 processed.
-
-Processing: https://mail.google.com/mail/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 5 processed.
-
-Processing: https://maps.google.com/maps
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 1
-Link no. 6 processed.
-
-Processing: https://news.google.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 7 processed.
-
-Processing: https://photos.google.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 8 processed.
-
-Processing: https://play.google.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 0
-Link no. 9 processed.
-
-Processing: https://translate.google.com/
-Calling Downloader.
-File Downloaded.
-getLinks() called.
-Links returned: 5
-Link no. 10 processed.
-
+file downloaded.
+links extracted.
+shared variables updated.
+file downloaded.
+links extracted.
+shared variables updated.
 Crawling completed.
 

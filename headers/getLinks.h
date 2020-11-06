@@ -19,8 +19,6 @@ set<string> getLinks(string html, int maxLinks);
 
 set<string> getLinks(string html, int maxLinks)
 {
-	cout << "getLinks() called." << endl;
-
   // Extracting all the links from the html file
   const regex url_re(R"!!(<\s*A\s+[^>]*href\s*=\s*"([^"]*)")!!", icase);
 
@@ -71,7 +69,6 @@ set<string> getLinks(string html, int maxLinks)
       }
     }
   }
-	cout << "getLinks() returned." << endl;
   
   return links;
 }
