@@ -63,22 +63,24 @@ void Crawler::runCrawler()
   
   while (1)
   {
-
-    lock(&mainLock);
-    if((!linkQueue.empty() && totalVisitedPages < pagesLimit) == 0){
-      unlock(&mainLock);
-      break;
-    }
-    unlock(&mainLock);
+    int w_threads;
+    int queue_size;
 
     lock(&wT_lock);
-    // if less threads are working need to create threads
-    if(workingThreads<maxThreads){
-      unlock(&wT_lock);
+    lock(&mainLock);
+    w_threads = workingThreads;
+    queue_size = linkQueue.size();
+    unlock(&wT_lock);
+    unlock(&mainLock);
+    
+    if(w_threads == 0 && queue_size == 0){
+      cout << "Exiting now." << endl;
+      break;
+    }
+    else if(w_threads == 0 && queue_size!=0){
+      cout << "creating a thread." << endl;
 
-
-      // Creating a thread
-      lock(&mainLock);
+	    lock(&mainLock);
       string currentSite = linkQueue.front();
       linkQueue.pop();
       unlock(&mainLock);
@@ -93,14 +95,32 @@ void Crawler::runCrawler()
       workingThreads++;
       unlock(&wT_lock);
     }
-    // now the parent needs to go to sleep
-    else {
-      unlock(&wT_lock);
-
-      pthread_cond_wait(&parent_cond, &parent_lock); 
+    else if(w_threads && queue_size == 0){
+      cout << "going to sleep now" << endl;
+      pthread_cond_wait(&parent_cond, &parent_lock);
+      cout << "awaken now." << endl; 
     }
+    else{
+      if(w_threads<maxThreads){
+        cout << "creating a thread." << endl;
 
+	    lock(&mainLock);
+      string currentSite = linkQueue.front();
+      linkQueue.pop();
+      unlock(&mainLock);
 
+      // childThread(currentSite);
+      pthread_t th;
+      int ret_val = pthread_create(
+          &th, NULL, childThread, (void *)currentSite.c_str());
+      
+
+      lock(&wT_lock);
+      workingThreads++;
+      unlock(&wT_lock);
+      }
+    }
+    
     // end of crawler loop
   }
 
@@ -158,6 +178,7 @@ void *childThread(void *_url)
   string html = myCrawler.downloader(url);
   ofstream log("./thread_logs/"+url+".log");
 
+	cout << "<<<" << html << ">>>" << endl;
 
   log << "file downloaded." << endl;
   cout << "file downloaded." << endl;
