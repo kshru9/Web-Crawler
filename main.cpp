@@ -11,13 +11,16 @@
 #include <unistd.h>
 
 #include "Crawler.h"
+#include "Crawler.cpp"
+// gives a myCrawler object from default
 
 using namespace std;
 
 int main(int argc, const char *argv[])
 {
   // Crawler(maxLinks, pagesLimit)
-  Crawler myCrawler(stoi(argv[1]), stoi(argv[2]));
+  myCrawler.maxLinks = stoi(argv[1]);
+  myCrawler.pagesLimit = stoi(argv[2]);
 
   myCrawler.initialize();
   myCrawler.runCrawler();
