@@ -12,9 +12,6 @@ void Crawler::initialize()
   log.open("logs.txt");
   log << "Crawler initialized" << endl;
 
-  // for dumping links
-  lout.open("links.txt");
-
   // Add initial urls from initialLinks.txt
   ifstream lin("initialLinks.txt");
   if (lin)
@@ -84,6 +81,7 @@ void Crawler::runCrawler()
     
 
     if(visitedpages>=pagesLimit){
+      log << "pagesLimit reached: " << pagesLimit << endl;
       break;
     }
     
@@ -101,7 +99,6 @@ void Crawler::runCrawler()
       // childThread(currentSite);
       createThread(currentSite);
   
-
       lock(&wT_lock);
       workingThreads++;
       unlock(&wT_lock);
@@ -181,9 +178,6 @@ void Crawler::showResults()
 void *childThread(void *_url)
 {
   string url((char*)_url);
-
-  cout << "i am getting << " << url << ">>" << endl;
-
 
   // downloading the file
   string html = myCrawler.downloader(url);

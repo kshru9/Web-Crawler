@@ -16,7 +16,6 @@ class Crawler
   // setting public for testing purposes
 public:
   ofstream log;  // logging
-  ofstream lout; // links dumping
 
   int workingThreads = 0;
   int maxThreads = 5;
@@ -50,6 +49,7 @@ public:
   // Constructor
   Crawler()
   {
+    system("rm -r thread_logs");
     mkdir("thread_logs",0777); 
     pthread_mutex_init(&wT_lock, NULL);
     pthread_mutex_init(&mainLock, NULL);
@@ -61,7 +61,6 @@ public:
   ~Crawler()
   {
     log.close();
-    lout.close();
   }
 
   // Public functions

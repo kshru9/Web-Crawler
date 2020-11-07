@@ -10,6 +10,4 @@ parent Crawler
         if thread limit is not reached
             create more threads 
 
-
-
 */

@@ -1,2 +1,0 @@
-language = "cpp"
-run = "g++ -std=c++14 main.cpp -lssl -pthread && ./a.out 1000000 2"
