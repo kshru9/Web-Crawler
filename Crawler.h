@@ -8,6 +8,7 @@
 #include <map>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <unistd.h> 
 using namespace std;
 
 class Crawler
@@ -16,6 +17,17 @@ class Crawler
 public:
   ofstream log;  // logging
   ofstream lout; // links dumping
+
+  int workingThreads = 0;
+  int maxThreads = 5;
+
+  pthread_mutex_t wT_lock;
+  pthread_mutex_t mainLock;
+
+
+  pthread_cond_t parent_cond;
+  pthread_mutex_t parent_lock;
+
 
   // Parameters declaration
   int maxLinks;
@@ -38,7 +50,11 @@ public:
   // Constructor
   Crawler()
   {
-    
+    mkdir("thread_logs",0777); 
+    pthread_mutex_init(&wT_lock, NULL);
+    pthread_mutex_init(&mainLock, NULL);
+    pthread_mutex_init(&parent_lock, NULL);
+    pthread_cond_init(&parent_cond, NULL);
   }
 
   // Destructor
