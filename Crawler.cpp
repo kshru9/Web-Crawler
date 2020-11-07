@@ -27,6 +27,7 @@ void Crawler::initialize()
       lin >> a;
       if (a != "")
       {
+        cout << a << endl;
         linkQueue.push(a);
       }
       else
@@ -46,16 +47,21 @@ string Crawler::downloader(string url)
 {
   string html;
   // check if the downloaded website is http, then use appropriate HTML downloader
-  if (url.substr(0, 8) == string("https://"))
-  {
-    html = httpsDownloader(url);
-  }
-  else
-  {
-    html = httpDownloader(url);
-  }
-
+  
+  html = httpsDownloader(url);
   return html;
+}
+
+void Crawler::createThread(string url){
+  cout << "creating a thread." << endl;
+  pthread_t th;
+  char* ch = (char*)malloc(1+url.size()*sizeof(char));
+  strcpy(ch, url.c_str());
+  
+
+
+  int ret_val = pthread_create(
+      &th, NULL, childThread, (void*)ch);
 }
 
 void Crawler::runCrawler()
@@ -65,20 +71,27 @@ void Crawler::runCrawler()
   {
     int w_threads;
     int queue_size;
+    int visitedpages;
 
     lock(&wT_lock);
     lock(&mainLock);
     w_threads = workingThreads;
     queue_size = linkQueue.size();
+    visitedpages = totalVisitedPages;
+
     unlock(&wT_lock);
     unlock(&mainLock);
+    
+
+    if(visitedpages>=pagesLimit){
+      break;
+    }
     
     if(w_threads == 0 && queue_size == 0){
       cout << "Exiting now." << endl;
       break;
     }
     else if(w_threads == 0 && queue_size!=0){
-      cout << "creating a thread." << endl;
 
 	    lock(&mainLock);
       string currentSite = linkQueue.front();
@@ -86,10 +99,8 @@ void Crawler::runCrawler()
       unlock(&mainLock);
 
       // childThread(currentSite);
-      pthread_t th;
-      int ret_val = pthread_create(
-          &th, NULL, childThread, (void *)currentSite.c_str());
-      
+      createThread(currentSite);
+  
 
       lock(&wT_lock);
       workingThreads++;
@@ -102,7 +113,6 @@ void Crawler::runCrawler()
     }
     else{
       if(w_threads<maxThreads){
-        cout << "creating a thread." << endl;
 
 	    lock(&mainLock);
       string currentSite = linkQueue.front();
@@ -110,9 +120,7 @@ void Crawler::runCrawler()
       unlock(&mainLock);
 
       // childThread(currentSite);
-      pthread_t th;
-      int ret_val = pthread_create(
-          &th, NULL, childThread, (void *)currentSite.c_str());
+      createThread(currentSite);
       
 
       lock(&wT_lock);
@@ -172,13 +180,14 @@ void Crawler::showResults()
 
 void *childThread(void *_url)
 {
-  string url = string((char *)_url);
+  string url((char*)_url);
+
+  cout << "i am getting << " << url << ">>" << endl;
+
 
   // downloading the file
   string html = myCrawler.downloader(url);
-  ofstream log("./thread_logs/"+url+".log");
-
-	cout << "<<<" << html << ">>>" << endl;
+  ofstream log("./thread_logs/"+to_string(rand())+".log");
 
   log << "file downloaded." << endl;
   cout << "file downloaded." << endl;

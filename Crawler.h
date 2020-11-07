@@ -76,9 +76,12 @@ public:
   void runCrawler();
   // Show the results of the crawling
   void showResults();
+  // for creating a single thread
+  void createThread(string url);
+
 } myCrawler;
 
 // child thread for downloading and parsing
-void *childThread(void* url);
+void *childThread(void* _url);
 
 #endif

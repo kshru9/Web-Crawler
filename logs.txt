@@ -1,9 +1,3 @@
 Crawler initialized
-file downloaded.
-links extracted.
-shared variables updated.
-file downloaded.
-links extracted.
-shared variables updated.
 Crawling completed.
 
