@@ -64,13 +64,14 @@ void Crawler::createThread(){
 	lock(&mainLock);
 		string currentSite = linkQueue.front();
 		linkQueue.pop();
+		totalVisitedPages++;
 	unlock(&mainLock);
 
 	lock(&wT_lock);
 		workingThreads++;
 	unlock(&wT_lock);
 
-  cout << "creating a thread." << workingThreads << endl;
+  cout << "creating a thread, totalworkingthreads now: " << workingThreads << endl;
   pthread_t th;
   char* ch = (char*)malloc(1+currentSite.size()*sizeof(char));
   strcpy(ch, currentSite.c_str());
@@ -101,7 +102,7 @@ void Crawler::runCrawler()
     unlock(&wT_lock);
 
 
-		if(visitedpages>=pagesLimit){
+		if(pagesLimitReached || visitedpages>=pagesLimit){
 			// pagesLimit reached
 			pagesLimitReached = true;
       
@@ -212,8 +213,6 @@ void *childThread(void *_url)
       myCrawler.linkQueue.push(i);
     }
   }
-  myCrawler.totalVisitedPages++;
-  //myCrawler.threadFinished = true;
   
   unlock(&myCrawler.mainLock);
 

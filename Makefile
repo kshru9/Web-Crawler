@@ -1,6 +1,6 @@
 maxlinks:= 1000000
 pagelimit:= 50
-threads:= 10
+threads:= 20
 
 all_targets:= clear compile run clean
 

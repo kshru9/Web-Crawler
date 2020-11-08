@@ -29,3 +29,6 @@ int main(int argc, const char *argv[])
 
   return 0;
 }
+
+// 10: 3309 7507
+// 20: 4940 
