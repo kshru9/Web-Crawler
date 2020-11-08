@@ -15,6 +15,56 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     - Link extractor
     - Domain extractor
 
+### Crawler loop code
+<pre>
+<code>
+...
+while(1){
+    if(pagesLimitReached || visitedpages>=pagesLimit){
+        pagesLimitReached = true;
+        if(w_threads){
+            <b>gotosleep()</b>;
+        }
+        else {
+            break;
+        }
+    }
+    else{
+        if (w_threads < maxThreads && queue_size>0){
+            createThread();
+        }
+        else if(w_threads == 0){
+            break;
+        }
+        else{
+            <b>gotosleep()</b>;
+        }
+    }
+}
+...
+</pre>
+</code>
+
+### Child Thread code
+<pre>
+<code>
+...
+download(url);
+parse(url);
+update(queue, visitedLinks, ranking);
+if(pagesLimitReached){
+    if(workingThreads == 0){
+        <b>wake_parent()</b>;
+    }
+}
+else{
+    <b>wake_parent()</b>;
+}
+...
+</pre>
+</code>
+
+
 ### Tools Used
  - Sockets
  - OpenSSL
