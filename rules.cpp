@@ -8,6 +8,7 @@ parent Crawler
         go to sleep
     if some threads are working && queue has some data
         if thread limit is not reached
-            create more threads 
-
+            create more threads
+				else if thread limit is reached
+						go to sleep
 */

@@ -24,7 +24,6 @@ void Crawler::initialize()
       lin >> a;
       if (a != "")
       {
-        cout << a << endl;
         linkQueue.push(a);
       }
       else
@@ -52,13 +51,11 @@ string Crawler::downloader(string url)
 void Crawler::createThread(string url){
   cout << "creating a thread." << endl;
   pthread_t th;
+	// copying the url into heap memory, so that it can be accessed via the thread
   char* ch = (char*)malloc(1+url.size()*sizeof(char));
   strcpy(ch, url.c_str());
-  
 
-
-  int ret_val = pthread_create(
-      &th, NULL, childThread, (void*)ch);
+  pthread_create(&th, NULL, childThread, (void*)ch);
 }
 
 void Crawler::runCrawler()
@@ -70,18 +67,22 @@ void Crawler::runCrawler()
     int queue_size;
     int visitedpages;
 
-    lock(&wT_lock);
-    lock(&mainLock);
+    // locking and getting the values of working threads, size of queue and total visited pages
+	lock(&wT_lock);
+	lock(&mainLock);
+
     w_threads = workingThreads;
     queue_size = linkQueue.size();
     visitedpages = totalVisitedPages;
 
-    unlock(&wT_lock);
-    unlock(&mainLock);
+	unlock(&wT_lock);
+	unlock(&mainLock);
     
 
+		// stopping if pagesLimit is reached
     if(visitedpages>=pagesLimit){
       log << "pagesLimit reached: " << pagesLimit << endl;
+			// exiting if pagesLimit is reached, some threads might be running, which would produce seg fault after this
       break;
     }
     
@@ -91,7 +92,7 @@ void Crawler::runCrawler()
     }
     else if(w_threads == 0 && queue_size!=0){
 
-	    lock(&mainLock);
+	  lock(&mainLock);
       string currentSite = linkQueue.front();
       linkQueue.pop();
       unlock(&mainLock);
@@ -99,9 +100,9 @@ void Crawler::runCrawler()
       // childThread(currentSite);
       createThread(currentSite);
   
-      lock(&wT_lock);
+		lock(&wT_lock);
       workingThreads++;
-      unlock(&wT_lock);
+		unlock(&wT_lock);
     }
     else if(w_threads && queue_size == 0){
       cout << "going to sleep now" << endl;
@@ -111,18 +112,18 @@ void Crawler::runCrawler()
     else{
       if(w_threads<maxThreads){
 
-	    lock(&mainLock);
+	  lock(&mainLock);
       string currentSite = linkQueue.front();
       linkQueue.pop();
-      unlock(&mainLock);
+		unlock(&mainLock);
 
       // childThread(currentSite);
       createThread(currentSite);
       
 
-      lock(&wT_lock);
+		lock(&wT_lock);
       workingThreads++;
-      unlock(&wT_lock);
+		unlock(&wT_lock);
       }
     }
     
@@ -140,10 +141,13 @@ void Crawler::showResults()
   cout << "-----------------------------------------------------" << endl;
   cout << "Parameters:" << endl;
   cout << "-----------------------------------------------------" << endl;
-  cout << "Max Links extracted from a website:"
+  cout << "Max Links from a website:"
        << "\t" << maxLinks << endl;
   cout << "Max pages downloaded:"
        << "\t" << pagesLimit << endl;
+  cout << "Max threads used in parallel:"
+       << "\t" << maxThreads << endl;
+
 
   cout << "" << endl;
 
@@ -171,58 +175,57 @@ void Crawler::showResults()
   {
     cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
   }
+  cout << "-----------------------------------------------------" << endl;
 }
 
 
 
 void *childThread(void *_url)
 {
-  string url((char*)_url);
 
-  // downloading the file
-  string html = myCrawler.downloader(url);
-  ofstream log("./thread_logs/"+to_string(rand())+".log");
+    string url((char*)_url);
 
-  log << "file downloaded." << endl;
-  cout << "file downloaded." << endl;
+    // downloading the file
+    string html = myCrawler.downloader(url);
+    ofstream log("./thread_logs/"+to_string(rand())+".log");
 
-  // extracting all the links from it
-  set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
-  log << "links extracted." << endl;
-  cout << "links extracted." << endl;
+    log << "file downloaded." << endl;
+    cout << "file downloaded." << endl;
 
-  // updating the shared variables
-  lock(&myCrawler.mainLock);
-  for (auto i : linkedSites)
-  {
+    // extracting all the links from it
+    set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+    log << "links extracted." << endl;
+    cout << "links extracted." << endl;
+
+    // updating the shared variables
+    lock(&myCrawler.mainLock);
+    for (auto i : linkedSites)
+    {
     log << i << endl;
     myCrawler.ranker[getDomain(i)]++;
     if (!myCrawler.discoveredSites[i])
     {
-      myCrawler.discoveredSites[i] = true;
-      myCrawler.linkQueue.push(i);
+        myCrawler.discoveredSites[i] = true;
+        myCrawler.linkQueue.push(i);
     }
-  }
-  myCrawler.totalVisitedPages++;
-  unlock(&myCrawler.mainLock);
+    }
+    myCrawler.totalVisitedPages++;
+    unlock(&myCrawler.mainLock);
 
-  cout << "shared variables updated." << endl;
-  log << "shared variables updated." << endl;
-  // unlock()
+    cout << "shared variables updated." << endl;
+    log << "shared variables updated." << endl;
+    // unlock()
 
 
-  lock(&myCrawler.wT_lock);
-  myCrawler.workingThreads--;
-  if(myCrawler.workingThreads<myCrawler.maxThreads){
+    lock(&myCrawler.wT_lock);
+    myCrawler.workingThreads--;
+    if(myCrawler.workingThreads < myCrawler.maxThreads){
     pthread_cond_signal(&myCrawler.parent_cond); 
-  }
-  
-  unlock(&myCrawler.wT_lock);
+    }
 
-  log.close();
-  
-  
-  
-  
-  pthread_exit(NULL);
+    unlock(&myCrawler.wT_lock);
+
+    log.close();
+
+    pthread_exit(NULL);
 }

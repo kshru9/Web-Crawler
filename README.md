@@ -9,7 +9,19 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
  - Part 3: (Extended scope) Web Ranking
 
 ### Main Components
- - Crawler
- - HTML downloader
- - Link extractor
- - Domain extractor
+ - **Crawler** as a thread controller
+ - **Child thread**
+    - HTML downloader
+    - Link extractor
+    - Domain extractor
+
+### Tools Used
+ - Sockets
+ - OpenSSL
+ - Pthread library
+    - For concurrency and synchronization techniques
+
+## How to run
+ - use `make` to run the program
+ - `maxlimit`, `pagelimit`, `threads` can be given as argument in with `make` command.
+ For example `make maxlimit=1000 pagelimit=100 threads=10`

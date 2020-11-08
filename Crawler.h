@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <queue>
 #include <map>
@@ -17,13 +18,15 @@ class Crawler
 public:
   ofstream log;  // logging
 
-  int workingThreads = 0;
-  int maxThreads = 5;
+  int workingThreads = 0; // total no of threads working
+  int maxThreads; // max threads allowed
 
-  pthread_mutex_t wT_lock;
-  pthread_mutex_t mainLock;
+  pthread_mutex_t wT_lock; // lock for workingThreads varialbe
+
+  pthread_mutex_t mainLock; // main lock covering all other varialbles such as linkQueue, discoveredSites, ranker, totalVisitedPages
 
 
+	// lock and cond_var for sleeping of parent thread and awaking by child thread
   pthread_cond_t parent_cond;
   pthread_mutex_t parent_lock;
 
@@ -37,20 +40,16 @@ public:
 
   // map for storing visited websites
   map<string, bool> discoveredSites;
+
   // map for a simple website ranker
   map<string, int> ranker;
 
   // for storing total processed pages till now
   int totalVisitedPages = 0;
 
-  // for storing total downloaded pages
-  int totalDownloadPages = 0;
-
   // Constructor
   Crawler()
   {
-    system("rm -r thread_logs");
-    mkdir("thread_logs",0777); 
     pthread_mutex_init(&wT_lock, NULL);
     pthread_mutex_init(&mainLock, NULL);
     pthread_mutex_init(&parent_lock, NULL);
