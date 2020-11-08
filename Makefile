@@ -1,6 +1,6 @@
-maxlimit:= 1000000
+maxlinks:= 1000000
 pagelimit:= 50
-threads:= 50
+threads:= 10
 
 all_targets:= clear compile run clean
 
@@ -18,7 +18,7 @@ compile:
 
 run:
 	@echo "Running..."
-	@./crawler $(maxlimit) $(pagelimit) $(threads)
+	@./crawler $(maxlinks) $(pagelimit) $(threads)
 
 clean:
 	@rm -r -f crawler > /dev/null 2>&1

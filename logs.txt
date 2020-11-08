@@ -1,4 +1,3 @@
 Crawler initialized
-pagesLimit reached: 50
 Crawling completed.
 

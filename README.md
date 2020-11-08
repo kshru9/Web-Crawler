@@ -23,5 +23,5 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 
 ## How to run
  - use `make` to run the program
- - `maxlimit`, `pagelimit`, `threads` can be given as argument in with `make` command.
- For example `make maxlimit=1000 pagelimit=100 threads=10`
+ - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
+    - For example `make maxlinks=1000 pagelimit=100 threads=10`

@@ -19,7 +19,10 @@ public:
   ofstream log;  // logging
 
   int workingThreads = 0; // total no of threads working
-  int maxThreads; // max threads allowed
+  int maxThreads = 3; // max threads allowed
+  bool pagesLimitReached = false;
+  // bool done = false;
+
 
   pthread_mutex_t wT_lock; // lock for workingThreads varialbe
 
@@ -40,7 +43,6 @@ public:
 
   // map for storing visited websites
   map<string, bool> discoveredSites;
-
   // map for a simple website ranker
   map<string, int> ranker;
 
@@ -75,7 +77,9 @@ public:
   // Show the results of the crawling
   void showResults();
   // for creating a single thread
-  void createThread(string url);
+  void createThread();
+	// sleeping the main thread
+	void gotosleep();
 
 } myCrawler;
 
