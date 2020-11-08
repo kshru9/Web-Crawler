@@ -1,2 +1,0 @@
-language = "cpp"
-run = "g++ -std=c++14 main.cpp -o crawler -lssl && ./crawler 1000000 1000000 20"
