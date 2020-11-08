@@ -42,8 +42,7 @@ while(1){
     }
 }
 ...
-</pre>
-</code>
+</pre></code>
 
 ### Child Thread code
 <pre>
@@ -61,8 +60,7 @@ else{
     <b>wake_parent()</b>;
 }
 ...
-</pre>
-</code>
+</pre></code>
 
 
 ### Tools Used
