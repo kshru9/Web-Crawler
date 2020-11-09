@@ -1,7 +1,6 @@
 #ifndef ___Crawler
 #define ___Crawler
 
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -9,81 +8,85 @@
 #include <map>
 #include <sys/stat.h>
 #include <pthread.h>
-#include <unistd.h> 
+#include <unistd.h>
+#include <chrono>
+
 using namespace std;
+using namespace std::chrono;
 
 class Crawler
 {
-  // setting public for testing purposes
+	// setting public for testing purposes
 public:
-  ofstream log;  // logging
+	ofstream log; // logging
 
-  int workingThreads = 0; // total no of threads working
-  int maxThreads = 3; // max threads allowed
-  bool pagesLimitReached = false;
-  // bool done = false;
+	int workingThreads = 0; // total no of threads working
+	bool pagesLimitReached = false;
+	// bool done = false;
 
+	pthread_mutex_t timingLock;
+	vector<vector<double>> threadTimings;
 
-  pthread_mutex_t wT_lock; // lock for workingThreads varialbe
+	// mainLock for all shared variables
+	pthread_mutex_t mainLock;
 
-  pthread_mutex_t mainLock; // main lock covering all other varialbles such as linkQueue, discoveredSites, ranker, totalVisitedPages
+	// lock and cond_var for parent
+	pthread_cond_t parent_cond;
+	pthread_mutex_t parent_lock;
 
+	// Parameters
+	int maxLinks = 1000;
+	int pagesLimit = 100;
+	int maxThreads = 10;
 
-	// lock and cond_var for sleeping of parent thread and awaking by child thread
-  pthread_cond_t parent_cond;
-  pthread_mutex_t parent_lock;
+	// queue for storing linked websites
+	queue<string> linkQueue;
 
+	// map for storing visited websites
+	map<string, bool> discoveredSites;
 
-  // Parameters declaration
-  int maxLinks;
-  int pagesLimit;
+	// map for a simple website ranker
+	map<string, int> webRanking;
 
-  // queue for storing linked websites
-  queue<string> linkQueue;
+	// for storing total processed pages till now
+	int totalVisitedPages = 0;
 
-  // map for storing visited websites
-  map<string, bool> discoveredSites;
-  // map for a simple website ranker
-  map<string, int> ranker;
+	// Constructor
+	Crawler()
+	{
+		pthread_mutex_init(&timingLock, NULL);
+		pthread_mutex_init(&mainLock, NULL);
 
-  // for storing total processed pages till now
-  int totalVisitedPages = 0;
+		pthread_mutex_init(&parent_lock, NULL);
+		pthread_cond_init(&parent_cond, NULL);
+	}
 
-  // Constructor
-  Crawler()
-  {
-    pthread_mutex_init(&wT_lock, NULL);
-    pthread_mutex_init(&mainLock, NULL);
-    pthread_mutex_init(&parent_lock, NULL);
-    pthread_cond_init(&parent_cond, NULL);
-  }
+	// Destructor
+	~Crawler()
+	{
+		log.close();
+	}
 
-  // Destructor
-  ~Crawler()
-  {
-    log.close();
-  }
+	// Public Functions
 
-  // Public functions
-
-  // Initialize the Crawler.
-  void initialize();
-  // Downloads a website and save it in buffer folder
-  string downloader(string url);
-  // Parse a file from the buffer and update parameters{concurrency part}
-  void parseFile(string filename);
-  // Start a crawler to discover a specific website.
-  void runCrawler();
-  // Show the results of the crawling
-  void showResults();
-  // for creating a single thread
-  void createThread();
-	// sleeping the main thread
+	// Initialize the Crawler.
+	void initialize();
+	// Downloads a website and save it in buffer folder
+	string downloader(string url);
+	// Parse a file from the buffer and update parameters{concurrency part}
+	void parseFile(string filename);
+	// Start a crawler to discover a specific website.
+	void runCrawler();
+	// Show the results of the crawling
+	void showResults();
+	// C a single thread
+	void createThread();
+	// Sleeping the main thread
 	void gotosleep();
 
 } myCrawler;
 
 // child thread for downloading and parsing
-void *childThread(void* _url);
+void *childThread(void *_url);
 
 #endif

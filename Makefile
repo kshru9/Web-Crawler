@@ -1,6 +1,6 @@
-maxlinks:= 1000000
-pagelimit:= 50
-threads:= 20
+maxlinks:= 1000
+pagelimit:= 10
+threads:= 3
 
 all_targets:= clear compile run clean
 
@@ -14,11 +14,11 @@ clear:
 
 compile:
 	@echo "Compiling file..."
-	@g++ -std=c++14 main.cpp -o crawler -lssl -lpthread
+	g++ -std=c++14 main.cpp -o crawler -lssl -lpthread
 
 run:
 	@echo "Running..."
-	@./crawler $(maxlinks) $(pagelimit) $(threads)
+	./crawler $(maxlinks) $(pagelimit) $(threads)
 
 clean:
 	@rm -r -f crawler > /dev/null 2>&1

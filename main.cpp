@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, const char *argv[])
 {
-  // Crawler maxLinks pagesLimit no_of_threads
+  // Crawler maxLinks pagesLimit threads
   myCrawler.maxLinks = stoi(argv[1]);
   myCrawler.pagesLimit = stoi(argv[2]);
 	myCrawler.maxThreads = stoi(argv[3]);
@@ -29,6 +29,3 @@ int main(int argc, const char *argv[])
 
   return 0;
 }
-
-// 10: 3309 7507
-// 20: 4940 

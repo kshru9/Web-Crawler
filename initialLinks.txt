@@ -1,6 +1,2 @@
-5
-https://www.google.com
-https://www.facebook.com
-https://linuxize.com/post/how-to-rename-local-and-remote-git-branch/
-https://en.wikipedia.org/wiki/Dog
-https://www.youtube.com/
+1
+https://github.com/
