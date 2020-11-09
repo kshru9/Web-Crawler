@@ -1,5 +1,12 @@
 #include "Crawler.h"
 
+#include <netdb.h>
+#include <unistd.h>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
@@ -39,13 +46,31 @@ void Crawler::initialize()
   }
 }
 
-string Crawler::downloader(string url)
-{
-  string html;
-  // check if the downloaded website is http, then use appropriate HTML downloader
+// string Crawler::downloader(string url)
+// {
+//   string html;
+//   // check if the downloaded website is http, then use appropriate HTML downloader
   
-  html = httpsDownloader(url);
-  return html;
+//   html = httpsDownloader(url);
+//   return html;
+// }
+std::pair<string, double> Crawler::downloader(string url)
+{
+    // Clock Start
+    high_resolution_clock::time_point startTime = high_resolution_clock::now();
+    
+    string html;
+    // check if the downloaded website is http, then use appropriate HTML downloader
+    double totaldTime = 0;
+    
+    html = httpsDownloader(url);
+
+    // Clock End
+    high_resolution_clock::time_point endTime = high_resolution_clock::now();
+    totaldTime = duration<double, milli>(endTime - startTime).count();
+
+    // return html, totaldTime;
+    return std::make_pair(html, totaldTime);
 }
 
 void Crawler::gotosleep(){
@@ -189,17 +214,31 @@ void *childThread(void *_url)
 {
   string url((char*)_url);
 
+    // // Clock Start
+    // high_resolution_clock::time_point startTime = high_resolution_clock::now();
+
   // downloading the file
-  string html = myCrawler.downloader(url);
+  std::pair<string, double> p = myCrawler.downloader(url);
+//   string html = myCrawler.downloader(url);
+    string html = p.first;
+    double totaldTime = p.second;
+
   ofstream log("./thread_logs/"+to_string(rand())+".log");
 
   log << "file downloaded." << endl;
   cout << "file downloaded." << endl;
+  cout << "total time taken to download = " << totaldTime << endl;
 
   // extracting all the links from it
-  set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+//   set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+  std::pair<set<string>, double> q = getLinks(html, myCrawler.maxLinks);
+  set<string> linkedSites = q.first;
+  double totalpTime = q.second;
+
   log << "links extracted." << endl;
   cout << "links extracted." << endl;
+  cout << "total time taken to parse = " << totalpTime << endl;
+	
 
   // updating the shared variables
   lock(&myCrawler.mainLock);
