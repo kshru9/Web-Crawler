@@ -73,3 +73,25 @@ else{
  - use `make` to run the program
  - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For example `make maxlinks=1000 pagelimit=100 threads=10`
+## Demo run
+<pre><code>-----------------------------------------------------
+Parameters:
+-----------------------------------------------------
+Max Links from a website:	1000
+Max pages downloaded:	10
+Max threads working:	3
+
+-----------------------------------------------------
+Web rankings	(Total Visited Websites:	10)
+-----------------------------------------------------
+Rank	Domain Name
+
+1	github.com : 35
+2	apple.com : 15
+3	apps.apple.com : 9
+4	docs.github.com : 8
+5	help.github.com : 6
+6	support.github.com : 3
+7	youtube.com : 2
+8	w3.org : 1
+-----------------------------------------------------</pre></code>
