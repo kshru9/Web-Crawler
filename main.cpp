@@ -10,7 +10,7 @@ int main(int argc, const char *argv[])
   // Crawler maxLinks pagesLimit threads
   myCrawler.maxLinks = stoi(argv[1]);
   myCrawler.pagesLimit = stoi(argv[2]);
-	myCrawler.maxThreads = stoi(argv[3]);
+// 	myCrawler.maxThreads = stoi(argv[3]);
 
   
 	auto start = chrono::steady_clock::now();
