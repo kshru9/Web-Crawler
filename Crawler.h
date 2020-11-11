@@ -64,7 +64,13 @@ public:
 	// Destructor
 	~Crawler()
 	{
+		log << "current queue size: " << linkQueue.size() << endl;
+
 		log.close();
+		ofstream tout("th_timings.csv");
+		for(auto i: threadTimings){
+			tout << i[0] << ',' << i[1] << ',' << i[2] << endl;
+		}
 	}
 
 	// Public Functions

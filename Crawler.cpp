@@ -100,6 +100,9 @@ void Crawler::runCrawler()
 		if (pagesLimitReached || _totalVisitedPages >= pagesLimit)
 		{
 			// pagesLimit reached
+			if(!pagesLimitReached && _totalVisitedPages>=pagesLimit){
+				cout << "~!!!pagesLimit Reached here.!!!~" << endl;
+			}
 			pagesLimitReached = true;
 
 			if (_workingThreads)
@@ -154,15 +157,13 @@ void Crawler::showResults()
 			 << "\t" << pagesLimit << endl;
 	cout << "Max threads working:"
 			 << "\t" << maxThreads << endl;
+	cout << "Total visited pages:"
+			 << "\t" << totalVisitedPages << endl;
 
 	cout << "" << endl;
 
 	cout << "-----------------------------------------------------" << endl;
-	cout << "Web rankings"
-			 << "\t"
-			 << "("
-			 << "Total Visited Websites:"
-			 << "\t" << totalVisitedPages << ")" << endl;
+	cout << "Web rankings" << endl;
 	cout << "-----------------------------------------------------" << endl;
 
 	map<int, string, greater<int>> mm;

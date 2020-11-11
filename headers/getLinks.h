@@ -71,7 +71,7 @@ set<string> getLinks(string html, int maxLinks)
 		{
 
 			links.insert(a);
-			if (links.size() > maxLinks)
+			if (links.size() >= maxLinks)
 			{
 				break;
 			}
