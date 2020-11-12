@@ -1,98 +1,174 @@
-#ifndef ___Crawler
-#define ___Crawler
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <queue>
 #include <map>
-#include <sys/stat.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <chrono>
-
+#include <queue>
+#include <iostream>
+#include <string>
 using namespace std;
-using namespace std::chrono;
+
+#include "headers/downloaders.h"
+#include "headers/getLinks.h"
+#include "headers/getDomain.h"
+
+void sort(map<string, int>& M);
 
 class Crawler
 {
-	// setting public for testing purposes
+  // setting public for testing purposes
 public:
-	ofstream log; // logging
+	ofstream log;
 
-	int workingThreads = 0; // total no of threads working
-	bool pagesLimitReached = false;
-	// bool done = false;
+  int maxLinks;
+	int pagesLimit;
+	// int depthLimit;
+  string intialLink = "https://www.google.com";
 
-	pthread_mutex_t timingLock;
-	vector<vector<double>> threadTimings;
-
-	// mainLock for all shared variables
-	pthread_mutex_t mainLock;
-
-	// lock and cond_var for parent
-	pthread_cond_t parent_cond;
-	pthread_mutex_t parent_lock;
-
-	// Parameters
-	int maxLinks = 1000;
-	int pagesLimit = 100;
-	int maxThreads = 10;
-
-	// queue for storing linked websites
-	queue<string> linkQueue;
-
-	// map for storing visited websites
-	map<string, bool> discoveredSites;
-
-	// map for a simple website ranker
-	map<string, int> webRanking;
-
-	// for storing total processed pages till now
-	int totalVisitedPages = 0;
+  queue<string> mainQueue;
+  map<string, bool> discoveredSites;
+  map<string, int> ranker;
+  int totalVisitedPages = 0;
 
 	// Constructor
-	Crawler()
-	{
-		pthread_mutex_init(&timingLock, NULL);
-		pthread_mutex_init(&mainLock, NULL);
-
-		pthread_mutex_init(&parent_lock, NULL);
-		pthread_cond_init(&parent_cond, NULL);
-	}
+  Crawler(int mL, int pL)
+  {
+		// this->depthLimit = dL;
+    this->maxLinks = mL;
+		this->pagesLimit = pL;
+  }
 
 	// Destructor
 	~Crawler()
 	{
-		log << "current queue size: " << linkQueue.size() << endl;
-
 		log.close();
-		ofstream tout("th_timings.csv");
-		for(auto i: threadTimings){
-			tout << i[0] << ',' << i[1] << ',' << i[2] << endl;
-		}
 	}
 
-	// Public Functions
+	// Public functions
+  void initialize();
+  void runCrawler();
+  void showResults();
+};
 
-	// Initialize the Crawler.
-	void initialize();
-	// Downloads a website and save it in buffer folder
-	string downloader(string url);
-	// Parse a file from the buffer and update parameters{concurrency part}
-	void parseFile(string filename);
-	// Start a crawler to discover a specific website.
-	void runCrawler();
-	// Show the results of the crawling
-	void showResults();
-	// C a single thread
-	void createThread();
-	// Sleeping the main thread
-	void gotosleep();
 
-} myCrawler;
+// Initialize the Crawler.
+void Crawler::initialize()
+{
+	log.open("logs.txt");
+	log << "Crawler initialized" << endl;
 
-// child thread for downloading and parsing
-void *childThread(void *_url);
+  // Add initial urls
+  mainQueue.push(intialLink);
+}
 
-#endif
+
+
+// Start a crawler to discover a specific website.
+void Crawler::runCrawler()
+{
+  log << "Crawler initialised." << endl;
+
+  ofstream lout("links.txt");
+  // Only discover more if haven't reached the depthLimit
+  while (
+		!mainQueue.empty() && 
+		// mainQueue.size() < depthLimit && 
+		totalVisitedPages<pagesLimit
+	){
+		string currentSite = mainQueue.front();
+    mainQueue.pop();
+
+		log << "Processing: " << currentSite << endl;
+
+    // Download the website html
+		log << "Calling Downloader." << endl;
+		string html = httpsDownloader(currentSite);
+		log << "File Downloaded." << endl;
+
+		system("clear");
+    cout << "Size of mainQueue:" << mainQueue.size() << endl;
+    cout << "Link no :" << totalVisitedPages+1 << endl;
+		cout << "HTML file length: " << html.size() << endl;
+
+
+
+		// Get urls from the getLinks()
+		log << "getLinks() called." << endl;
+    set<string> linkedSites = getLinks(html, maxLinks);
+    log << "Links returned: " << linkedSites.size() << endl;
+
+
+		// Pushing links into mainQueue if they are unvisited
+    for (auto i : linkedSites)
+    {
+			lout << i << endl;
+			ranker[getDomain(i)]++;
+      if (!discoveredSites[i])
+      {
+			discoveredSites[i] = true;
+            mainQueue.push(i);
+      }
+    }
+		totalVisitedPages++;
+		
+		log << "Link no. " << totalVisitedPages << " processed." << endl << endl;
+		// end of crawler loop
+  }
+
+  log << "Crawling completed." << endl << endl;
+  lout.close();
+}
+
+void Crawler::showResults()
+{
+	system("clear");
+	cout << "-----------------------------------------------------" << endl;
+	cout << "Parameters:" << endl;
+	cout << "-----------------------------------------------------" << endl;
+	cout << "Max Links from a website:"
+			 << "\t" << maxLinks << endl;
+	cout << "Max pages downloaded:"
+			 << "\t" << pagesLimit << endl;
+	// cout << "Max threads working:"
+	// 		 << "\t" << maxThreads << endl;
+	cout << "Total visited pages:"
+			 << "\t" << totalVisitedPages << endl;
+
+	cout << "" << endl;
+
+	cout << "-----------------------------------------------------" << endl;
+	cout << "Web rankings" << endl;
+	cout << "-----------------------------------------------------" << endl;
+
+	map<int, string, greater<int>> mm;
+
+	for (auto &it : ranker)
+	{
+		mm[it.second] = it.first;
+	}
+
+	int r = 1;
+	cout << "Rank"
+			 << "\t"
+			 << "Domain Name" << endl;
+	cout << "" << endl;
+	for (auto i : mm)
+	{
+		cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
+	}
+
+	cout << "-----------------------------------------------------" << endl;
+}
+
+void sort(map<string, int>& M) 
+{
+    // Here if greater<int> is used to make 
+    // sure that elements are stored in 
+    // descending order of keys. 
+    multimap<int, string, greater <int> > MM; 
+
+    for (auto& it : M){
+      MM.insert(make_pair(it.second, it.first));
+    }
+
+    // begin() returns to the first value of multimap. 
+    multimap<int,string> :: iterator it; 
+    for (it=MM.begin() ; it!=MM.end() ; it++) 
+        cout << (*it).second << " : " << (*it).first << endl; 
+} 
