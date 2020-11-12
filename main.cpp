@@ -1,38 +1,30 @@
 #include <iostream>
-#include <algorithm>
-#include <fstream>
-#include <iomanip>
-#include <vector>
-#include <string>
-#include <regex>
-#include <queue>
-#include <map>
-#include <set>
-#include <unistd.h>
-
 #include "Crawler.h"
 #include "Crawler.cpp"
-#include <chrono>
+// gives a Crawler object named `myCrawler` from default
 
 using namespace std;
-using namespace std::chrono;
 
 int main(int argc, const char *argv[])
 {
-    auto start = chrono::steady_clock::now();
-    // Crawler(maxLinks, pagesLimit)
-    Crawler myCrawler(stoi(argv[1]), stoi(argv[2]));
+  // Crawler maxLinks pagesLimit threads
+  myCrawler.maxLinks = stoi(argv[1]);
+  myCrawler.pagesLimit = stoi(argv[2]);
+  myCrawler.maxThreads = stoi(argv[3]);
 
-    myCrawler.initialize();
-    myCrawler.runCrawler();
-    myCrawler.showResults();
+  
+	auto start = chrono::steady_clock::now();
+
+  myCrawler.initialize();
+  myCrawler.runCrawler();
+  myCrawler.showResults();
+	cout << "FINISHED." << endl;
 
 	auto end = chrono::steady_clock::now();
 
 	cout<< "Elapsed time in milliseconds : "
 			<< chrono::duration_cast<chrono::milliseconds>(end - start).count()
 			<< " ms" << endl;
-  
 
   return 0;
 }
