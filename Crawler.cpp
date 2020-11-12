@@ -1,153 +1,81 @@
-#include "Crawler.h"
+
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
+#include "Crawler.h"
 
-#define lock pthread_mutex_lock
-#define unlock pthread_mutex_unlock
 
+// Initialize the Crawler.
 void Crawler::initialize()
 {
 	log.open("logs.txt");
 	log << "Crawler initialized" << endl;
 
-	// Add initial urls from initialLinks.txt
-	ifstream lin("initialLinks.txt");
-	if (lin)
-	{
-		int n;
-		lin >> n;
-		string a;
-		for (int i = 0; i < n; i++)
-		{
-			lin >> a;
-			if (a != "")
-			{
-				linkQueue.push(a);
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
-	else
-	{
-		// Unable to read starting links from input file
-		cout << "Error reading file: \"initialLinks.txt\"" << endl;
-		linkQueue.push("https://www.google.com");
-	}
+  // Add initial urls
+  mainQueue.push(intialLink);
 }
 
-string Crawler::downloader(string url)
-{
-	// check if the downloaded website is http,
-	// then use appropriate HTML downloader
-	string html;
-	if (url.substr(0, 5) == "https")
-	{
-		html = httpsDownloader(url);
-	}
-	else
-	{
-		html = httpDownloader(url);
-	}
 
-	return html;
-}
 
-void Crawler::gotosleep()
-{
-	cout << "Going to sleep now" << endl;
-
-	lock(&parent_lock);
-	// while(done==0){
-	pthread_cond_wait(&parent_cond, &parent_lock);
-	// }
-	unlock(&parent_lock);
-
-	cout << "Awaken now." << endl;
-}
-
-void Crawler::createThread()
-{
-	lock(&mainLock);
-	string currentSite = linkQueue.front();
-	linkQueue.pop();
-	totalVisitedPages++;
-	workingThreads++;
-	unlock(&mainLock);
-
-	cout << "Creating a thread, total = " << workingThreads << endl;
-	pthread_t th;
-	char *ch = (char *)malloc(1 + currentSite.size() * sizeof(char));
-	strcpy(ch, currentSite.c_str());
-
-	int ret_val = pthread_create(
-			&th, NULL, childThread, (void *)ch);
-}
-
+// Start a crawler to discover a specific website.
 void Crawler::runCrawler()
 {
-	while (1)
-	{
-		lock(&mainLock);
-		int _workingThreads = workingThreads;
-		int _linkQueueSize = linkQueue.size();
-		int _totalVisitedPages = totalVisitedPages;
-		unlock(&mainLock);
+  log << "Crawler initialised." << endl;
 
-		if (pagesLimitReached || _totalVisitedPages >= pagesLimit)
-		{
-			// pagesLimit reached
-			if(!pagesLimitReached && _totalVisitedPages>=pagesLimit){
-				cout << "~!!!pagesLimit Reached here.!!!~" << endl;
-			}
-			pagesLimitReached = true;
+  ofstream lout("links.txt");
+  // Only discover more if haven't reached the depthLimit
+  while (
+		!mainQueue.empty() && 
+		// mainQueue.size() < depthLimit && 
+		totalVisitedPages<pagesLimit
+	){
+		string currentSite = mainQueue.front();
+    mainQueue.pop();
 
-			if (_workingThreads)
-			{
-				// sleep
-				gotosleep();
-			}
-			else
-			{
-				// exiting
-				cout << "EXITING AS ALL THREADS ARE COMPLETED & pagelimit reached." << endl;
-				break;
-			}
-		}
-		else
-		{
-			// pagesLimit not reached
-			if (_workingThreads < maxThreads && _linkQueueSize > 0)
-			{
-				// create thread
-				createThread();
-			}
-			else if (_workingThreads == 0)
-			{
-				// exiting
-				cout << "EXITING AS NO THREADS WORKING. & pagelimit not reached" << endl;
-				break;
-			}
-			else
-			{
-				// sleep
-				gotosleep();
-			}
-		}
+		log << "Processing: " << currentSite << endl;
 
-		// End of crawler loop
-	}
+    // Download the website html
+		log << "Calling Downloader." << endl;
+		string html = httpsDownloader(currentSite);
+		log << "File Downloaded." << endl;
 
-	log << "Crawling completed." << endl
-			<< endl;
+		system("clear");
+    cout << "Size of mainQueue:" << mainQueue.size() << endl;
+    cout << "Link no :" << totalVisitedPages+1 << endl;
+		cout << "HTML file length: " << html.size() << endl;
+
+
+
+		// Get urls from the getLinks()
+		log << "getLinks() called." << endl;
+    set<string> linkedSites = getLinks(html, maxLinks);
+    log << "Links returned: " << linkedSites.size() << endl;
+
+
+		// Pushing links into mainQueue if they are unvisited
+    for (auto i : linkedSites)
+    {
+			lout << i << endl;
+			ranker[getDomain(i)]++;
+      if (!discoveredSites[i])
+      {
+			discoveredSites[i] = true;
+            mainQueue.push(i);
+      }
+    }
+		totalVisitedPages++;
+		
+		log << "Link no. " << totalVisitedPages << " processed." << endl << endl;
+		// end of crawler loop
+  }
+
+  log << "Crawling completed." << endl << endl;
+  lout.close();
 }
 
 void Crawler::showResults()
 {
-	// system("clear");
+	system("clear");
 	cout << "-----------------------------------------------------" << endl;
 	cout << "Parameters:" << endl;
 	cout << "-----------------------------------------------------" << endl;
@@ -155,8 +83,8 @@ void Crawler::showResults()
 			 << "\t" << maxLinks << endl;
 	cout << "Max pages downloaded:"
 			 << "\t" << pagesLimit << endl;
-	cout << "Max threads working:"
-			 << "\t" << maxThreads << endl;
+	// cout << "Max threads working:"
+	// 		 << "\t" << maxThreads << endl;
 	cout << "Total visited pages:"
 			 << "\t" << totalVisitedPages << endl;
 
@@ -168,7 +96,7 @@ void Crawler::showResults()
 
 	map<int, string, greater<int>> mm;
 
-	for (auto &it : webRanking)
+	for (auto &it : ranker)
 	{
 		mm[it.second] = it.first;
 	}
@@ -186,81 +114,19 @@ void Crawler::showResults()
 	cout << "-----------------------------------------------------" << endl;
 }
 
-void *childThread(void *_url)
+void sort(map<string, int>& M) 
 {
-	string url((char *)_url);
-	ofstream log("./thread_logs/" + to_string(rand()) + ".log");
+    // Here if greater<int> is used to make 
+    // sure that elements are stored in 
+    // descending order of keys. 
+    multimap<int, string, greater <int> > MM; 
 
-	high_resolution_clock::time_point t1, t2;
-	double totaldTime = 0;
-	double d_Time, p_Time, u_Time;
+    for (auto& it : M){
+      MM.insert(make_pair(it.second, it.first));
+    }
 
-	// downloading the file
-	t1 = high_resolution_clock::now();
-	string html = myCrawler.downloader(url);
-	t2 = high_resolution_clock::now();
-	d_Time = duration<double>(t2 - t1).count();
-
-	log << "file downloaded." << endl;
-	cout << "file downloaded." << endl;
-
-	// extracting all the links from it
-	t1 = high_resolution_clock::now();
-	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
-	t2 = high_resolution_clock::now();
-	p_Time = duration<double>(t2 - t1).count();
-
-	log << "links extracted." << endl;
-	cout << "links extracted." << endl;
-
-	// updating the shared variables
-	t1 = high_resolution_clock::now();
-	lock(&myCrawler.mainLock);
-	for (auto i : linkedSites)
-	{
-		log << i << endl;
-		myCrawler.webRanking[getDomain(i)]++;
-		if (!myCrawler.discoveredSites[i])
-		{
-			myCrawler.discoveredSites[i] = true;
-			myCrawler.linkQueue.push(i);
-		}
-	}
-	myCrawler.workingThreads--;
-	int _workingThreads = myCrawler.workingThreads;
-	unlock(&myCrawler.mainLock);
-	t2 = high_resolution_clock::now();
-	u_Time = duration<double>(t2 - t1).count();
-
-	cout << "shared variables updated." << endl;
-
-	// saving time measurements for this thread
-	lock(&myCrawler.timingLock);
-	myCrawler.threadTimings.push_back(vector<double>{d_Time, p_Time, u_Time});
-	unlock(&myCrawler.timingLock);
-
-	if (myCrawler.pagesLimitReached)
-	{
-		if (_workingThreads == 0)
-		{
-			// Awake the parent
-			lock(&myCrawler.parent_lock);
-			// myCrawler.done = true;
-			// cout << "cond signal" << myCrawler.done << endl;
-			pthread_cond_signal(&myCrawler.parent_cond);
-
-			unlock(&myCrawler.parent_lock);
-		}
-	}
-	else
-	{
-		lock(&myCrawler.parent_lock);
-		// myCrawler.done = true;
-		pthread_cond_signal(&myCrawler.parent_cond);
-
-		unlock(&myCrawler.parent_lock);
-	}
-
-	log.close();
-	pthread_exit(NULL);
-}
+    // begin() returns to the first value of multimap. 
+    multimap<int,string> :: iterator it; 
+    for (it=MM.begin() ; it!=MM.end() ; it++) 
+        cout << (*it).second << " : " << (*it).first << endl; 
+} 
