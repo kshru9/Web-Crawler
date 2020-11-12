@@ -71,7 +71,7 @@ else{
 
 ## How to run
  - use `make` to run the program
- - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
+ - `maxlinks`, `pagelimit`, `threads` can be given as argument within the `make` command.
     - For example `make maxlinks=1000 pagelimit=100 threads=10`
 ## Demo run
 <pre><code>-----------------------------------------------------
