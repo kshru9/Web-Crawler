@@ -11,8 +11,11 @@
 #include <unistd.h>
 
 #include "Crawler.h"
+#include "Crawler.cpp"
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 int main(int argc, const char *argv[])
 {
