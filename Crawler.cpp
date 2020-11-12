@@ -5,6 +5,7 @@
 
 #define lock pthread_mutex_lock
 #define unlock pthread_mutex_unlock
+#define _now high_resolution_clock::now()
 
 void Crawler::initialize()
 {
@@ -100,11 +101,12 @@ void Crawler::runCrawler()
 		if (pagesLimitReached || _totalVisitedPages >= pagesLimit)
 		{
 			// pagesLimit reached
-			if(!pagesLimitReached && _totalVisitedPages>=pagesLimit){
+			if(!pagesLimitReached && _totalVisitedPages>=pagesLimit)
+			{
+        pagesLimitReached = true;
 				cout << "~!!!pagesLimit Reached here.!!!~" << endl;
 			}
-			pagesLimitReached = true;
-
+			
 			if (_workingThreads)
 			{
 				// sleep
@@ -196,25 +198,28 @@ void *childThread(void *_url)
 	double d_Time, p_Time, u_Time;
 
 	// downloading the file
-	t1 = high_resolution_clock::now();
+	t1 = _now;
 	string html = myCrawler.downloader(url);
-	t2 = high_resolution_clock::now();
+	t2 = _now;
 	d_Time = duration<double>(t2 - t1).count();
 
 	log << "file downloaded." << endl;
 	cout << "file downloaded." << endl;
 
-	// extracting all the links from it
-	t1 = high_resolution_clock::now();
-	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
-	t2 = high_resolution_clock::now();
+	
+  // for calculating time of downloading
+	t1 = _now;
+  // extracting all the links from it
+  set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+  t2 = _now;
+
 	p_Time = duration<double>(t2 - t1).count();
 
 	log << "links extracted." << endl;
 	cout << "links extracted." << endl;
 
 	// updating the shared variables
-	t1 = high_resolution_clock::now();
+	t1 = _now;
 	lock(&myCrawler.mainLock);
 	for (auto i : linkedSites)
 	{
@@ -229,7 +234,7 @@ void *childThread(void *_url)
 	myCrawler.workingThreads--;
 	int _workingThreads = myCrawler.workingThreads;
 	unlock(&myCrawler.mainLock);
-	t2 = high_resolution_clock::now();
+	t2 = _now;
 	u_Time = duration<double>(t2 - t1).count();
 
 	cout << "shared variables updated." << endl;
@@ -262,5 +267,7 @@ void *childThread(void *_url)
 	}
 
 	log.close();
+
+	cout << "working threads now: " << myCrawler.workingThreads << endl;
 	pthread_exit(NULL);
 }

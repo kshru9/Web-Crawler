@@ -1,6 +1,8 @@
-maxlinks:= 1000000
-pagelimit:= 1000
-threads:= 20
+a b c d 
+
+maxlinks:= 1000
+pagelimit:= 10
+threads:= 10
 
 all_targets:= clear compile run clean
 
@@ -19,7 +21,8 @@ compile:
 run:
 	@echo "Running..."
 	./crawler $(maxlinks) $(pagelimit) $(threads)
-#	@python graph.py
+	#@python graph.py
+
 
 clean:
 	@rm -r -f crawler > /dev/null 2>&1

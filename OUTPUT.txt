@@ -1,0 +1,849 @@
+[3J[H[2JCompiling file...
+g++ -std=c++14 main.cpp -o crawler -lssl -lpthread
+Running...
+./crawler 1000 100 1000
+Creating a thread, total = 1
+Going to sleep now
+hostname: github.com
+path: /
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 0
+Awaken now.
+Creating a thread, total = 1
+Creating a thread, total = 2
+Creating a thread, total = 3
+Creating a thread, total = 4
+hostname: atom.io
+Creating a thread, total = 5
+Creating a thread, total = 6
+Creating a thread, total = 7
+Creating a thread, total = 8
+Creating a thread, total = 9
+Creating a thread, total = 10
+Creating a thread, total = 11
+Creating a thread, total = 12
+Creating a thread, total = 13
+Creating a thread, total = 14
+hostname: docs.github.com
+path: /
+Creating a thread, total = 15
+Creating a thread, total = 16
+Creating a thread, total = 17
+Creating a thread, total = 18
+Creating a thread, total = 19
+hostname: docs.github.com
+path: /github/managing-security-vulnerabilities/configuring-dependabot-security-updates
+Creating a thread, total = 20
+hostname: docs.github.com
+path: /privacy
+hostname: enterprise.github.com
+path: /contact
+hostname: docs.github.com
+path: /terms
+Creating a thread, total = 21
+Creating a thread, total = 22
+Creating a thread, total = 23
+Creating a thread, total = 24
+Creating a thread, total = 25
+Creating a thread, total = 26
+Creating a thread, total = 27
+Creating a thread, total = 28
+Creating a thread, total = 29
+Creating a thread, total = 30
+Creating a thread, total = 31
+Creating a thread, total = 32
+Creating a thread, total = 33
+Creating a thread, total = 34
+Creating a thread, total = 35
+Creating a thread, total = 36
+Going to sleep now
+path: /
+hostname: docs.github.com
+path: /en/free-pro-team@latest/github/site-policy/github-privacy-statement
+hostname: github.com
+path: /
+hostname: education.github.com
+path: /
+hostname: www.youtube.com
+path: /github
+hostname: cli.github.com
+hostname: services.github.com
+path: /
+hostname: stars.github.com
+path: /
+hostname: twitter.com
+path: /github
+hostname: github.com
+path: /events
+hostname: github.com
+path: /certifications
+hostname: resources.github.com
+path: /
+hostname: desktop.github.com
+path: /
+hostname: docs.github.com
+path: /en/github/site-pner-details
+hostname: hostname: docs.github.com
+path: /en/github/site-policy/github-subprocessors-and-cookies
+hostname: hostname: github.blog
+path: /
+www.facebook.com
+path: /GitHub
+docs.github.compath: /
+hostname: docs.github.com
+path: /articles/supported-browsers
+
+path: /articles/creating-a-strong-password
+hostname: shop.github.com
+path: /
+hostname: socialimpact.github.com
+path: /
+hostname: github.com
+hostname: play.google.com
+path: /store/apps/details
+hostname: github.community
+path: /
+path: /github/roadmap
+hostname: opensource.guide
+path: /
+hostname: github.com
+path: /about
+hostname: www.linkedin.com
+path: /company/github
+hostname: www.npmjs.com
+path: /
+hostname: githubstatus.com
+path: /
+hostname: lab.github.com
+path: /
+hostname: github.com
+path: /contact
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 35
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 34
+links extracted.
+shared variables updated.
+working threads now: 33
+Awaken now.
+Creating a thread, total = 34
+Creating a thread, total = 35
+hostname: github.com
+path: /github/opensource.guide
+Creating a thread, total = 36
+Creating a thread, total = 37
+Going to sleep now
+hostname: github.com
+path: /github/opensource.guide/graphs/contributors
+hostname: github.com
+path: /github/opensource.guide/blob/HEAD/CONTRIBUTING.md
+hostname: github.com
+path: /github/opensource.guide/edit/main/index.html
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 36
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 35
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 34
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 33
+Awaken now.
+Going to sleep now
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 32
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 32
+Creating a thread, total = 33
+Going to sleep now
+working threads now: 33
+links extracted.
+shared variables updated.
+working threads now: 32
+Awaken now.
+Creating a thread, total = 33
+Creating a thread, total = 34
+file downloaded.
+hostname: github.com
+path: /site/privacy
+hostname: help.github.com
+path: /en/articles/github-privacy-statement/
+Going to sleep now
+hostname: help.github.com
+path: /en/github/site-policy/github-terms-of-service
+hostname: help.github.com
+path: /en/articles/github-terms-of-service/
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 33
+Awaken now.
+Going to sleep now
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 32
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 31
+file downloaded.
+links extracted.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 30
+shared variables updated.
+Awaken now.
+Creating a thread, total = 30
+Creating a thread, total = 31
+Creating a thread, total = 32
+Creating a thread, total = 33
+Creating a thread, total = 34
+Creating a thread, total = 35
+Going to sleep now
+working threads now: 35
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 34
+file downloaded.
+hostname: help.github.com
+path: /desktop/
+hostname: central.github.com
+path: /deployments/desktop/desktop/latest/darwin
+hostname: central.github.com
+path: /deployments/desktop/desktop/latest/win32
+hostname: github.com
+path: /blogows
+hostname: help.github.com
+path: /articles/github-privacy-statement/
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 33
+links extracted.
+shared variables updated.
+working threads now: 32
+Awaken now.
+Going to sleep now
+links extracted.
+shared variables updated.
+working threads now: 31
+Awaken now.
+Going to sleep now
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 30
+hostname: github.com
+path: /desktop/desktop
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 30
+Creating a thread, total = 31
+Creating a thread, total = 32
+Creating a thread, total = 33
+Creating a thread, total = 34
+Creating a thread, total = 35
+Creating a thread, total = 36
+Going to sleep now
+working threads now: 36
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 35
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+links extracted.
+shared variables updated.
+working threads now: 33
+Awaken now.
+Going to sleep now
+file downloaded.
+hostname: support.github.com
+path: /contact/nonprofit
+hostname: mavenyouth.org
+path: /
+hostname: hikaya.io
+path: /
+hostname: github.com
+path: /sponsors/chaynHQ
+hostname: explore.ovio.org
+path: /
+hostname: chayn.co
+path: /soul-medicine/
+working threads now: 33
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 31
+Awaken now.
+Creating a thread, total = 32
+Going to sleep now
+file downloaded.
+working threads now: 32
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 31
+links extracted.
+shared variables updated.
+working threads now: 30
+Awaken now.
+Going to sleep now
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 29
+Awaken now.
+Creating a thread, total = 30
+Going to sleep now
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 29
+hostname: support.github.com
+path: /
+file downloaded.
+links extracted.
+shared variables updated.
+hostname: www.codetenderloin.org
+path: /
+Awaken now.
+Going to sleep now
+working threads now: 28
+hostname: docs.github.com
+path: /articles/github-privacy-policy/
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 27
+file downloaded.
+links extracted.
+shared variables updated.
+links extracted.
+shared variables updated.
+working threads now: 25
+Awaken now.
+Going to sleep now
+working threads now: 25
+Awaken now.
+Going to sleep now
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 25
+file downloaded.
+Creating a thread, total = 26
+Creating a thread, total = 27
+Creating a thread, total = 28
+Creating a thread, total = 29
+Creating a thread, total = 30
+Going to sleep now
+working threads now: 30
+hostname: atom.io
+hostname: electronjs.org
+file downloaded.
+hostname: cli.github.com
+path: /manual
+hostname: github.com
+path: /pricing
+hostname: github.com
+path: /security
+hostname: support.github.com
+path: /contact
+links extracted.
+shared variables updated.
+working threads now: 29
+path: /docs
+path: /docs
+Awaken now.
+Going to sleep now
+links extracted.
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+links extracted.
+Awaken now.
+Going to sleep now
+working threads now: 28
+file downloaded.
+links extracted.
+shared variables updated.
+shared variables updated.
+working threads now: 26
+Awaken now.
+Creating a thread, total = 27
+Creating a thread, total = 28
+Creating a thread, total = 29
+Creating a thread, total = 30
+Creating a thread, total = 31
+Creating a thread, total = 32
+Creating a thread, total = 33
+Creating a thread, total = 34
+Creating a thread, total = 35
+Creating a thread, total = 36
+Creating a thread, total = 37
+Creating a thread, total = 38
+Creating a thread, total = 39
+Going to sleep now
+shared variables updated.
+working threads now: 38
+Awaken now.
+Creating a thread, total = 39
+Creating a thread, total = 40
+Going to sleep now
+hostname: github.com
+path: /blog
+working threads now: 40
+hostname: github.myshopify.com
+path: /
+hostname: www.npmjs.com
+path: /advisories
+hostname: help.github.com
+path: /
+hostname: github.com
+path: /
+hostname: status.github.com
+path: /
+hostname: blog.npmjs.org
+path: /
+hostname: www.discourse.org
+path: /
+hostname: docs.github.com
+path: /articles/github-privacy-statement
+hostname: developer.github.com
+path: /
+hostname: docs.npmjs.com
+path: /
+hostname: help.github.com
+path: /articles/github-terms-of-service/
+hostname: docs.github.com
+path: /articles/github-terms-of-service
+hostname: npm.community
+path: /
+hostname: github.com
+path: /features/codespaces
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+links extracted.
+shared variables updated.
+working threads now: 38
+Awaken now.
+Going to sleep now
+working threads now: 38
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+links extracted.
+file downloaded.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+links extracted.
+links extracted.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+shared variables updated.
+working threads now: 36
+Awaken now.
+Creating a thread, total = 37
+Creating a thread, total = 38
+Creating a thread, total = 39
+Creating a thread, total = 40
+Creating a thread, total = 41
+Creating a thread, total = 42
+Creating a thread, total = 43
+Creating a thread, total = 44
+Creating a thread, total = 45
+Creating a thread, total = 46
+Creating a thread, total = 47
+Creating a thread, total = 46
+Creating a thread, total = 47
+Creating a thread, total = 48
+Going to sleep now
+shared variables updated.
+working threads now: 48
+shared variables updated.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 48
+working threads now: 48
+file downloaded.
+shared variables updated.
+working threads now: 47
+Awaken now.
+Going to sleep now
+shared variables updated.
+working threads now: 45
+Awaken now.
+Going to sleep now
+shared variables updated.
+working threads now: Awaken now.
+Going to sleep now
+45
+hostname: github.com
+path: /cli/cli/releases/download/v1.2.1/gh_1.2.1_macOS_amd64.tar.gz
+hostname: github.com
+path: /customer-stories
+hostname: services.github.com
+path: /
+hostname: github.com
+path: /about/careers
+hostname: github.com
+path: /cli/cli/blob/trunk/docs/install_linux.md
+hostname: github.com
+path: /enterprise
+hostname: github.com
+path: /features
+hostname: github.blog
+path: /
+hostname: github.blog
+path: /2020-09-17-github-cli-1-0-is-now-available/
+hostname: github.com
+path: /cli/cli/releases/download/v1.2.1/gh_1.2.1_windows_amd64.msi
+hostname: github.com
+path: /cli/cli/releases/latest
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 44
+Awaken now.
+Going to sleep now
+hostname: github.com
+path: /about/press
+hostname: help.github.com
+path: /en
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 43
+links extracted.
+shared variables updated.
+working threads now: 42
+Awaken now.
+Creating a thread, total = 43
+Going to sleep now
+links extracted.
+file downloaded.
+hostname: github.com
+path: /cli/cli
+file downloaded.
+file downloaded.
+links extracted.
+hostname: support.github.com
+path: /request
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+links extracted.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+links extracted.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+file downloaded.
+links extracted.
+links extracted.
+file downloaded.
+shared variables updated.
+working threads now: 41
+Awaken now.
+Creating a thread, total = 42
+Creating a thread, total = 43
+Creating a thread, total = 44
+Creating a thread, total = 45
+~!!!pagesLimit Reached here.!!!~
+Going to sleep now
+shared variables updated.
+working threads now: 44
+shared variables updated.
+working threads now: 44
+shared variables updated.
+working threads now: 43
+shared variables updated.
+working threads now: 42
+shared variables updated.
+working threads now: 40
+links extracted.
+shared variables updated.
+working threads now: 38
+shared variables updated.
+working threads now: 38
+shared variables updated.
+working threads now: 37
+shared variables updated.
+working threads now: 36
+shared variables updated.
+working threads now: 36
+file downloaded.
+hostname: desktop.github.com
+path: /
+file downloaded.
+hostname: github.blog
+path: /2020-10-27-github-game-off-2020/
+hostname: github.blog
+path: /2020-10-29-building-github-introduction/
+hostname: github.blog
+path: /2020-10-29-getting-started-with-devops-automation/
+links extracted.
+shared variables updated.
+working threads now: 35
+file downloaded.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+links extracted.
+file downloaded.
+file downloaded.
+file downloaded.
+shared variables updated.
+shared variables updated.
+working threads now: 32
+working threads now: 32
+shared variables updated.
+links extracted.
+shared variables updated.
+working threads now: 31
+working threads now: 31
+file downloaded.
+links extracted.
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 30
+shared variables updated.
+working threads now: 29
+links extracted.
+file downloaded.
+shared variables updated.
+working threads now: 28
+links extracted.
+shared variables updated.
+working threads now: 27
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 26
+shared variables updated.
+working threads now: 25
+links extracted.
+shared variables updated.
+working threads now: 24
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 23
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 22
+links extracted.
+shared variables updated.
+working threads now: 21
+shared variables updated.
+working threads now: 20
+shared variables updated.
+working threads now: 19
+links extracted.
+shared variables updated.
+working threads now: 18
+links extracted.
+shared variables updated.
+working threads now: 17
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 16
+shared variables updated.
+working threads now: 15
+links extracted.
+shared variables updated.
+working threads now: 14
+links extracted.
+shared variables updated.
+working threads now: 13
+links extracted.
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 10
+shared variables updated.
+working threads now: 10
+shared variables updated.
+working threads now: 10
+links extracted.
+shared variables updated.
+working threads now: 9
+links extracted.
+shared variables updated.
+working threads now: 8
+links extracted.
+shared variables updated.
+working threads now: 7
+links extracted.
+shared variables updated.
+working threads now: 6
+links extracted.
+links extracted.
+links extracted.
+shared variables updated.
+working threads now: 4
+shared variables updated.
+working threads now: 4
+links extracted.
+shared variables updated.
+working threads now: 3
+shared variables updated.
+working threads now: 2
+links extracted.
+shared variables updated.
+working threads now: 1
+links extracted.
+shared variables updated.
+working threads now: 0
+Awaken now.
+EXITING AS ALL THREADS ARE COMPLETED & pagelimit reached.
+-----------------------------------------------------
+Parameters:
+-----------------------------------------------------
+Max Links from a website:	1000
+Max pages downloaded:	100
+Max threads working:	1000
+Total visited pages:	100
+
+-----------------------------------------------------
+Web rankings
+-----------------------------------------------------
+Rank	Domain Name
+
+1		github.com : 370
+2		github.blog : 170
+3		docs.github.com : 139
+4		boards.greenhouse.io : 49
+5		github.community : 31
+6		services.github.com : 30
+7		twitter.com : 27
+8		blog.npmjs.org : 26
+9		lab.github.com : 25
+10		resources.github.com : 24
+11		linkedin.com : 23
+12		youtube.com : 22
+13		education.github.com : 21
+14		shop.github.com : 20
+15		stars.github.com : 18
+16		socialimpact.github.com : 12
+17		tumblr.com : 9
+18		developer.github.com : 8
+19		support.github.com : 6
+20		visualstudio.github.com : 4
+21		play.google.com : 3
+22		snapcraft.io : 2
+23		wdc.com : 1
+-----------------------------------------------------
+FINISHED.
+Elapsed time in milliseconds : 5378 ms
+#@python graph.py
+All cleaned.

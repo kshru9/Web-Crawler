@@ -1,0 +1,113 @@
+[3J[H[2JCompiling file...
+g++ -std=c++14 main.cpp -o crawler -lssl -lpthread
+Running...
+./crawler 10 10 3
+Creating a thread, total = 1
+Going to sleep now
+hostname: github.com
+path: /
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 1
+Creating a thread, total = 2
+Creating a thread, total = 3
+Going to sleep now
+working threads now: 3
+hostname: support.github.com
+path: /
+hostname: githubstatus.com
+path: /
+hostname: twitter.com
+path: /githubstatus
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Going to sleep now
+working threads now: 2
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 2
+Creating a thread, total = 3
+Going to sleep now
+working threads now: 3
+hostname: docs.github.com
+path: /
+hostname: discuss.atom.io
+path: /
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: Awaken now.
+Creating a thread, total = 3
+2
+Going to sleep now
+hostname: docs.github.com
+path: /articles/about-two-factor-authentication
+file downloaded.
+file downloaded.
+links extracted.
+shared variables updated.
+Awaken now.
+Creating a thread, total = 3
+Going to sleep now
+working threads now: 3
+hostname: docs.github.com
+path: /articles/git-and-github-learning-resources
+links extracted.
+shared variables updated.
+working threads now: 2
+Awaken now.
+Creating a thread, total = 3
+Going to sleep now
+hostname: docs.github.com
+path: /articles/github-privacy-statement
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 2
+Awaken now.
+Creating a thread, total = 3
+~!!!pagesLimit Reached here.!!!~
+Going to sleep now
+hostname: docs.github.com
+path: /articles/github-terms-of-service
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 2
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 1
+file downloaded.
+links extracted.
+shared variables updated.
+working threads now: 0
+Awaken now.
+EXITING AS ALL THREADS ARE COMPLETED & pagelimit reached.
+-----------------------------------------------------
+Parameters:
+-----------------------------------------------------
+Max Links from a website:	10
+Max pages downloaded:	10
+Max threads working:	3
+Total visited pages:	10
+
+-----------------------------------------------------
+Web rankings
+-----------------------------------------------------
+Rank	Domain Name
+
+1		docs.github.com : 9
+2		discuss.atom.io : 7
+3		atom.io : 4
+4		twitter.com : 1
+-----------------------------------------------------
+FINISHED.
+Elapsed time in milliseconds : 1003 ms
+All cleaned.

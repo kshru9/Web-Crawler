@@ -75,24 +75,46 @@ public:
 
 	// Public Functions
 
-	// Initialize the Crawler.
+	/*
+		Initialize the Crawler.
+	*/
 	void initialize();
-	// Downloads a website and save it in buffer folder
+	
+	/*
+		Downloads a website and save it in buffer folder
+	*/
 	string downloader(string url);
-	// Parse a file from the buffer and update parameters{concurrency part}
+
+	/*
+		Parse a file from the buffer and update parameters{concurrency part}
+	*/
 	void parseFile(string filename);
-	// Start a crawler to discover a specific website.
+	
+	/*
+		Start a crawler to discover a specific website.
+	*/
 	void runCrawler();
-	// Show the results of the crawling
+	
+	/*
+		Show the results of the crawling
+	*/
 	void showResults();
-	// C a single thread
+	
+	/*
+		Create a single thread
+	*/
 	void createThread();
-	// Sleeping the main thread
+
+	/*
+		Sleeping the main thread
+	*/
 	void gotosleep();
 
 } myCrawler;
 
-// child thread for downloading and parsing
+/*
+	Child thread for downloading + parsing + updating shared variables
+*/
 void *childThread(void *_url);
 
 #endif

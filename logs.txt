@@ -1,1 +1,4 @@
 Crawler initialized
+Crawling completed.
+
+current queue size: 55
