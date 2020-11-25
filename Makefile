@@ -1,7 +1,7 @@
 maxlinks:= 1000
-pagelimit:= 1000
-threads:= 200
-
+pagelimit:= 10
+threads:= 5
+abcd;
 all_targets:= clear compile run clean
 
 all: ${all_targets}

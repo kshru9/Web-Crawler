@@ -69,8 +69,11 @@ void Crawler::gotosleep()
 void Crawler::createThread()
 {
 	string currentSite = linkQueue.pop();
+	discoveredSites.inc(currentSite);
 	totalVisitedPages.add(1);
 	workingThreads.add(1);
+
+	log << currentSite << endl;
 
 	cout << "Creating a thread, total = " << workingThreads.value() << endl;
 

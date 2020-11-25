@@ -17,9 +17,11 @@ public:
         lock_guard<mutex> guard_obj (m);
 
         if(q.size() == 0){
-            return "";
+						return "";
         }
-        return q.front();
+				string str = q.front();
+				q.pop();
+        return str;
         
     }
     int size(){
