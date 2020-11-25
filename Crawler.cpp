@@ -3,8 +3,6 @@
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
 
-#define lock pthread_mutex_lock
-#define unlock pthread_mutex_unlock
 #define _now high_resolution_clock::now()
 
 void Crawler::initialize()
@@ -61,53 +59,39 @@ void Crawler::gotosleep()
 {
 	cout << "Going to sleep now" << endl;
 
-	lock(&parent_lock);
-	// while(done==0){
-	pthread_cond_wait(&parent_cond, &parent_lock);
-	// }
-	unlock(&parent_lock);
+	std::unique_lock<std::mutex> lk(cv_m);
+
+	cv.wait(lk);
 
 	cout << "Awaken now." << endl;
 }
 
 void Crawler::createThread()
 {
-	lock(&mainLock);
-	string currentSite = linkQueue.front();
-	linkQueue.pop();
-	totalVisitedPages++;
-	workingThreads++;
-	unlock(&mainLock);
+	string currentSite = linkQueue.pop();
+	totalVisitedPages.add(1);
+	workingThreads.add(1);
 
-	cout << "Creating a thread, total = " << workingThreads << endl;
-	pthread_t th;
-	char *ch = (char *)malloc(1 + currentSite.size() * sizeof(char));
-	strcpy(ch, currentSite.c_str());
+	cout << "Creating a thread, total = " << workingThreads.value() << endl;
 
-	int ret_val = pthread_create(
-			&th, NULL, childThread, (void *)ch);
+	thread th(childThread, currentSite);
+	th.detach();
 }
 
 void Crawler::runCrawler()
 {
 	while (1)
 	{
-		lock(&mainLock);
-		int _workingThreads = workingThreads;
-		int _linkQueueSize = linkQueue.size();
-		int _totalVisitedPages = totalVisitedPages;
-		unlock(&mainLock);
-
-		if (pagesLimitReached || _totalVisitedPages >= pagesLimit)
+		if (pagesLimitReached || totalVisitedPages.value() >= pagesLimit)
 		{
 			// pagesLimit reached
-			if(!pagesLimitReached && _totalVisitedPages>=pagesLimit)
+			if (!pagesLimitReached && totalVisitedPages.value() >= pagesLimit)
 			{
-        pagesLimitReached = true;
+				pagesLimitReached = true;
 				cout << "~!!!pagesLimit Reached here.!!!~" << endl;
 			}
-			
-			if (_workingThreads)
+
+			if (workingThreads.value())
 			{
 				// sleep
 				gotosleep();
@@ -122,12 +106,12 @@ void Crawler::runCrawler()
 		else
 		{
 			// pagesLimit not reached
-			if (_workingThreads < maxThreads && _linkQueueSize > 0)
+			if (workingThreads.value() < maxThreads && linkQueue.size() > 0)
 			{
 				// create thread
 				createThread();
 			}
-			else if (_workingThreads == 0)
+			else if (workingThreads.value() == 0)
 			{
 				// exiting
 				cout << "EXITING AS NO THREADS WORKING. & pagelimit not reached" << endl;
@@ -160,7 +144,7 @@ void Crawler::showResults()
 	cout << "Max threads working:"
 			 << "\t" << maxThreads << endl;
 	cout << "Total visited pages:"
-			 << "\t" << totalVisitedPages << endl;
+			 << "\t" << totalVisitedPages.value() << endl;
 
 	cout << "" << endl;
 
@@ -170,7 +154,7 @@ void Crawler::showResults()
 
 	map<int, string, greater<int>> mm;
 
-	for (auto &it : webRanking)
+	for (auto it : webRanking.value())
 	{
 		mm[it.second] = it.first;
 	}
@@ -188,9 +172,8 @@ void Crawler::showResults()
 	cout << "-----------------------------------------------------" << endl;
 }
 
-void *childThread(void *_url)
+void childThread(string url)
 {
-	string url((char *)_url);
 	ofstream log("./thread_logs/" + to_string(rand()) + ".log");
 
 	high_resolution_clock::time_point t1, t2;
@@ -201,73 +184,62 @@ void *childThread(void *_url)
 	t1 = _now;
 	string html = myCrawler.downloader(url);
 	t2 = _now;
-	d_Time = duration<double>(t2 - t1).count();
+	d_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
 	log << "file downloaded." << endl;
 	cout << "file downloaded." << endl;
 
-	
-  // for calculating time of downloading
+	// for calculating time of downloading
 	t1 = _now;
-  // extracting all the links from it
-  set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
-  t2 = _now;
+	// extracting all the links from it
+	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+	t2 = _now;
 
-	p_Time = duration<double>(t2 - t1).count();
+	p_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
 	log << "links extracted." << endl;
 	cout << "links extracted." << endl;
 
 	// updating the shared variables
 	t1 = _now;
-	lock(&myCrawler.mainLock);
+
 	for (auto i : linkedSites)
 	{
 		log << i << endl;
-		myCrawler.webRanking[getDomain(i)]++;
-		if (!myCrawler.discoveredSites[i])
+		myCrawler.webRanking.inc(getDomain(i));
+
+		if (!myCrawler.discoveredSites.get(i))
 		{
-			myCrawler.discoveredSites[i] = true;
+			myCrawler.discoveredSites.inc(i);
 			myCrawler.linkQueue.push(i);
 		}
 	}
-	myCrawler.workingThreads--;
-	int _workingThreads = myCrawler.workingThreads;
-	unlock(&myCrawler.mainLock);
+
 	t2 = _now;
-	u_Time = duration<double>(t2 - t1).count();
+	u_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
 	cout << "shared variables updated." << endl;
 
 	// saving time measurements for this thread
-	lock(&myCrawler.timingLock);
+	myCrawler.timingLock.lock();
 	myCrawler.threadTimings.push_back(vector<double>{d_Time, p_Time, u_Time});
-	unlock(&myCrawler.timingLock);
+	myCrawler.timingLock.unlock();
+	log.close();
 
+	myCrawler.workingThreads.add(-1);
+	
+
+	std::unique_lock<std::mutex> lk(myCrawler.cv_m);
+	
 	if (myCrawler.pagesLimitReached)
 	{
-		if (_workingThreads == 0)
+		if (myCrawler.workingThreads.value() == 0)
 		{
-			// Awake the parent
-			lock(&myCrawler.parent_lock);
-			// myCrawler.done = true;
-			// cout << "cond signal" << myCrawler.done << endl;
-			pthread_cond_signal(&myCrawler.parent_cond);
-
-			unlock(&myCrawler.parent_lock);
+			myCrawler.cv.notify_all();
 		}
 	}
 	else
 	{
-		lock(&myCrawler.parent_lock);
-		// myCrawler.done = true;
-		pthread_cond_signal(&myCrawler.parent_cond);
-
-		unlock(&myCrawler.parent_lock);
+		myCrawler.cv.notify_all();
 	}
-
-	log.close();
-
-	cout << "working threads now: " << myCrawler.workingThreads << endl;
-	pthread_exit(NULL);
 }
