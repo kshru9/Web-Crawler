@@ -1,6 +1,6 @@
-maxlinks:= 1000000
-pagelimit:= 10
-threads:= 4
+maxlinks:= 5
+pagelimit:= 100
+threads:= 100
 # er ror
 all_targets:= compile run plots clean
 
