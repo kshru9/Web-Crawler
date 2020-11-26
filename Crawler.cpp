@@ -53,19 +53,22 @@ string Crawler::downloader(string url)
 void Crawler::gotosleep()
 {
 	cout << "Going to sleep now" << endl;
-	ready = false; // because main thread is now not ready to process any data
+
+	ready = false;							 // because main thread is now not ready to process any data
 	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 
 	// written in a while loop, if spuriously woken up
-  while (!ready) cv.wait(lk); // Waiting until not ready
+	while (!ready)
+		cv.wait(lk); // Waiting until not ready
+
 	cout << "Awaken now." << endl;
 }
 
 void Crawler::awake()
 {
 	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
-  ready = true; // because now main thread needs to be awaken 
-  cv.notify_all(); // notifying the main thread which is sleeping
+	ready = true;								 // because now main thread needs to be awaken
+	cv.notify_all();						 // notifying the main thread which is sleeping
 }
 
 void Crawler::createThread()
@@ -85,7 +88,7 @@ void Crawler::createThread()
 
 void Crawler::runCrawler()
 {
-	while (1)
+	while (true)
 	{
 		if (pagesLimitReached || totalVisitedPages.value() >= pagesLimit)
 		{
@@ -93,7 +96,7 @@ void Crawler::runCrawler()
 			if (!pagesLimitReached && totalVisitedPages.value() >= pagesLimit)
 			{
 				pagesLimitReached = true;
-				cout << "~!!!pagesLimit Reached here.!!!~" << endl;
+				cout << RED << "~!!!pagesLimit Reached here.!!!~" << C_END << endl;
 			}
 
 			if (workingThreads.value())
@@ -105,7 +108,8 @@ void Crawler::runCrawler()
 			{
 				// exiting
 
-				cout << RED << "Exiting as all threads are finished & pagelimit reached.\033[0m\n" << C_END <<  endl;
+				cout << RED << "Exiting as all threads are finished & pagelimit reached.\033[0m\n"
+						 << C_END << endl;
 
 				break;
 			}
@@ -138,12 +142,15 @@ void Crawler::runCrawler()
 			<< endl;
 }
 
+/*
+*/
 void Crawler::showResults()
 {
 	// system("clear");
-	cout << "-----------------------------------------------------" << endl;
+	string dashline = "-----------------------------------------------------";
+	cout << endl;
 	cout << "Parameters:" << endl;
-	cout << "-----------------------------------------------------" << endl;
+	cout << dashline << endl;
 	cout << "Max Links from a website:"
 			 << "\t" << maxLinks << endl;
 	cout << "Max pages downloaded:"
@@ -155,9 +162,9 @@ void Crawler::showResults()
 
 	cout << "" << endl;
 
-	cout << "-----------------------------------------------------" << endl;
+	cout << dashline << endl;
 	cout << "Web rankings" << endl;
-	cout << "-----------------------------------------------------" << endl;
+	cout << dashline << endl;
 
 	map<int, string, greater<int>> mm;
 
@@ -173,7 +180,7 @@ void Crawler::showResults()
 	cout << "" << endl;
 	for (auto i : mm)
 	{
-		cout << r++ << "\t\t" << i.second << " : " << i.first << endl;
+		cout << RED << r++ << "\t\t" << GREEN << i.second << " : " << i.first << C_END <<  endl;
 	}
 
 	cout << "-----------------------------------------------------" << endl;
@@ -181,7 +188,8 @@ void Crawler::showResults()
 
 void childThread(string url)
 {
-	ofstream log("./thread_logs/" + to_string(rand()) + ".log");
+	string name = to_string(rand() % 1000);
+	cout << CYAN << "Thread " << name << " has started working." << C_END << endl;
 
 	high_resolution_clock::time_point t1, t2;
 	double totaldTime = 0;
@@ -193,26 +201,19 @@ void childThread(string url)
 	t2 = _now;
 	d_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
-	log << "file downloaded." << endl;
-	cout << "file downloaded." << endl;
+	cout << CYAN << "Thread " << name << " has downloaded files." << C_END << endl;
 
 	// for calculating time of downloading
 	t1 = _now;
-	// extracting all the links from it
 	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
 	t2 = _now;
-
 	p_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
-
-	log << "links extracted." << endl;
-	cout << "links extracted." << endl;
+	cout << CYAN << "Thread " << name << " has extracted links." << C_END << endl;
 
 	// updating the shared variables
 	t1 = _now;
-
 	for (auto i : linkedSites)
 	{
-		log << i << endl;
 		myCrawler.webRanking.inc(getDomain(i));
 
 		if (!myCrawler.discoveredSites.get(i))
@@ -221,21 +222,17 @@ void childThread(string url)
 			myCrawler.linkQueue.push(i);
 		}
 	}
-
 	t2 = _now;
 	u_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
-
-	cout << "shared variables updated." << endl;
-	log << "shared variables updated." << endl;
+	cout << CYAN << "Thread " << name << " has updated shared var." << C_END << endl;
 
 	// saving time measurements for this thread
 	myCrawler.timingLock.lock();
 	myCrawler.threadTimings.push_back(vector<double>{d_Time, p_Time, u_Time});
 	myCrawler.timingLock.unlock();
-	log.close();
 
-	myCrawler.workingThreads.add(-1);
-		
+	cout << BLUE << "Thread " << name << " finished, total: " << myCrawler.workingThreads.add(-1) << C_END << endl;
+
 	if (myCrawler.pagesLimitReached)
 	{
 		if (myCrawler.workingThreads.value() == 0)
@@ -245,9 +242,8 @@ void childThread(string url)
 	}
 	else
 	{
-		myCrawler.awake();			
+		myCrawler.awake();
 	}
 
-	cout << BLUE << "Thread finished." << C_END << endl;
 	// EXIT NOW
 }

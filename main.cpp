@@ -6,6 +6,8 @@ using namespace std;
 
 int main(int argc, const char *argv[])
 {
+	srand(time(0));
+
   // Crawler maxLinks pagesLimit threads
   myCrawler.maxLinks = stoi(argv[1]);
   myCrawler.pagesLimit = stoi(argv[2]);
@@ -22,7 +24,7 @@ int main(int argc, const char *argv[])
 	auto end = chrono::steady_clock::now();
 
 	cout<< "Elapsed time in milliseconds : "
-			<< chrono::duration_cast<chrono::milliseconds>(end - start).count()
+			<< chrono::duration_cast<chrono::seconds>(end - start).count()
 			<< " ms" << endl;
 
 

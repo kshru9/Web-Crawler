@@ -15,8 +15,9 @@ public:
         lock_guard<mutex> guard_obj (m);
         return num;
     }
-    void add(int x){
+    int add(int x){
         lock_guard<mutex> guard_obj (m);
         num+=x;
+				return num;
     }
 };

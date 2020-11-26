@@ -25,11 +25,11 @@
 using namespace std;
 using namespace std::chrono;
 
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define BLUE   "\033[34m"      /* Blue */
+#define RED "\033[31m"	 /* Red */
+#define CYAN "\033[36m"	 /* Cyan */
+#define GREEN "\033[32m" /* Green */
+#define BLUE "\033[34m"	 /* Blue */
 #define C_END "\033[0m"
-
 
 class Crawler
 {

@@ -3,6 +3,10 @@
 #include <mutex>
 using namespace std;
 
+// pair<string, vector<string>> a;
+// a["web"].push_back("web1");
+
+
 template<class Key, class Value>
 class map_ts
 {
@@ -22,6 +26,7 @@ public:
 		
     map<Key, Value> value(){
 				lock_guard<mutex> guard_obj(m_lock);
-        return m;
-    }
+				return m;
+		}
+		
 };
