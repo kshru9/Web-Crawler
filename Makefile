@@ -19,10 +19,12 @@ compile:
 run:
 	@echo "Running..."
 	./crawler $(maxlinks) $(pagelimit) $(threads)
-	#@python graph.py
-# 
+	python graph.py
+
 clean:
-	@rm -r -f crawler > /dev/null 2>&1
-	@rm -r -f thread_logs > /dev/null 2>&1
-	@rm -r -f logs.txt > /dev/null 2>&1
+	rm -r -f crawler
+	rm -r -f thread_logs
+	rm -r -f logs.txt
+	rm -r -f th_timings.csv
+	
 	@echo "All cleaned."
