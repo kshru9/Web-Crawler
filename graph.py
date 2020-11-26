@@ -23,4 +23,6 @@ plt.plot(x, d_Time, linewidth = 2)
 plt.plot(x, p_Time, linewidth = 2)
 plt.plot(x, u_Time, linewidth = 2)
 plt.legend(['download time', 'parse time', 'var updation time'])
-plt.show()
+
+# plt.figure(figsize=(8, 6))
+plt.savefig('OUTPUT/graph.png', dpi=300)

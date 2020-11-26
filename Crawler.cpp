@@ -52,10 +52,10 @@ string Crawler::downloader(string url)
 
 void Crawler::gotosleep()
 {
+	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 	cout << "Going to sleep now" << endl;
 
 	ready = false;							 // because main thread is now not ready to process any data
-	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 
 	// written in a while loop, if spuriously woken up
 	while (!ready)
@@ -68,7 +68,7 @@ void Crawler::awake()
 {
 	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 	ready = true;								 // because now main thread needs to be awaken
-	cv.notify_all();						 // notifying the main thread which is sleeping
+	cv.notify_one();						 // notifying the main thread which is sleeping
 }
 
 void Crawler::createThread()
@@ -78,9 +78,15 @@ void Crawler::createThread()
 	totalVisitedPages.add(1);
 	workingThreads.add(1);
 
-	log << currentSite << endl;
 
+	log << currentSite << endl;
 	cout << GREEN << "Creating a thread, total: " << workingThreads.value() << C_END << endl;
+
+
+	if(totalVisitedPages.value() >= pagesLimit){
+		pagesLimitReached.add(1);
+		cout << RED << "~!!!pagesLimit Reached here.!!!~" << C_END << endl;
+	}
 
 	thread th(childThread, currentSite);
 	th.detach();
@@ -90,15 +96,8 @@ void Crawler::runCrawler()
 {
 	while (true)
 	{
-		if (pagesLimitReached || totalVisitedPages.value() >= pagesLimit)
+		if (pagesLimitReached.value())
 		{
-			// pagesLimit reached
-			if (!pagesLimitReached && totalVisitedPages.value() >= pagesLimit)
-			{
-				pagesLimitReached = true;
-				cout << RED << "~!!!pagesLimit Reached here.!!!~" << C_END << endl;
-			}
-
 			if (workingThreads.value())
 			{
 				// sleep
@@ -108,8 +107,7 @@ void Crawler::runCrawler()
 			{
 				// exiting
 
-				cout << RED << "Exiting as all threads are finished & pagelimit reached.\033[0m\n"
-						 << C_END << endl;
+				cout << RED << "Exiting as all threads are finished & pagelimit reached." << C_END << endl;
 
 				break;
 			}
@@ -159,41 +157,24 @@ void Crawler::showResults()
 			 << "\t" << maxThreads << endl;
 	cout << "Total visited pages:"
 			 << "\t" << totalVisitedPages.value() << endl;
-
-	cout << "" << endl;
-
 	cout << dashline << endl;
 	cout << "Web rankings" << endl;
 	cout << dashline << endl;
 
-	map<int, string, greater<int>> mm;
+	cout << "RESULTS" << endl;
 
-	for (auto it : webRanking.value())
-	{
-		mm[it.second] = it.first;
-	}
-
-	int r = 1;
-	cout << "Rank"
-			 << "\t"
-			 << "Domain Name" << endl;
-	cout << "" << endl;
-	for (auto i : mm)
-	{
-		cout << RED << r++ << "\t\t" << GREEN << i.second << " : " << i.first << C_END <<  endl;
-	}
-
-	cout << "-----------------------------------------------------" << endl;
+	cout << dashline << endl;
 }
 
 void childThread(string url)
 {
 	string name = to_string(rand() % 1000);
-	cout << CYAN << "Thread " << name << " has started working." << C_END << endl;
 
 	high_resolution_clock::time_point t1, t2;
 	double totaldTime = 0;
 	double d_Time, p_Time, u_Time;
+
+	
 
 	// downloading the file
 	t1 = _now;
@@ -214,12 +195,11 @@ void childThread(string url)
 	t1 = _now;
 	for (auto i : linkedSites)
 	{
-		myCrawler.webRanking.inc(getDomain(i));
-
 		if (!myCrawler.discoveredSites.get(i))
 		{
 			myCrawler.discoveredSites.inc(i);
 			myCrawler.linkQueue.push(i);
+			myCrawler.pageRank.add(url, i);
 		}
 	}
 	t2 = _now;
@@ -231,9 +211,12 @@ void childThread(string url)
 	myCrawler.threadTimings.push_back(vector<double>{d_Time, p_Time, u_Time});
 	myCrawler.timingLock.unlock();
 
-	cout << BLUE << "Thread " << name << " finished, total: " << myCrawler.workingThreads.add(-1) << C_END << endl;
+	myCrawler.workingThreads.add(-1);
 
-	if (myCrawler.pagesLimitReached)
+	cout << BLUE << "Thread " << name << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
+
+
+	if (myCrawler.pagesLimitReached.value())
 	{
 		if (myCrawler.workingThreads.value() == 0)
 		{

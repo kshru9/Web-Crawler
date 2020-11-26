@@ -6,8 +6,6 @@
 
 using namespace std;
 using namespace std::chrono;
-
-using namespace std;
 using namespace std::regex_constants;
 
 string _replaceFirstOccurrence(string &s, const string &toReplace, const string &replaceWith)

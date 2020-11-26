@@ -54,8 +54,7 @@ string httpDownloader(string url)
 	// Connect to server
 	if (connect(sock, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
 	{
-		cout << "Socket Connection failed." << endl;
-		exit(0);
+		return "Socket Connection failed.";
 	}
 
 	string send_data = "GET " + path + " HTTP/1.1\r\nHOST:" + hostname + "\r\nConnection: Close\r\n\r\n";
@@ -215,6 +214,8 @@ string httpsDownloader(string url)
 	//and SSL_shutdown/SSL_free before close()
 	SSL_shutdown(conn);
 	SSL_free(conn);
+	close(sock);
+
 
 	return httpResponse;
 }

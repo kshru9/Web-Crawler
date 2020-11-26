@@ -6,12 +6,14 @@
 #include <string>
 #include <queue>
 #include <map>
-#include <sys/stat.h>
-#include <pthread.h>
-#include <unistd.h>
+#include <set>
 #include <chrono>
 #include <thread>
 #include <condition_variable>
+
+#include <sys/stat.h>
+#include <pthread.h>
+#include <unistd.h>
 
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
@@ -38,7 +40,7 @@ public:
 	ofstream log; // logging
 
 	int_ts workingThreads; // total no of threads working
-	bool pagesLimitReached = false;
+	int_ts pagesLimitReached;
 	// bool done = false;
 
 	mutex timingLock;
@@ -59,11 +61,15 @@ public:
 	queue_ts linkQueue;
 	// map for storing visited websites
 	map_ts<string, bool> discoveredSites;
-	// map for a simple website ranker
-	map_ts<string, int> webRanking;
-
+	// for storing page relations
+	map_ts<string, set<string>> pageRank;
+	
+	
+	
 	// for storing total processed pages till now
 	int_ts totalVisitedPages;
+
+
 
 	// Constructor
 	Crawler()
@@ -74,13 +80,26 @@ public:
 	~Crawler()
 	{
 		log << "current queue size: " << linkQueue.size() << endl;
-
 		log.close();
+
 		ofstream tout("th_timings.csv");
 		for (auto i : threadTimings)
 		{
 			tout << i[0] << ',' << i[1] << ',' << i[2] << endl;
 		}
+		tout.close();
+
+		ofstream fout("pagerank.csv");
+		for (auto i: pageRank.value())
+		{
+			fout << i.first;
+			for (auto link: i.second)
+			{
+				fout << "," << link;
+			}
+			fout << endl;
+		}
+		fout.close();
 	}
 
 	// Public Functions
