@@ -1,9 +1,4 @@
 #include "Crawler.h"
-#include "headers/downloaders.h"
-#include "headers/getLinks.h"
-#include "headers/getDomain.h"
-
-#define _now high_resolution_clock::now()
 
 void Crawler::initialize()
 {
@@ -58,12 +53,19 @@ string Crawler::downloader(string url)
 void Crawler::gotosleep()
 {
 	cout << "Going to sleep now" << endl;
+	ready = false; // because main thread is now not ready to process any data
+	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 
-	std::unique_lock<std::mutex> lk(cv_m);
-
-	cv.wait(lk);
-
+	// written in a while loop, if spuriously woken up
+  while (!ready) cv.wait(lk); // Waiting until not ready
 	cout << "Awaken now." << endl;
+}
+
+void Crawler::awake()
+{
+	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
+  ready = true; // because now main thread needs to be awaken 
+  cv.notify_all(); // notifying the main thread which is sleeping
 }
 
 void Crawler::createThread()
@@ -75,7 +77,7 @@ void Crawler::createThread()
 
 	log << currentSite << endl;
 
-	cout << "Creating a thread, total = " << workingThreads.value() << endl;
+	cout << GREEN << "Creating a thread, total: " << workingThreads.value() << C_END << endl;
 
 	thread th(childThread, currentSite);
 	th.detach();
@@ -102,7 +104,9 @@ void Crawler::runCrawler()
 			else
 			{
 				// exiting
-				cout << "EXITING AS ALL THREADS ARE COMPLETED & pagelimit reached." << endl;
+
+				cout << RED << "Exiting as all threads are finished & pagelimit reached.\033[0m\n" << C_END <<  endl;
+
 				break;
 			}
 		}
@@ -222,6 +226,7 @@ void childThread(string url)
 	u_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
 	cout << "shared variables updated." << endl;
+	log << "shared variables updated." << endl;
 
 	// saving time measurements for this thread
 	myCrawler.timingLock.lock();
@@ -230,19 +235,19 @@ void childThread(string url)
 	log.close();
 
 	myCrawler.workingThreads.add(-1);
-	
-
-	std::unique_lock<std::mutex> lk(myCrawler.cv_m);
-	
+		
 	if (myCrawler.pagesLimitReached)
 	{
 		if (myCrawler.workingThreads.value() == 0)
 		{
-			myCrawler.cv.notify_all();
+			myCrawler.awake();
 		}
 	}
 	else
 	{
-		myCrawler.cv.notify_all();
+		myCrawler.awake();			
 	}
+
+	cout << BLUE << "Thread finished." << C_END << endl;
+	// EXIT NOW
 }

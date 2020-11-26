@@ -1,2 +1,5 @@
-1
+4
 https://en.wikipedia.org/wiki/Power_Rangers
+https://en.wikipedia.org/wiki/Power_Rangers_S.P.D.
+https://en.wikipedia.org/wiki/Power_Rangers_Dino_Thunder
+https://en.wikipedia.org/wiki/Power_Rangers_Ninja_Storm

@@ -1,7 +1,7 @@
 maxlinks:= 1000
 pagelimit:= 10
-threads:= 5
-abcd;
+threads:= 3
+# er ror
 all_targets:= clear compile run clean
 
 all: ${all_targets}
@@ -20,7 +20,7 @@ run:
 	@echo "Running..."
 	./crawler $(maxlinks) $(pagelimit) $(threads)
 	#@python graph.py
-# valgrind --tool=helgrind 
+# 
 clean:
 	@rm -r -f crawler > /dev/null 2>&1
 	@rm -r -f thread_logs > /dev/null 2>&1

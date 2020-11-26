@@ -13,12 +13,23 @@
 #include <thread>
 #include <condition_variable>
 
+#include "headers/downloaders.h"
+#include "headers/getLinks.h"
+#include "headers/getDomain.h"
 #include "thread_safe/int_ts.cpp"
 #include "thread_safe/map_ts.cpp"
 #include "thread_safe/queue_ts.cpp"
 
+#define _now high_resolution_clock::now()
+
 using namespace std;
 using namespace std::chrono;
+
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define BLUE   "\033[34m"      /* Blue */
+#define C_END "\033[0m"
+
 
 class Crawler
 {
@@ -34,6 +45,7 @@ public:
 	vector<vector<double>> threadTimings;
 
 	// lock and cond_var for parent
+	bool ready = false;
 	condition_variable cv;
 	mutex cv_m;
 
@@ -107,6 +119,11 @@ public:
 		Sleeping the main thread
 	*/
 	void gotosleep();
+
+	/*
+		Awake the main thread
+	*/
+	void awake();
 
 } myCrawler;
 
