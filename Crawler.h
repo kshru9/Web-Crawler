@@ -1,5 +1,5 @@
-#ifndef ___Crawler
-#define ___Crawler
+#ifndef ___CRAWLER_H
+#define ___CRAWLER_H
 
 #include <iostream>
 #include <fstream>
@@ -11,13 +11,14 @@
 #include <thread>
 #include <condition_variable>
 
-#include <sys/stat.h>
 #include <pthread.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
+
 #include "thread_safe/int_ts.cpp"
 #include "thread_safe/map_ts.cpp"
 #include "thread_safe/queue_ts.cpp"
@@ -41,7 +42,8 @@ public:
 
 	int_ts workingThreads; // total no of threads working
 	int_ts pagesLimitReached;
-	// bool done = false;
+	// for storing total processed pages till now
+	int_ts totalVisitedPages;
 
 	mutex timingLock;
 	vector<vector<double>> threadTimings;
@@ -64,12 +66,13 @@ public:
 	// for storing page relations
 	map_ts<string, set<string>> pageRank;
 	
-	// for storing total processed pages till now
-	int_ts totalVisitedPages;
 
 	// Constructor
 	Crawler()
 	{
+		totalVisitedPages.assign(0);
+		workingThreads.assign(0);
+		pagesLimitReached.assign(0);
 	}
 
 	// Destructor
@@ -77,27 +80,6 @@ public:
 	{
 		log << "current queue size: " << linkQueue.size() << endl;
 		log.close();
-
-
-		ofstream tout("th_timings.csv");
-		for (auto i : threadTimings)
-		{
-			tout << i[0] << ',' << i[1] << ',' << i[2] << endl;
-		}
-		tout.close();
-
-		ofstream fout("pagerank.csv");
-		for (auto i: pageRank.value())
-		{
-			fout << i.first;
-			for (auto link: i.second)
-			{
-				fout << "," << link;
-			}
-			fout << endl;
-		}
-		fout.close();
-
 	}
 
 	// Public Functions

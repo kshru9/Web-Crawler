@@ -2,11 +2,11 @@ import os
 import random
 import re
 import sys
-from pomegranate import *
 import csv
 
 DAMPING = 0.85
 SAMPLES = 10000
+
 """
 prompt
 python pagerank.py -n --> simple counter based web ranker will be executed
@@ -16,15 +16,15 @@ python pagerank.py -ip --> pagerank with iteration will be executed
 
 def main():
     if len(sys.argv) != 2:
-        sys.exit("Usage: python pagerank.py [FLAG]")
+        sys.exit("Usage: python ranker.py [FLAG]")
     
     flag = sys.argv[1]
 
-    corpus = crawl()
+    corpus = read()
 
     if (flag == "-n"):
         print("------------------------------------------------")
-        print(f"  Website rankings using counter")
+        print(f"  Domain Name rankings using counter")
         print("------------------------------------------------")
         print()
         print("................................................")
@@ -33,46 +33,56 @@ def main():
         print()
         ranks = counter_ranker(corpus)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     elif (flag == "-sp"):
         ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
         print("-------------------------------------------------------------")
-        print(f"  Website ranking using PageRank: Sampling (n = {SAMPLES})")
+        print(f"  Domain Name ranking using PageRank: Sampling (n = {SAMPLES})")
         print("-------------------------------------------------------------")
         print()
         print("................................................")
         print(f"  Domain Name \t\t\t Rank")
         print("................................................")
         print()
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     elif (flag == "-ip"):
         ranks = iterate_pagerank(corpus, DAMPING)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
         print("----------------------------------------------")
-        print(f"  Website ranking using PageRank: Iteration")
+        print(f"  Domain Name ranking using PageRank: Iteration")
         print("----------------------------------------------")
         print()
         print("................................................")
         print(f"  Domain Name \t\t\t Rank")
         print("................................................")
         print()
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     else:
-        sys.exit("Usage: python pagerank.py [FLAG]")
-
-def crawl():
+        sys.exit("Usage: python ranker.py [FLAG]")
+#who do we think we are
+def read():
     """
-    Parse a directory of HTML pages and check for links to other pages.
-    Return a dictionary where each key is a page, and values are
-    a list of all other pages in the corpus that are linked to by the page.
+    Read the csv file line by line
+    Adding the first website of each line as key and rest as its values
+    Because we have the csv file like that: 
+    first one of each line is current website and others are linked websites to that website
     """
     pages = dict()
 
-    with open("pagerank.csv", "r") as csv_file:
+    with open("OUTPUT/pagerank.csv", "r") as csv_file:
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
             pages[row[0]] = set(
@@ -184,7 +194,6 @@ def iterate_pagerank(corpus, damping_factor):
         if (nochange(before, [pagerrank[v] for v in pagerrank.keys()])):
             break
 
-    # print(pagerrank)
     return pagerrank
 
 def nochange(before,new):
