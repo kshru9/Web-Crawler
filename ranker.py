@@ -2,11 +2,11 @@ import os
 import random
 import re
 import sys
-from pomegranate import *
 import csv
 
 DAMPING = 0.85
 SAMPLES = 10000
+
 """
 prompt
 python pagerank.py -n --> simple counter based web ranker will be executed
@@ -20,7 +20,7 @@ def main():
     
     flag = sys.argv[1]
 
-    corpus = crawl()
+    corpus = read()
 
     if (flag == "-n"):
         print("------------------------------------------------")
@@ -64,11 +64,12 @@ def main():
     else:
         sys.exit("Usage: python pagerank.py [FLAG]")
 
-def crawl():
+def read():
     """
-    Parse a directory of HTML pages and check for links to other pages.
-    Return a dictionary where each key is a page, and values are
-    a list of all other pages in the corpus that are linked to by the page.
+    Read the csv file line by line
+    Adding the first website of each line as key and rest as its values
+    Because we have the csv file like that: 
+    first one of each line is current website and others are linked websites to that website
     """
     pages = dict()
 
@@ -184,7 +185,6 @@ def iterate_pagerank(corpus, damping_factor):
         if (nochange(before, [pagerrank[v] for v in pagerrank.keys()])):
             break
 
-    # print(pagerrank)
     return pagerrank
 
 def nochange(before,new):
