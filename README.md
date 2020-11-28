@@ -16,28 +16,29 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 ![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/flowchart.jfif)
 
 ## [Table of contents](#table-of-contents)
-- [Single Threaded Web Crawler](#singlethreaded)
-    - [Components](#singlethreaded-components)
-    - [Psuedocode](#singlethreaded-code)
-    - [How to run single threaded web crawler](#singlethreaded-run)
-- [MULTITHREADED Web Crawler](#multithreaded)
-    - [Components](#multithreaded-components)
-    - [Psuedocode](#multithreaded-code)
-    - [Different locking techniques](#multithreaded-techniques)
-        - [Using SINGLE LOCK technique](#multithreaded-singlelock)
-        - [Using THREAD SAFE DATA STRUCTURE technique](#multithreaded-threadsafe)
-    - [How to run multi threaded web crawler](#multithreaded-run)
-- [Website domain ranking algorithms](#ranking)
-    - [Simple counter based](#ranking-counter)
-    - [Sampling based PageRank algorithm](#ranking-sampling)
-    - [Iterative based PageRank algorithm](#ranking-iterative)
+- [Single Threaded Web Crawler](#single-threaded-web-crawler)
+    - [Single Threaded Components](#single-threaded-components)
+    - [Single Threaded Psuedocode](#single-threaded-psuedocode)
+    - [How to run single threaded web crawler](#how-to-run-single-threaded-web-crawler)
+- [MULTITHREADED Web Crawler](#multithreaded-web-crawler)
+    - [Multithreaded Components](#multithreaded-components)
+    - [Multithreaded Psuedocode](#multithreaded-psuedocode)
+    - [Different locking techniques](#different-locking-techniques)
+        - [Using SINGLE LOCK technique](#using-single-lock-technique)
+        - [Using THREAD SAFE DATA STRUCTURE technique](#using-thread-safe-data-structure-technique)
+    - [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
+- [Website domain ranking algorithms](#website-domain-ranking-algorithms)
+    - [Simple counter based](#simple-counter-based)
+    - [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
+    - [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
 - [Graphs](#graphs)
-- [Tech Frameworks/Libraries used](#frameworks)
+- [Libraries used](#libraries-used)
+- [Future extension of project](#future-extension-of-project)
 - [Contributors](#contributors)
 
-## [SINGLE THREADED Web Crawler](#singlethreaded)
+## [Single Threaded Web Crawler](#single-threaded-web-crawler)
 
-### Components
+### [Single Threaded Components](#single-threaded-components)
 - HTTP website downloader
     - using socket library
 - HTTPs websites downloader
@@ -50,7 +51,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 - Website ranker
     - using a simple counter
     
-### [Psuedocode](#singlethreaded-code)
+### [Single Threaded Psuedocode](#single-threaded-psuedocode)
 <pre><code>    ...
     while(!mainQueue.empty() && totalVisitedPages < pagesLimit)
     {
@@ -61,7 +62,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     }
     ...</code></pre>
     
-### [How to run SINGLE THREADED web crawler](#singlethreaded-run)
+### [How to run single threaded web crawler](#how-to-run-single-threaded-web-crawler)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100`
@@ -69,9 +70,9 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
 
-## [MULTITHREADED Web Crawler](#multithreaded)
+## [MULTITHREADED Web Crawler](#multithreaded-web-crawler)
 
-### [Components](#multithreaded-components)
+### [Multithreaded Components](#multithreaded-components)
  - **Crawler** as a thread controller
  - **Child thread**
     - HTML downloader
@@ -79,7 +80,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     - Domain extractor
     - Ranker using counter
 
-### [Psuedocode](#multithreaded-code)
+### [Multithreaded Psuedocode](#multithreaded-psuedocode)
 ### Crawler loop code
 <pre><code>...
 while(1){
@@ -124,11 +125,12 @@ else{
 ...
 </pre></code>
 
-### [Different locking techniques](#multithreaded-techniques)
-- [Using SINGLE LOCK technique](#multithreaded-singlelock)
-- [Using THREAD SAFE DATA STRUCTURE technique](#multithreaded-threadsafe)
+### [Different locking techniques](#different-locking-techniques)
+- [Using SINGLE LOCK technique](#using-single-lock-technique)
+    - In single locking mechanism, we have used a single `pthread_mutex` lock to handle all shared variables. 
+- [Using THREAD SAFE DATA STRUCTURE technique](#using-thread-safe-data-structure-technique)
 
-### [How to run multi threaded web crawler](#multithreaded-run)
+### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
@@ -138,8 +140,8 @@ else{
         - `threads`: Maximum number of threads to be created
         - `rankerFlag`: Flag to choose which ranking algorithm to be executed
 
-## [Website domain ranking algorithms](#ranking)
-- [Simple counter based](#ranking-counter)
+## [Website domain ranking algorithms](#website-domain-ranking-algorithms)
+- [Simple counter based](#simple-counter-based)
 The intuition behind this approach of ranking is to increase the rank of a domain name whenever we visit it.
 - [PageRank algorithm](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
 The intuition behind our pagerank algorithm is as follows. Suppose there is a random surfer which randomly chooses a starting website. After that it chooses next website from all the linked website with current chosen website with probability of 0.85 or it chooses next website from all available websites with a probability of 0.15. 
@@ -147,10 +149,10 @@ The intuition behind our pagerank algorithm is as follows. Suppose there is a ra
 In this way, the importance of a website is measured by how repetitively a random surfer visits a website. Hence, a website is important if it is linked to more number of important websites.
 
 There are two ways to implement this algorithm
-- [Iterative based PageRank algorithm](#ranking-iterative)
-- [Sampling based PageRank algorithm](#ranking-sampling)
+- [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
+- [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
 
-### [Simple counter based](#ranking-counter)
+### [Simple counter based](#simple-counter-based)
 
 <pre><code>
 ...
@@ -177,7 +179,7 @@ for website in corpus.keys():
 5 .  asi.nic.in                                16
 ------------------------------------------------------------</pre></code>
 
-### [Sampling based PageRank algorithm](#ranking-sampling)
+### [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
 In this approach, we randomly choose a website according to pagerank algorithm intuition 
 
 In this way, the importance of website is measured by how many times the random surfer will be on a website.
@@ -217,13 +219,12 @@ return pagerrank
 5 .  aatmanirbharbharat.mygov.in               0.04840000000000036
 ------------------------------------------------------------</pre></code>
 
-### [Iterative based PageRank algorithm](#ranking-iterative)
-The intuition behind ranking using iterative pagerank algorithm is as follows. We will intialize the probability of surfer visiting a given website to 1/total_websites. We will update the probability of every website according to below formula.
+### [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
+The intuition behind ranking using iterative pagerank algorithm is as follows. We will intialize the probability of surfer visiting a given website to 1/total_websites. We will update the probability of every website according to below formula. 
+
 ![pagerank](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/PRiterative.png)
 
 We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
-
-In this way, the importance of website is measured by what
 
 <pre><code>
 ...
@@ -270,7 +271,7 @@ We have made a graph between number of threads vs time. According to this graph,
 ![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/crawler_analytics.png)
 
 
-## [Tech Frameworks/Libraries used](#frameworks)
+## [Libraries used](#libraries-used)
  - Sockets
  - OpenSSL
  - Pthread library
@@ -279,6 +280,10 @@ We have made a graph between number of threads vs time. According to this graph,
          - Single locks
          - Reader Writer locks
        - Condition Variables
+
+## [Future extension of project](#future-extension-of-project)
+- Efficient parser to parse large websites
+- Creating a search engine by using web indexing and web scraping
 
 ## [Contributors](#contributors)
 - Anupam Kumar
