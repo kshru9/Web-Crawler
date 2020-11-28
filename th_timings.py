@@ -1,11 +1,12 @@
 import csv
 import matplotlib.pyplot as plt
+import sys
 
 d_Time = []
 p_Time = []
 u_Time = []
 
-with open('th_timings.csv') as csv_file:
+with open('OUTPUT/th_timings.csv') as csv_file:
 	csv_reader = csv.reader(csv_file, delimiter=',')
 	for row in csv_reader:
 		if len(row) == 0:
@@ -23,6 +24,7 @@ plt.plot(x, d_Time, linewidth = 2)
 plt.plot(x, p_Time, linewidth = 2)
 plt.plot(x, u_Time, linewidth = 2)
 plt.legend(['download time', 'parse time', 'var updation time'])
+plt.xlabel('Threads')
+plt.xlabel('Elapsed time in microseconds')
 
-# plt.figure(figsize=(8, 6))
-plt.savefig('OUTPUT/graph.png', dpi=300)
+plt.savefig('OUTPUT/graph_'+sys.argv[1]+'.png', dpi=300)

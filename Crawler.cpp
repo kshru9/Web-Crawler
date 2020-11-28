@@ -1,12 +1,14 @@
 #include "Crawler.h"
 
+#define _del_stop_at 2
+
 void Crawler::initialize()
 {
 	log.open("logs.txt");
 	log << "Crawler initialized" << endl;
 
 	// Add initial urls from initialLinks.txt
-	ifstream lin("initialLinks.txt");
+	ifstream lin("INPUT/initialLinks.txt");
 	if (lin)
 	{
 		int n;
@@ -66,7 +68,6 @@ void Crawler::gotosleep()
 
 void Crawler::awake()
 {
-	unique_lock<mutex> lk(cv_m); // unique_lock for conditional variable
 	ready = true;								 // because now main thread needs to be awaken
 	cv.notify_one();						 // notifying the main thread which is sleeping
 }
@@ -97,18 +98,18 @@ void Crawler::runCrawler()
 	{
 		if (pagesLimitReached.value())
 		{
-			if (workingThreads.value() > 5 - 1)
-			{
-				// sleep
-				gotosleep();
-			}
-			else
+			if(workingThreads.value() < _del_stop_at)
 			{
 				// exiting
 
 				cout << RED << "Exiting as all threads are finished & pagelimit reached." << C_END << endl;
 
 				break;
+			}
+			else
+			{
+				// sleep
+				gotosleep();
 			}
 		}
 		else
@@ -143,19 +144,24 @@ void Crawler::runCrawler()
 */
 void Crawler::showResults()
 {
-  ofstream fout("pagerank.csv");
-	
-	for (auto i: pageRank.value())
-  {
-    fout << i.first;
-    for (auto link: i.second)
-    {
-			fout << "," << link;
-    }
-    fout << endl;
-  }
-	fout.close();
-	
+  ofstream tout("OUTPUT/th_timings.csv");
+		for (auto i : threadTimings)
+		{
+			tout << i[0] << ',' << i[1] << ',' << i[2] << endl;
+		}
+		tout.close();
+
+		ofstream fout("OUTPUT/pagerank.csv");
+		for (auto i: pageRank.value())
+		{
+			fout << i.first;
+			for (auto link: i.second)
+			{
+				fout << "," << link;
+			}
+			fout << endl;
+		}
+		fout.close();
 	
 	// system("clear");
 	string dashline = "-----------------------------------------------------";
@@ -223,16 +229,16 @@ void childThread(string url, int th_no)
 	myCrawler.threadTimings.push_back(vector<double>{d_Time, p_Time, u_Time});
 	myCrawler.timingLock.unlock();
 
-	myCrawler.workingThreads.add(-1);
 
+
+//
+	unique_lock<mutex> lk(myCrawler.cv_m); // unique_lock for conditional variable
+	myCrawler.workingThreads.add(-1);
 	cout << RED << d_Time << " " << p_Time << " " << u_Time << endl << C_END;
 	cout << BLUE << "Thread " << th_no << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
-
-
-
 	if (myCrawler.pagesLimitReached.value())
 	{
-		if (myCrawler.workingThreads.value() < 5)
+		if (myCrawler.workingThreads.value() < _del_stop_at)
 		{
 			myCrawler.awake();
 		}
@@ -242,5 +248,7 @@ void childThread(string url, int th_no)
 		myCrawler.awake();
 	}
 
+
+	// pthread_exit(NULL);
 	// EXIT NOW
 }

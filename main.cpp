@@ -1,8 +1,10 @@
 #include <iostream>
+#include "Crawler.h"
 #include "Crawler.cpp"
 // gives a Crawler object named `myCrawler` from default
 
 using namespace std;
+using namespace std::chrono;
 
 int main(int argc, const char *argv[])
 {
@@ -14,19 +16,23 @@ int main(int argc, const char *argv[])
   myCrawler.maxThreads = stoi(argv[3]);
 
   
-	auto start = chrono::steady_clock::now();
-
+	auto t1 = chrono::steady_clock::now();
   myCrawler.initialize();
   myCrawler.runCrawler();
   myCrawler.showResults();
+	auto t2 = chrono::steady_clock::now();
+
+
+	int res = duration_cast<milliseconds>(t2 - t1).count();
+
 	cout << "FINISHED." << endl;
+	cout<< RED << "Elapsed time in milliseconds : "
+			<< res
+			<< C_END << endl;
 
-	auto end = chrono::steady_clock::now();
-
-	cout<< "Elapsed time in seconds : "
-			<< chrono::duration_cast<chrono::seconds>(end - start).count()
-			<< " ms" << endl;
-
+	ofstream fout("OUTPUT/crawler_timings.csv", std::ios_base::app);
+	fout << myCrawler.maxThreads << ", " << res << endl;
+	fout.close();
 
   return 0;
 }
