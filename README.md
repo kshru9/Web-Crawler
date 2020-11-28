@@ -218,8 +218,9 @@ return pagerrank
 ------------------------------------------------------------</pre></code>
 
 ### [Iterative based PageRank algorithm](#ranking-iterative)
-The intuition behind ranking using iterative pagerank algorithm is as follows.  We will update the probability of every website according to this. 
-![pagerank](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/PRiterative.png) 
+The intuition behind ranking using iterative pagerank algorithm is as follows. We will intialize the probability of surfer visiting a given website to 1/total_websites. We will update the probability of every website according to below formula.
+![pagerank](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/PRiterative.png)
+
 We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
 
 In this way, the importance of website is measured by what
@@ -261,6 +262,12 @@ return pagerrank
 ------------------------------------------------------------</pre></code>
 
 ## [Graphs](#graphs)
+We have made a graph between number of threads vs time. According to this graph, we can infer as follows:
+- When number of threads are very low, time required for crawling is large
+- Time increases when number of threads becomes huge becuase of locking overhead
+- When we use optimal number of threads, concurrent crawling is useful.
+
+![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/crawler_analytics.png)
 
 
 ## [Tech Frameworks/Libraries used](#frameworks)
