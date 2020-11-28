@@ -1,6 +1,6 @@
 maxlinks:= 1000
-pagelimit:= 100
-threads:= 50
+pagelimit:= 10
+threads:= 5
 #error
 all_targets:= compile run plots clean
 

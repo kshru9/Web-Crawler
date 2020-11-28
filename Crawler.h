@@ -11,13 +11,14 @@
 #include <thread>
 #include <condition_variable>
 
-#include <sys/stat.h>
 #include <pthread.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "headers/downloaders.h"
 #include "headers/getLinks.h"
 #include "headers/getDomain.h"
+
 #include "thread_safe/int_ts.cpp"
 #include "thread_safe/map_ts.cpp"
 #include "thread_safe/queue_ts.cpp"
