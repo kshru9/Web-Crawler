@@ -12,6 +12,17 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
  - Part 2: Tool for Web scraping
  - Part 3: (Extended scope) Web Ranking
 
+### Tools Used
+ - Sockets
+ - OpenSSL
+ - Pthread library
+    - For concurrency and synchronization techniques
+       - Locks
+         - Single locks
+         - Reader Writer locks
+       - Condition Variables
+
+
 ## Simple Crawler Flowchart
 ![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/flowchart.jpg?raw=true)
 
@@ -123,7 +134,7 @@ else{
  - Pthread library
     - For concurrency and synchronization techniques
 
-## [How to run multi threaded web crawler using single lock](#run-multi-threaded-singlelock)
+## [Multithreaded Web Crawler using SINGLE_LOCK technique](#run-multi-threaded-singlelock)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
@@ -132,30 +143,7 @@ else{
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
 
-## Demo run
-<pre><code>-----------------------------------------------------
-Parameters:
------------------------------------------------------
-Max Links from a website:	1000
-Max pages downloaded:	10
-Max threads working:	3
-
------------------------------------------------------
-Web rankings	(Total Visited Websites:	10)
------------------------------------------------------
-Rank	Domain Name
-
-1	github.com : 35
-2	apple.com : 15
-3	apps.apple.com : 9
-4	docs.github.com : 8
-5	help.github.com : 6
-6	support.github.com : 3
-7	youtube.com : 2
-8	w3.org : 1
------------------------------------------------------</pre></code>
-
-## [Multithreaded Web Crawler using thread safe data structures](#multi-threaded-threadsafe)
+## [Multithreaded Web Crawler using THREAD_SAFE data structures](#multi-threaded-threadsafe)
 
 ## [Components](#multi-threaded-components-threadsafe):
 - **Crawler** as a thread controller
@@ -210,13 +198,6 @@ else{
 }
 ...
 </pre></code>
-
-
-### Tools Used
- - Sockets
- - OpenSSL
- - Pthread library
-    - For concurrency and synchronization techniques
 
 ## [How to run multi threaded web crawler using single lock](#run-multi-threaded-singlelock)
 - use `make` to compile the program
