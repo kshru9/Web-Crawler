@@ -16,7 +16,7 @@ python pagerank.py -ip --> pagerank with iteration will be executed
 
 def main():
     if len(sys.argv) != 2:
-        sys.exit("Usage: python pagerank.py [FLAG]")
+        sys.exit("Usage: python ranker.py [FLAG]")
     
     flag = sys.argv[1]
 
@@ -62,7 +62,7 @@ def main():
         for page in ranks:
             print(f"  {page} \t\t\t {ranks[page]:.4f}")
     else:
-        sys.exit("Usage: python pagerank.py [FLAG]")
+        sys.exit("Usage: python ranker.py [FLAG]")
 
 def read():
     """
