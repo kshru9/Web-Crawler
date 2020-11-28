@@ -134,7 +134,7 @@ else{
  - Pthread library
     - For concurrency and synchronization techniques
 
-## [Multithreaded Web Crawler using SINGLE_LOCK technique](#run-multi-threaded-singlelock)
+## [How to run Multithreaded Web Crawler using SINGLE_LOCK technique](#run-multi-threaded-singlelock)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
@@ -199,7 +199,7 @@ else{
 ...
 </pre></code>
 
-## [How to run multi threaded web crawler using single lock](#run-multi-threaded-singlelock)
+## [How to run Multithreaded Web Crawler using THREAD_SAFE data structures](#run-multi-threaded-threadsafe)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
@@ -207,29 +207,7 @@ else{
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
-
-## Demo run
-<pre><code>-----------------------------------------------------
-Parameters:
------------------------------------------------------
-Max Links from a website:	1000
-Max pages downloaded:	10
-Max threads working:	3
-
------------------------------------------------------
-Web rankings	(Total Visited Websites:	10)
------------------------------------------------------
-Rank	Domain Name
-
-1	github.com : 35
-2	apple.com : 15
-3	apps.apple.com : 9
-4	docs.github.com : 8
-5	help.github.com : 6
-6	support.github.com : 3
-7	youtube.com : 2
-8	w3.org : 1
------------------------------------------------------</pre></code>
+        - `rankerFlag`: Flag to choose which ranking algorithm to be executed
 
 ## [Website domain name ranker](#ranker)
 - [Simple counter based](#ranker-counter)
@@ -247,6 +225,22 @@ for website in corpus.keys():
         rank[website]+=1
 ...
 </code></pre>
+
+## Demo run
+<pre><code>------------------------------------------------
+  Domain Name rankings using counter
+------------------------------------------------
+
+................................................
+  Domain Name            Rank
+................................................
+
+1 .  mygov.in                                  43
+2 .  main.ayush.gov.in                         36
+3 .  tourism.gov.in                            24
+4 .  digitalindia.gov.in                       19
+5 .  asi.nic.in                                16
+------------------------------------------------------------</pre></code>
 
 ### [Sampling based pagerank algorithm](#ranker-sampling)
 
@@ -269,6 +263,21 @@ return pagerrank
 ...
 </code></pre>
 
+<pre><code>-------------------------------------------------------------
+  Domain Name ranking using PageRank: Sampling (n = 10000)
+-------------------------------------------------------------
+
+................................................
+  Domain Name            Rank
+................................................
+
+1 .  haryana.mygov.in                          0.1290000000000021
+2 .  chhattisgarh.mygov.in                     0.11000000000000212
+3 .  blog.mygov.in                             0.07730000000000119
+4 .  mygov.in                                  0.07260000000000105
+5 .  aatmanirbharbharat.mygov.in               0.04840000000000036
+------------------------------------------------------------</pre></code>
+
 ### [Iteration based pagerank algorithm](#ranker-iterative)
 
 <pre><code>
@@ -290,3 +299,18 @@ while(1):
 return pagerrank
 ...
 </code></pre>
+
+<pre><code>----------------------------------------------
+  Domain Name ranking using PageRank: Iteration
+----------------------------------------------
+
+................................................
+  Domain Name            Rank
+................................................
+
+1 .  chhattisgarh.mygov.in                     0.03622047763650005
+2 .  haryana.mygov.in                          0.03622047763650005
+3 .  mygov.in                                  0.015051816113982971
+4 .  blog.mygov.in                             0.014124265632032305
+5 .  india.gov.in                              0.011385432326608554
+------------------------------------------------------------</pre></code>
