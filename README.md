@@ -28,7 +28,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 
 ## [SINGLE THREADED Web Crawler](#single-threaded)
 
-### [Components](#single-threaded-components):
+### Components
 - HTTP website downloader
     - using socket library
 - HTTPs websites downloader
@@ -41,7 +41,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 - Website ranker
     - using a simple counter
     
-### [Pseudo Code]
+### Pseudo Code
 <pre><code>    ...
     while(!mainQueue.empty() && totalVisitedPages < pagesLimit)
     {
@@ -52,7 +52,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     }
     ...</code></pre>
     
-### [How to run SINGLE THREADED web crawler](#run-single-threaded)
+### How to run SINGLE THREADED web crawler
 - use `make` to compile the program
 - `maxlinks`, `pagelimit` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100`
@@ -62,7 +62,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 
 ## [MULTITHREADED Web Crawler](#multi-threaded)
 
-### [Components](#multi-threaded-components):
+### Components
  - **Crawler** as a thread controller
  - **Child thread**
     - HTML downloader
@@ -70,7 +70,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     - Domain extractor
     - Ranker using counter
 
-### [Crawler loop code]
+### Crawler loop code
 <pre><code>...
 while(1){
     if(pagesLimitReached || visitedpages>=pagesLimit){
@@ -96,7 +96,7 @@ while(1){
 }
 ...</pre></code>
 
-### [Child Thread code]
+### Child Thread code
 <pre>
 <code>
 ...
@@ -114,10 +114,10 @@ else{
 ...
 </pre></code>
 
-### [Variations with locking techniques]
-#### [using SINGLE_LOCK technique]
-#### [using THREAD-SAFE data structures]
-#### [How to run MULTITHREADED Web Crawler with SINGLE_LOCK technique](#run-multi-threaded-singlelock)
+### Variations with locking techniques
+#### using SINGLE_LOCK technique
+#### using THREAD-SAFE data structures
+#### How to run MULTITHREADED Web Crawler with SINGLE_LOCK technique
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
     - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
@@ -125,16 +125,16 @@ else{
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
-#### [How to run MULTITHREADED Web Crawler with THREAD-SAFE data structures](#run-multi-threaded-singlelock)
+#### How to run MULTITHREADED Web Crawler with THREAD-SAFE data structures
 
-## [Web Ranking Algorithms]
-### [Simple counter based ranking system]
-### [Sampling based ranking algorithms]
-#### [Using random surfer model]
-#### [Using iterative algorithm]
+## [Web Ranking Algorithms](web-ranking-algo)
+### Simple counter based ranking system
+### Sampling based ranking algorithms
+#### Using random surfer model
+#### Using iterative algorithm
 
 
-## [Demo Output]
+## [Demo Output](demo-output)
 <pre>./_crawler 100 10 4
 <font color="#00CD00">Creating a thread, total: 1</font>
 <font color="#00CD00">Creating a thread, total: 2</font>
@@ -222,23 +222,23 @@ Awaken now.
 <font color="#CD0000">Exiting as all threads are finished &amp; pagelimit reached.</font>
 
 Parameters:
------------------------------------------------------
+----------------------------------------------------------------
 Max Links from a website:	100
 Max pages downloaded:	10
 Max threads working:	4
 Total visited pages:	10
------------------------------------------------------
+----------------------------------------------------------------
 FINISHED.
 <font color="#CD0000">Elapsed time in milliseconds : 6988</font>
 python3 th_timings.py 4
 python3 ranker.py -sp
--------------------------------------------------------------
+----------------------------------------------------------------
   Domain Name ranking using PageRank: Sampling (n = 10000)
--------------------------------------------------------------
+----------------------------------------------------------------
 
-................................................
+----------------------------------------------------------------
   Domain Name 			 Rank
-................................................
+----------------------------------------------------------------
 
 1 .  agra.nic.in                               0.20319999999999394
 2 .  tourism.gov.in                            0.1717999999999974
@@ -247,10 +247,10 @@ python3 ranker.py -sp
 5 .  adysoftindia.com                          0.11370000000000223
 6 .  kalakrititheatre.com                      0.10470000000000197
 7 .  tajmahal.gov.in                           0.10350000000000194
-------------------------------------------------------------
+----------------------------------------------------------------
 </pre>
 
-## Tech/Framework used
+## [Tech/Framework used](tech-used)
  - Sockets
  - OpenSSL
  - Pthread library
@@ -260,8 +260,8 @@ python3 ranker.py -sp
          - Reader Writer locks
        - Condition Variables
 
-## How to use
+## [How to use](how-to-use)
 
-## Credits
+## [Credits](credits)
 
-## License
+## [License](license)
