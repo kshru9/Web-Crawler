@@ -47,8 +47,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
         update(discoveredWebsites, mainQueue, totalVisitedPages)
     }
     ...
-    </pre>
-    </code>
+    </pre></code>
 - Website ranker
     - using a simple counter
 
@@ -155,3 +154,118 @@ Rank	Domain Name
 7	youtube.com : 2
 8	w3.org : 1
 -----------------------------------------------------</pre></code>
+
+## [Multithreaded Web Crawler using thread safe data structures](#multi-threaded-threadsafe)
+
+## [Components](#multi-threaded-components-threadsafe):
+- **Crawler** as a thread controller
+- **Child thread**
+    - HTML downloader
+    - Link extractor
+    - Domain extractor
+
+### Crawler loop code
+<pre>
+<code>
+...
+while(1){
+    if(pagesLimitReached || visitedpages>=pagesLimit){
+        pagesLimitReached = true;
+        if(w_threads){
+            <b>gotosleep()</b>;
+        }
+        else {
+            break;
+        }
+    }
+    else{
+        if (w_threads < maxThreads && queue_size>0){
+            createThread();
+        }
+        else if(w_threads == 0){
+            break;
+        }
+        else{
+            <b>gotosleep()</b>;
+        }
+    }
+}
+...
+</pre></code>
+
+### Child Thread code
+<pre>
+<code>
+...
+download(url);
+parse(url);
+update(queue, visitedLinks, ranking);
+if(pagesLimitReached){
+    if(workingThreads == 0){
+        <b>wake_parent()</b>;
+    }
+}
+else{
+    <b>wake_parent()</b>;
+}
+...
+</pre></code>
+
+
+### Tools Used
+ - Sockets
+ - OpenSSL
+ - Pthread library
+    - For concurrency and synchronization techniques
+
+## [How to run multi threaded web crawler using single lock](#run-multi-threaded-singlelock)
+- use `make` to compile the program
+- `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
+    - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
+    - Here the arguments are:
+        - `maxlinks`: Maximum number of links to be extracted from a website
+        - `pagelimit`: Maximum number of websites to be downloaded while crawling
+        - `threads`: Maximum number of threads to be created
+
+## Demo run
+<pre><code>-----------------------------------------------------
+Parameters:
+-----------------------------------------------------
+Max Links from a website:	1000
+Max pages downloaded:	10
+Max threads working:	3
+
+-----------------------------------------------------
+Web rankings	(Total Visited Websites:	10)
+-----------------------------------------------------
+Rank	Domain Name
+
+1	github.com : 35
+2	apple.com : 15
+3	apps.apple.com : 9
+4	docs.github.com : 8
+5	help.github.com : 6
+6	support.github.com : 3
+7	youtube.com : 2
+8	w3.org : 1
+-----------------------------------------------------</pre></code>
+
+## [Website domain name ranker](#ranker)
+- [Simple counter based](#ranker-counter)
+- [Iteration based pagerank algorithm](#ranker-iterative)
+- [Sampling based pagerank algorithm](#ranker-sampling)
+
+### [Simple counter based ranking algorithm](#ranker-counter)
+
+<pre><code>
+...
+corpus = read(csv_file)
+for website in corpus.keys():
+    for x in corpus[website]:
+        rank[website]+=1
+...
+</code></pre>
+
+### [Sampling based pagerank algorithm](#ranker-sampling)
+
+
