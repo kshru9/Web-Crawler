@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define MAX_FILE_SIZE 512 * 1024
+#define MAX_FILE_SIZE 128 * 1024
 #define PACKET_SIZE 1024
 
 string httpDownloader(string);

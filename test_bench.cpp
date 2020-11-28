@@ -1,20 +1,9 @@
 #include <iostream>
 using namespace std;
-
 int main(){
-	system("make threads=1");
-	system("make threads=10");
-	system("make threads=20");
-	system("make threads=30");
-	system("make threads=40");
-	system("make threads=50");
-	system("make threads=60");
-	system("make threads=70");
-	system("make threads=80");
-	system("make threads=90");
-	system("make threads=100");
-
-
-
+	system("make test_targets threads=1");
+	for(int i = 1; i<=100; i+=10){
+		std::system(string("make threads=" + to_string(i)).c_str());
+	}
 	return 0;
 }

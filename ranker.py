@@ -24,46 +24,55 @@ def main():
 
     if (flag == "-n"):
         print("------------------------------------------------")
-        print(f"  Website rankings using counter")
+        print(f"  Domain Name rankings using counter")
         print("------------------------------------------------")
         print()
         print("................................................")
-        print(f"  Website \t\t\t Rank")
+        print(f"  Domain Name \t\t\t Rank")
         print("................................................")
         print()
         ranks = counter_ranker(corpus)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     elif (flag == "-sp"):
         ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
         print("-------------------------------------------------------------")
-        print(f"  Website ranking using PageRank: Sampling (n = {SAMPLES})")
+        print(f"  Domain Name ranking using PageRank: Sampling (n = {SAMPLES})")
         print("-------------------------------------------------------------")
         print()
         print("................................................")
-        print(f"  Website \t\t\t Rank")
+        print(f"  Domain Name \t\t\t Rank")
         print("................................................")
         print()
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     elif (flag == "-ip"):
         ranks = iterate_pagerank(corpus, DAMPING)
         ranks = dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))
         print("----------------------------------------------")
-        print(f"  Website ranking using PageRank: Iteration")
+        print(f"  Domain Name ranking using PageRank: Iteration")
         print("----------------------------------------------")
         print()
         print("................................................")
-        print(f"  Website \t\t\t Rank")
+        print(f"  Domain Name \t\t\t Rank")
         print("................................................")
         print()
+        x = 0
         for page in ranks:
-            print(f"  {page} \t\t\t {ranks[page]:.4f}")
+            x = x+1
+            print(x, ". ", page, " "*(40-len(page)), ranks[page])
+        print("-"*60)
     else:
         sys.exit("Usage: python ranker.py [FLAG]")
-
+#who do we think we are
 def read():
     """
     Read the csv file line by line

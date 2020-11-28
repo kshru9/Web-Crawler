@@ -1,6 +1,8 @@
-#include "Crawler.h"
+#ifndef ___CRAWLER_CPP
+#define ___CRAWLER_CPP
 
-#define _del_stop_at 2
+#include "Crawler.h"
+#define _del_stop_at 5
 
 void Crawler::initialize()
 {
@@ -82,12 +84,14 @@ void Crawler::createThread()
 	log << currentSite << endl;
 	cout << GREEN << "Creating a thread, total: " << workingThreads.value() << C_END << endl;
 
+    // update pagesLimitReached
 
 	if(totalVisitedPages.value() >= pagesLimit){
 		pagesLimitReached.add(1);
 		cout << RED << "~!!!pagesLimit Reached here.!!!~" << C_END << endl;
 	}
 
+    // create thread
 	thread *th = new thread(childThread, currentSite, totalVisitedPages.value());
 	(*th).detach();
 }
@@ -108,7 +112,7 @@ void Crawler::runCrawler()
 			}
 			else
 			{
-				// sleep
+				// sleep as some threads are still working
 				gotosleep();
 			}
 		}
@@ -162,7 +166,6 @@ void Crawler::showResults()
 			fout << endl;
 		}
 		fout.close();
-	
 	// system("clear");
 	string dashline = "-----------------------------------------------------";
 	cout << endl;
@@ -176,13 +179,10 @@ void Crawler::showResults()
 			 << "\t" << maxThreads << endl;
 	cout << "Total visited pages:"
 			 << "\t" << totalVisitedPages.value() << endl;
-	cout << dashline << endl;
-	cout << "Web rankings" << endl;
-	cout << dashline << endl;
-
-	cout << "RESULTS" << endl;
 
 	cout << dashline << endl;
+	/*
+	*/
 }
 
 void childThread(string url, int th_no)
@@ -196,7 +196,7 @@ void childThread(string url, int th_no)
 
 	// downloading the file
 	t1 = _now;
-	string html = myCrawler.downloader(url);
+	string html = myCrawler.downloader(url); // downloading html
 	t2 = _now;
 	d_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
@@ -204,20 +204,22 @@ void childThread(string url, int th_no)
 
 	// for calculating time of downloading
 	t1 = _now;
-	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
+	set<string> linkedSites = getLinks(html, myCrawler.maxLinks); // parsing html
 	t2 = _now;
 	p_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 	cout << CYAN << "Thread " << th_no << " has extracted links." << C_END << endl;
 
 	// updating the shared variables
 	t1 = _now;
+	string currDomain = getDomain(url);
 	for (auto i : linkedSites)
 	{
 		if (!myCrawler.discoveredSites.get(i))
 		{
 			myCrawler.discoveredSites.inc(i);
 			myCrawler.linkQueue.push(i);
-			myCrawler.pageRank.add(url, i);
+			myCrawler.pageRank.add(currDomain, getDomain(i));
+			//pageRank[url] = i;
 		}
 	}
 	t2 = _now;
@@ -236,6 +238,8 @@ void childThread(string url, int th_no)
 	myCrawler.workingThreads.add(-1);
 	cout << RED << d_Time << " " << p_Time << " " << u_Time << endl << C_END;
 	cout << BLUE << "Thread " << th_no << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
+
+    // waking up the parent thread to create more threads or exit the crawler if crawling is completed
 	if (myCrawler.pagesLimitReached.value())
 	{
 		if (myCrawler.workingThreads.value() < _del_stop_at)
@@ -248,7 +252,7 @@ void childThread(string url, int th_no)
 		myCrawler.awake();
 	}
 
-
-	// pthread_exit(NULL);
 	// EXIT NOW
 }
+
+#endif

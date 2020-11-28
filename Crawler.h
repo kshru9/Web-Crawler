@@ -1,5 +1,5 @@
-#ifndef ___Crawler
-#define ___Crawler
+#ifndef ___CRAWLER_H
+#define ___CRAWLER_H
 
 #include <iostream>
 #include <fstream>
