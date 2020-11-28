@@ -13,7 +13,8 @@
 
 using namespace std;
 
-#define MAX_FILE_SIZE 4096 * 8192
+#define MAX_FILE_SIZE 512 * 8192
+#define PACKET_SIZE 10000
 
 string httpDownloader(string);
 string httpsDownloader(string);
@@ -63,7 +64,7 @@ string httpDownloader(string url)
 		return "Send Request Failed.";
 	}
 
-	char recv_data[1024];
+	char recv_data[PACKET_SIZE];
 	int totalBytesRead = 0;
 	string Response = "";
 
@@ -195,7 +196,7 @@ string httpsDownloader(string url)
 	}
 
 	string httpResponse = "";
-	char ptr[1024];
+	char ptr[PACKET_SIZE];
 	int totalBytesRead = 0;
 	int bytesRead;
 

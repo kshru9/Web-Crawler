@@ -74,7 +74,6 @@ void Crawler::awake()
 void Crawler::createThread()
 {
 	string currentSite = linkQueue.pop();
-	discoveredSites.inc(currentSite);
 	totalVisitedPages.add(1);
 	workingThreads.add(1);
 
@@ -88,8 +87,8 @@ void Crawler::createThread()
 		cout << RED << "~!!!pagesLimit Reached here.!!!~" << C_END << endl;
 	}
 
-	thread th(childThread, currentSite);
-	th.detach();
+	thread *th = new thread(childThread, currentSite, totalVisitedPages.value());
+	(*th).detach();
 }
 
 void Crawler::runCrawler()
@@ -98,7 +97,7 @@ void Crawler::runCrawler()
 	{
 		if (pagesLimitReached.value())
 		{
-			if (workingThreads.value())
+			if (workingThreads.value() > 5 - 1)
 			{
 				// sleep
 				gotosleep();
@@ -144,6 +143,20 @@ void Crawler::runCrawler()
 */
 void Crawler::showResults()
 {
+  ofstream fout("pagerank.csv");
+	
+	for (auto i: pageRank.value())
+  {
+    fout << i.first;
+    for (auto link: i.second)
+    {
+			fout << "," << link;
+    }
+    fout << endl;
+  }
+	fout.close();
+	
+	
 	// system("clear");
 	string dashline = "-----------------------------------------------------";
 	cout << endl;
@@ -166,10 +179,9 @@ void Crawler::showResults()
 	cout << dashline << endl;
 }
 
-void childThread(string url)
+void childThread(string url, int th_no)
 {
-	string name = to_string(rand() % 1000);
-
+	
 	high_resolution_clock::time_point t1, t2;
 	double totaldTime = 0;
 	double d_Time, p_Time, u_Time;
@@ -182,14 +194,14 @@ void childThread(string url)
 	t2 = _now;
 	d_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
-	cout << CYAN << "Thread " << name << " has downloaded files." << C_END << endl;
+	cout << CYAN << "Thread " << th_no << " has downloaded files." << C_END << endl;
 
 	// for calculating time of downloading
 	t1 = _now;
 	set<string> linkedSites = getLinks(html, myCrawler.maxLinks);
 	t2 = _now;
 	p_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
-	cout << CYAN << "Thread " << name << " has extracted links." << C_END << endl;
+	cout << CYAN << "Thread " << th_no << " has extracted links." << C_END << endl;
 
 	// updating the shared variables
 	t1 = _now;
@@ -204,7 +216,7 @@ void childThread(string url)
 	}
 	t2 = _now;
 	u_Time = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
-	cout << CYAN << "Thread " << name << " has updated shared var." << C_END << endl;
+	cout << CYAN << "Thread " << th_no << " has updated shared var." << C_END << endl;
 
 	// saving time measurements for this thread
 	myCrawler.timingLock.lock();
@@ -213,12 +225,14 @@ void childThread(string url)
 
 	myCrawler.workingThreads.add(-1);
 
-	cout << BLUE << "Thread " << name << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
+	cout << RED << d_Time << " " << p_Time << " " << u_Time << endl << C_END;
+	cout << BLUE << "Thread " << th_no << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
+
 
 
 	if (myCrawler.pagesLimitReached.value())
 	{
-		if (myCrawler.workingThreads.value() == 0)
+		if (myCrawler.workingThreads.value() < 5)
 		{
 			myCrawler.awake();
 		}

@@ -64,12 +64,8 @@ public:
 	// for storing page relations
 	map_ts<string, set<string>> pageRank;
 	
-	
-	
 	// for storing total processed pages till now
 	int_ts totalVisitedPages;
-
-
 
 	// Constructor
 	Crawler()
@@ -81,6 +77,7 @@ public:
 	{
 		log << "current queue size: " << linkQueue.size() << endl;
 		log.close();
+
 
 		ofstream tout("th_timings.csv");
 		for (auto i : threadTimings)
@@ -100,6 +97,7 @@ public:
 			fout << endl;
 		}
 		fout.close();
+
 	}
 
 	// Public Functions
@@ -149,6 +147,6 @@ public:
 /*
 	Child thread for downloading + parsing + updating shared variables
 */
-void childThread(string url);
+void childThread(string url, int th_no);
 
 #endif

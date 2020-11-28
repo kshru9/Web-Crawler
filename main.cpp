@@ -23,7 +23,7 @@ int main(int argc, const char *argv[])
 
 	auto end = chrono::steady_clock::now();
 
-	cout<< "Elapsed time in milliseconds : "
+	cout<< "Elapsed time in seconds : "
 			<< chrono::duration_cast<chrono::seconds>(end - start).count()
 			<< " ms" << endl;
 
