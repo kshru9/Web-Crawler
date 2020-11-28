@@ -212,6 +212,11 @@ else{
 ## [Website domain name ranker](#ranker)
 - [Simple counter based](#ranker-counter)
 - [PageRank algorithm](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
+The intuition behind our pagerank algorithm is as follows. Suppose there is a random surfer which randomly chooses a starting website. After that it chooses next website from all the linked website with current chosen website with probability of 0.85 or it chooses next website from all available websites with a probability of 0.15. 
+
+In this way, the importance of a website is measured by how repetitively a random surfer visits a website. Hence, a website is important if it is linked to more number of important websites.
+
+There are two ways to implement this algorithm:
     - [Iteration based pagerank algorithm](#ranker-iterative)
     - [Sampling based pagerank algorithm](#ranker-sampling)
 
@@ -226,7 +231,7 @@ for website in corpus.keys():
 ...
 </code></pre>
 
-## Demo run
+#### Demo run
 <pre><code>------------------------------------------------
   Domain Name rankings using counter
 ------------------------------------------------
@@ -243,6 +248,9 @@ for website in corpus.keys():
 ------------------------------------------------------------</pre></code>
 
 ### [Sampling based pagerank algorithm](#ranker-sampling)
+In this approach, we randomly choose a website according to pagerank algorithm intuition 
+
+In this way, the importance of website is measured by how many times the random surfer will be on a website.
 
 <pre><code>
 ...
@@ -257,12 +265,13 @@ for i in range(1,SAMPLES):
             model[x] = ((DAMPING * (1/number_of_linked_websites)) + ((1-DAMPING)* (1/total_websites)))
         else:
             model[x] = ((1-DAMPING)* (1/total_websites))
-    x = random.choices(websites, weights=probability)[0]
+    x = random.choices(websites, weights=model.values())[0]
     pagerrank[x] += (1/n)
 return pagerrank
 ...
 </code></pre>
 
+#### Demo run
 <pre><code>-------------------------------------------------------------
   Domain Name ranking using PageRank: Sampling (n = 10000)
 -------------------------------------------------------------
@@ -279,6 +288,9 @@ return pagerrank
 ------------------------------------------------------------</pre></code>
 
 ### [Iteration based pagerank algorithm](#ranker-iterative)
+The intuition behind ranking using iterative pagerank algorithm is as follows.  We will update the probability of every website according to this. We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
+
+In this way, the importance of website is measured by what
 
 <pre><code>
 ...
@@ -300,6 +312,7 @@ return pagerrank
 ...
 </code></pre>
 
+#### Demo run
 <pre><code>----------------------------------------------
   Domain Name ranking using PageRank: Iteration
 ----------------------------------------------
