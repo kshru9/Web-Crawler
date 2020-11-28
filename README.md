@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # Multi Threaded Web-Crawler
@@ -13,7 +13,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
  - Part 3: (Extended scope) Web Ranking
  
 ## Simple Crawler Flowchart
-![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/flowchart.jfif?raw=true)
+![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/flowchart.jfif)
 
 ## [Table of contents](#table-of-contents)
 - [Single Threaded Web Crawler](#singlethreaded)
@@ -31,6 +31,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     - [Simple counter based](#ranking-counter)
     - [Sampling based PageRank algorithm](#ranking-sampling)
     - [Iterative based PageRank algorithm](#ranking-iterative)
+- [Graphs](#graphs)
 - [Tech Frameworks/Libraries used](#frameworks)
 - [Contributors](#contributors)
 
@@ -145,9 +146,9 @@ The intuition behind our pagerank algorithm is as follows. Suppose there is a ra
 
 In this way, the importance of a website is measured by how repetitively a random surfer visits a website. Hence, a website is important if it is linked to more number of important websites.
 
-There are two ways to implement this algorithm:
-    - [Iterative based PageRank algorithm](#ranking-iterative)
-    - [Sampling based PageRank algorithm](#ranking-sampling)
+There are two ways to implement this algorithm
+- [Iterative based PageRank algorithm](#ranking-iterative)
+- [Sampling based PageRank algorithm](#ranking-sampling)
 
 ### [Simple counter based](#ranking-counter)
 
@@ -217,7 +218,9 @@ return pagerrank
 ------------------------------------------------------------</pre></code>
 
 ### [Iterative based PageRank algorithm](#ranking-iterative)
-The intuition behind ranking using iterative pagerank algorithm is as follows.  We will update the probability of every website according to this. We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
+The intuition behind ranking using iterative pagerank algorithm is as follows.  We will update the probability of every website according to this. 
+![pagerank](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/PRiterative.png) 
+We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
 
 In this way, the importance of website is measured by what
 
@@ -256,6 +259,9 @@ return pagerrank
 4 .  digitalindiaawards.gov.in                 0.014974653859083446
 5 .  mygov.in                                  0.0122561916194452
 ------------------------------------------------------------</pre></code>
+
+## [Graphs](#graphs)
+
 
 ## [Tech Frameworks/Libraries used](#frameworks)
  - Sockets
