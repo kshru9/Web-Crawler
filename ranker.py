@@ -28,7 +28,7 @@ def main():
         print("------------------------------------------------")
         print()
         print("................................................")
-        print(f"  Domain Name \t\t\t Rank")
+        print(f"  Website \t\t\t Rank")
         print("................................................")
         print()
         ranks = counter_ranker(corpus)
@@ -43,7 +43,7 @@ def main():
         print("-------------------------------------------------------------")
         print()
         print("................................................")
-        print(f"  Domain Name \t\t\t Rank")
+        print(f"  Website \t\t\t Rank")
         print("................................................")
         print()
         for page in ranks:
@@ -56,7 +56,7 @@ def main():
         print("----------------------------------------------")
         print()
         print("................................................")
-        print(f"  Domain Name \t\t\t Rank")
+        print(f"  Website \t\t\t Rank")
         print("................................................")
         print()
         for page in ranks:
