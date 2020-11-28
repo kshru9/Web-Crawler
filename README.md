@@ -15,6 +15,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 ## Simple Crawler Flowchart
 ![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/flowchart.jfif)
 
+<!--ts-->
 ## [Table of contents](#table-of-contents)
 - [Single Threaded Web Crawler](#single-threaded-web-crawler)
     - [Single Threaded Components](#single-threaded-components)
@@ -35,6 +36,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 - [Libraries used](#libraries-used)
 - [Future extension of project](#future-extension-of-project)
 - [Contributors](#contributors)
+<!--te-->
 
 ## [Single Threaded Web Crawler](#single-threaded-web-crawler)
 
@@ -69,6 +71,8 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
     - Here the arguments are:
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
+
+_[Back to Table of Contents](#table-of-contents)_
 
 ## [MULTITHREADED Web Crawler](#multithreaded-web-crawler)
 
@@ -127,8 +131,14 @@ else{
 
 ### [Different locking techniques](#different-locking-techniques)
 - [Using SINGLE LOCK technique](#using-single-lock-technique)
-    - In single locking mechanism, we have used a single `pthread_mutex` lock to handle all shared variables. 
+    
 - [Using THREAD SAFE DATA STRUCTURE technique](#using-thread-safe-data-structure-technique)
+    - Motivation:
+        - We have to update four data structures in our crawler algorithm. Hence, if we single lock to update all of them will keep the lock acquired for more time. Hence, we used individual locks for each data structures. 
+    - Different thread safe data structures:
+        - Thread safe integer
+        - Thread safe queue
+        - Thread safe map
 
 ### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
 - use `make` to compile the program
@@ -139,6 +149,8 @@ else{
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
         - `rankerFlag`: Flag to choose which ranking algorithm to be executed
+
+_[Back to Table of Contents](#table-of-contents)_
 
 ## [Website domain ranking algorithms](#website-domain-ranking-algorithms)
 - [Simple counter based](#simple-counter-based)
@@ -179,6 +191,8 @@ for website in corpus.keys():
 5 .  asi.nic.in                                16
 ------------------------------------------------------------</pre></code>
 
+_[Back to Table of Contents](#table-of-contents)_
+
 ### [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
 In this approach, we randomly choose a website according to pagerank algorithm intuition 
 
@@ -218,6 +232,8 @@ return pagerrank
 4 .  mygov.in                                  0.07260000000000105
 5 .  aatmanirbharbharat.mygov.in               0.04840000000000036
 ------------------------------------------------------------</pre></code>
+
+_[Back to Table of Contents](#table-of-contents)_
 
 ### [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
 The intuition behind ranking using iterative pagerank algorithm is as follows. We will intialize the probability of surfer visiting a given website to 1/total_websites. We will update the probability of every website according to below formula. 
@@ -262,14 +278,24 @@ return pagerrank
 5 .  mygov.in                                  0.0122561916194452
 ------------------------------------------------------------</pre></code>
 
+_[Back to Table of Contents](#table-of-contents)_
+
 ## [Graphs](#graphs)
-We have made a graph between number of threads vs time. According to this graph, we can infer as follows:
-- When number of threads are very low, time required for crawling is large
-- Time increases when number of threads becomes huge becuase of locking overhead
-- When we use optimal number of threads, concurrent crawling is useful.
+- We have made a graph between number of threads vs time. According to this graph, we can infer as follows:
+    - When number of threads are very low, time required for crawling is large
+    - Time increases when number of threads becomes huge becuase of locking overhead
+    - When we use optimal number of threads, concurrent crawling is useful.
 
 ![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/crawler_analytics.png)
 
+- We have made a graph by varying one of our parameters pagelimit vs time. According to this graph, we can infer as follows:
+    - As pagelimit increases, crawler time increases
+    - Multithreaded with single locking works better than single threaded becuase of concurrency
+    - Multithreaded with thread safe data structures works worst than other two appraoches because of locking overheads. Because in this approach, we have used individual locks for each data structures. And while crawling we needed to acquire and release locks back to back to update each data structure. This increases lot of overhead. As a result, time increases singnificantly in this approach
+
+![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/pagelimitvstime.png)
+
+_[Back to Table of Contents](#table-of-contents)_
 
 ## [Libraries used](#libraries-used)
  - Sockets
@@ -286,7 +312,7 @@ We have made a graph between number of threads vs time. According to this graph,
 - Creating a search engine by using web indexing and web scraping
 
 ## [Contributors](#contributors)
-- Anupam Kumar
-- Preeti Chiluveru
-- Shruti Katpara
-- Vivek Modi
+- [Anupam Kumar](https://github.com/akcgjc007)
+- [Preeti Chiluveru](https://github.com/Preeti29-bot)
+- [Shruti Katpara](https://github.com/ShrutiKatpara)
+- [Vivek Modi](https://github.com/viper-vm)
