@@ -252,8 +252,9 @@ Rank	Domain Name
 
 ## [Website domain name ranker](#ranker)
 - [Simple counter based](#ranker-counter)
-- [Iteration based pagerank algorithm](#ranker-iterative)
-- [Sampling based pagerank algorithm](#ranker-sampling)
+- [PageRank algorithm](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
+    - [Iteration based pagerank algorithm](#ranker-iterative)
+    - [Sampling based pagerank algorithm](#ranker-sampling)
 
 ### [Simple counter based ranking algorithm](#ranker-counter)
 
@@ -268,4 +269,43 @@ for website in corpus.keys():
 
 ### [Sampling based pagerank algorithm](#ranker-sampling)
 
+<pre><code>
+...
+DAMPING = 0.85
+SAMPLES = 10000
 
+corpus = read(csv_file)
+
+for i in range(1,SAMPLES):
+    for x in corpus.keys():
+        if (x in corpus[page]):
+            model[x] = ((DAMPING * (1/number_of_linked_websites)) + ((1-DAMPING)* (1/total_websites)))
+        else:
+            model[x] = ((1-DAMPING)* (1/total_websites))
+    x = random.choices(websites, weights=probability)[0]
+    pagerrank[x] += (1/n)
+return pagerrank
+...
+</code></pre>
+
+### [Iteration based pagerank algorithm](#ranker-iterative)
+
+<pre><code>
+...
+DAMPING = 0.85
+THRESHOLD = 0.001
+corpus = read(csv_file)
+
+while(1):
+    before = [pagerrank[v] for v in pagerrank.keys()]
+    for x in corpus.keys():
+        for v in linkedWebsites:
+            pagerrank[x] += (DAMPING*(pagerank[v]/total_linkedWebsites))
+        pagerank[x] += ((1-DAMPING)/number_of_websites)
+        
+    if (change(before, [pagerrank[v] for v in pagerrank.keys()]) <= THRESHOLD):
+        break
+
+return pagerrank
+...
+</code></pre>
