@@ -194,9 +194,7 @@ for website in corpus.keys():
 _[Back to Table of Contents](#table-of-contents)_
 
 ### [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
-In this approach, we randomly choose a website according to pagerank algorithm intuition 
-
-In this way, the importance of website is measured by how many times the random surfer will be on a website.
+In this approach, we have asked random surfer for certain number of sample times to choose a website from all websites which are weighted as per the pagerank algorithm intuition.
 
 <pre><code>
 ...
