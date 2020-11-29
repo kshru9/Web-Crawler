@@ -1,6 +1,6 @@
 maxlinks:= 100
 pagelimit:= 100
-threads:= 40
+threads:= 10
 rankerFlag:= -sp
 all_targets:= compile run plots ranker clean
 

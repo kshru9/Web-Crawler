@@ -236,7 +236,7 @@ void childThread(string url, int th_no)
 //
 	unique_lock<mutex> lk(myCrawler.cv_m); // unique_lock for conditional variable
 	myCrawler.workingThreads.add(-1);
-	cout << RED << d_Time << " " << p_Time << " " << u_Time << endl << C_END;
+	//cout << RED << d_Time << " " << p_Time << " " << u_Time << endl << C_END;
 	cout << BLUE << "Thread " << th_no << " finished, total: " << myCrawler.workingThreads.value() << C_END << endl;
 
     // waking up the parent thread to create more threads or exit the crawler if crawling is completed
