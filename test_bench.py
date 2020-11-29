@@ -15,7 +15,7 @@ with open('OUTPUT/crawler_timings.csv') as csv_file:
 
 
 plt.plot(x, time_elap, linewidth = 4)
-plt.xlabel("number of threads")
-plt.ylabel("time elapsed to crawl")
+plt.xlabel("No. of max threads")
+plt.ylabel("Time elapsed to crawl(in ms)")
 
 plt.savefig('OUTPUT/crawler_analytics.png', dpi=300)
