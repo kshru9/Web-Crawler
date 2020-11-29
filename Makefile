@@ -32,7 +32,8 @@ clean:
 
 test_bench:
 	@rm -r -f OUTPUT/crawler_timings.csv
-	@g++ test_bench.cpp -o _tb
-	@./_tb
+	g++ test_bench.cpp -o _tb
+	./_tb
 	@rm -r -f _tb
-	python test_bench.py
+	python3 test_bench.py
+	@echo "Successfully testing finished."
