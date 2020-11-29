@@ -305,8 +305,15 @@ _[Back to Table of Contents](#table-of-contents)_
          - Single locks
          - Reader Writer locks
        - Condition Variables
+## [Creadits](credits)
+ - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
+ - [DOWNLOADING A WEB PAGE IN C USING A SOCKET](http://www.martinbroadhurst.com/downloading-a-web-page-in-c-using-a-socket.html)
+ - [std::condition_variable](https://www.cplusplus.com/reference/condition_variable/condition_variable/)
+ - [Scrapy](https://scrapy.org/)
+ 
 
 ## [Future extension of project](#future-extension-of-project)
+- Efficient downloader to download all websites
 - Efficient parser to parse large websites
 - Creating a search engine by using web indexing and web scraping
 
