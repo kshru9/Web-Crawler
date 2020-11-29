@@ -26,9 +26,8 @@ int main(int argc, const char *argv[])
 	int res = duration_cast<milliseconds>(t2 - t1).count();
 
 	cout << "FINISHED." << endl;
-	cout<< RED << "Elapsed time in milliseconds : "
-			<< res
-			<< C_END << endl;
+	cout << "Elapsed time in milliseconds : "
+			<< res << endl;
 
 	ofstream fout("OUTPUT/crawler_timings.csv", std::ios_base::app);
 	fout << myCrawler.maxThreads << ", " << res << endl;
