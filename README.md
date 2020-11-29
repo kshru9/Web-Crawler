@@ -67,7 +67,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 ### [How to run single threaded web crawler](#how-to-run-single-threaded-web-crawler)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit` can be given as argument in with `make` command.
-    - For e.g. `make maxlinks=1000 pagelimit=100`
+    - For e.g. `make maxlinks=100 pagelimit=100`
     - Here the arguments are:
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
@@ -143,7 +143,7 @@ else{
 ### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
 - use `make` to compile the program
 - `maxlinks`, `pagelimit`, `threads` can be given as argument in with `make` command.
-    - For e.g. `make maxlinks=1000 pagelimit=100 threads=10`
+    - For e.g. `make maxlinks=100 pagelimit=100 threads=20`
     - Here the arguments are:
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
