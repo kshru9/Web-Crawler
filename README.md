@@ -82,7 +82,7 @@ _[Back to Table of Contents](#table-of-contents)_
     - HTML downloader
     - Link extractor
     - Domain extractor
-    - Ranker using counter
+    - Ranking using different algorithms
 
 ### [Multithreaded Psuedocode](#multithreaded-psuedocode)
 ### Crawler loop code
@@ -130,15 +130,21 @@ else{
 </pre></code>
 
 ### [Different locking techniques](#different-locking-techniques)
-- [Using SINGLE LOCK technique](#using-single-lock-technique)
+- [**Using SINGLE LOCK technique**](#using-single-lock-technique)
+ - Having one lock for all of our shared variables.
+ - Pros:
+    - Easy to implement
+ - Cons:
+    - Serial processing
+ 
+- [Using **THREAD SAFE DATA STRUCTURE** technique](#using-thread-safe-data-structure-technique)
+  - For each of the data structure, having a single lock or RW lock if required.
+  - Waiting time distributed over different locks
     
-- [Using THREAD SAFE DATA STRUCTURE technique](#using-thread-safe-data-structure-technique)
-    - Motivation:
-        - We have to update four data structures in our crawler algorithm. Hence, if we single lock to update all of them will keep the lock acquired for more time. Hence, we used individual locks for each data structures. 
-    - Different thread safe data structures:
-        - Thread safe integer
-        - Thread safe queue
-        - Thread safe map
+  - Different thread safe data structures:
+    - Thread safe integer
+    - Thread safe queue
+    - Thread safe map
 
 ### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
 - use `make` to compile the program
@@ -148,7 +154,7 @@ else{
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
-        - `rankerFlag`: Flag to choose which ranking algorithm to be executed
+        - `rankerFlag`: Flag to choose which ranking algorithm to be executed(`np` = simple counter based web ranker, `sp` = pagerank with sampling, `ip` = pagerank with iteration)
 
 _[Back to Table of Contents](#table-of-contents)_
 
@@ -305,6 +311,9 @@ _[Back to Table of Contents](#table-of-contents)_
          - Single locks
          - Reader Writer locks
        - Condition Variables
+ - Matplotlib
+    - Plotting
+
 ## [Creadits](credits)
  - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
  - [DOWNLOADING A WEB PAGE IN C USING A SOCKET](http://www.martinbroadhurst.com/downloading-a-web-page-in-c-using-a-socket.html)
