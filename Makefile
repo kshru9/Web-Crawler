@@ -1,8 +1,7 @@
 maxlinks:= 100
 pagelimit:= 100
-threads:= 100
+threads:= 40
 rankerFlag:= -sp
-#error
 all_targets:= compile run plots ranker clean
 
 all: ${all_targets}
@@ -30,6 +29,7 @@ clean:
 	@echo "All cleaned."
 
 
+# For testing MT Crawler from 10 to 100 threads
 test_bench:
 	@rm -r -f OUTPUT/crawler_timings.csv
 	g++ test_bench.cpp -o _tb
