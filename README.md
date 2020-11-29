@@ -236,7 +236,7 @@ _[Back to Table of Contents](#table-of-contents)_
 ### [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
 The intuition behind ranking using iterative pagerank algorithm is as follows. We will intialize the probability of surfer visiting a given website to 1/total_websites. We will update the probability of every website according to below formula. 
 
-![pagerank](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/PRiterative.png)
+<img src="UTILS/PRiterative.png" alt="Pagerank equation" width="400"/>
 
 We will stop iterating when the difference between old and updated probabilities is less than certain threashold.
 
@@ -284,14 +284,15 @@ _[Back to Table of Contents](#table-of-contents)_
     - Time increases when number of threads becomes huge becuase of locking overhead
     - When we use optimal number of threads, concurrent crawling is useful.
 
-![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/crawler_analytics.png)
+<img src="UTILS/crawler_analytics.png" alt="Crawler Analytics" width="700"/>
 
 - We have made a graph by varying one of our parameters pagelimit vs time. According to this graph, we can infer as follows:
     - As pagelimit increases, crawler time increases
     - Multithreaded with single locking works better than single threaded becuase of concurrency
     - Multithreaded with thread safe data structures works worst than other two appraoches because of locking overheads. Because in this approach, we have used individual locks for each data structures. And while crawling we needed to acquire and release locks back to back to update each data structure. This increases lot of overhead. As a result, time increases singnificantly in this approach
 
-![crawler_analytics](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/pagelimitvstime.png)
+<img src="UTILS/pagelimitvstime.png" alt="Page limit vs time elapsed" width="700"/>
+
 
 _[Back to Table of Contents](#table-of-contents)_
 
