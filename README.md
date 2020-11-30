@@ -145,7 +145,7 @@ else{
         - Thread safe integer
         - Thread safe queue
         - Thread safe map
-    - *Pros* No need to keep the lock acquired for more amount of time. Hence concurrency can be efficiently achieves in multi processor CPUs
+    - *Pros* No need to keep the lock acquired for more amount of time. Hence concurrency can be efficiently achieved in multi processor CPUs
     - *Cons* Overhead due to multiple locks
 
 ### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
@@ -294,6 +294,8 @@ _[Back to Table of Contents](#table-of-contents)_
 
 <img src="UTILS/crawler_analytics.png" alt="Crawler Analytics" width="700"/>
 
+** Above graph varies whenever your run the code. Above all inferences are made according to general trend in graph which is seen for most of times
+
 - We have made a graph by varying one of our parameters pagelimit vs time. According to this graph, we can infer as follows:
     - As pagelimit increases, crawler time increases
     - Multithreaded with single locking works better than single threaded becuase of concurrency
@@ -327,6 +329,47 @@ _[Back to Table of Contents](#table-of-contents)_
     - `MT_singlelock`: contains the multithreaded using single lock web crawler
     - `single_threaded`: contains the single threaded web crawler
 
+- `main` branch structure looks like
+<pre><code>
+├─ Makefile
+├─ README.md
+├─ ranker.py
+├─ test_bench.cpp
+├─ test_bench.py
+├─ th_timings.py
+├─ main.cpp
+├─ Crawler.h
+├─ Crawler.cpp
+├─ INPUT
+│  └─ initialLinks.txt
+├─ OUTPUT
+│  ├─ crawler_analytics.png
+│  ├─ crawler_timings.csv
+│  ├─ graph_10.png
+│  ├─ graph_20.png
+│  ├─ graph_30.png
+│  ├─ graph_40.png
+│  ├─ graph_50.png
+│  ├─ graph_60.png
+│  ├─ graph_70.png
+│  ├─ graph_80.png
+│  ├─ graph_90.png
+│  ├─ graph_100.png
+│  ├─ pagerank.csv
+│  └─ th_timings.csv
+├─ thread_safe
+│  ├─ int_ts.cpp
+│  ├─ map_ts.cpp
+│  └─ queue_ts.cpp
+└─ UTILS
+   ├─ crawler_analytics.png
+   ├─ flowchart.jfif
+   ├─ pagelimitvstime.png
+   └─ PRiterative.png
+</pre></code>
+
+_[Back to Table of Contents](#table-of-contents)_
+
 ## [How to reuse this repo](#how-to-reuse-this-repo)
 - `fork` the repo from top right corner of this page
 - Run following in your terminal
@@ -351,3 +394,6 @@ _[Back to Table of Contents](#table-of-contents)_
 - [Preeti Chiluveru](https://github.com/Preeti29-bot)
 - [Shruti Katpara](https://github.com/ShrutiKatpara)
 - [Vivek Modi](https://github.com/viper-vm)
+
+** This project was made as a academic project as a part of Operating Systems course
+_[Link to presentation](https://docs.google.com/presentation/d/1hry5oK9I8fozkhN13xgKqUBYKl4Ul3y4EI6qeO2szV0/edit?usp=sharing)_
