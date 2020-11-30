@@ -35,6 +35,9 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 - [Graphs](#graphs)
 - [Libraries used](#libraries-used)
 - [Future extension of project](#future-extension-of-project)
+- [Repo structure](#repo-structure)
+- [How to reuse this repo](#how-to-reuse-this-repo)
+- [Credits](#credits)
 - [Contributors](#contributors)
 <!--te-->
 
@@ -131,20 +134,19 @@ else{
 
 ### [Different locking techniques](#different-locking-techniques)
 - [**Using SINGLE LOCK technique**](#using-single-lock-technique)
- - Having one lock for all of our shared variables.
- - Pros:
-    - Easy to implement
- - Cons:
-    - Serial processing
+    - Having one lock for all of our shared variables
+    - *Pros* Easy to implement
+    - *Cons* Need to keep the lock acquired for more amount of time which may result in serial processing only
  
 - [Using **THREAD SAFE DATA STRUCTURE** technique](#using-thread-safe-data-structure-technique)
-  - For each of the data structure, having a single lock or RW lock if required.
-  - Waiting time distributed over different locks
-    
-  - Different thread safe data structures:
-    - Thread safe integer
-    - Thread safe queue
-    - Thread safe map
+    - For each of the data structure, having a single lock or RW lock if required
+    - Waiting time distributed over different locks
+    - Different thread safe data structures:
+        - Thread safe integer
+        - Thread safe queue
+        - Thread safe map
+    - *Pros* No need to keep the lock acquired for more amount of time. Hence concurrency can be efficiently achieves in multi processor CPUs
+    - *Cons* Overhead due to multiple locks
 
 ### [How to run multi threaded web crawler](#how-to-run-multi-threaded-web-crawler)
 - use `make` to compile the program
@@ -154,21 +156,21 @@ else{
         - `maxlinks`: Maximum number of links to be extracted from a website
         - `pagelimit`: Maximum number of websites to be downloaded while crawling
         - `threads`: Maximum number of threads to be created
-        - `rankerFlag`: Flag to choose which ranking algorithm to be executed(`np` = simple counter based web ranker, `sp` = pagerank with sampling, `ip` = pagerank with iteration)
+        - `rankerFlag`: Flag to choose which ranking algorithm to be executed (`n` = simple counter based web ranker, `sp` = pagerank with sampling, `ip` = pagerank with iteration)
 
 _[Back to Table of Contents](#table-of-contents)_
 
 ## [Website domain ranking algorithms](#website-domain-ranking-algorithms)
 - [Simple counter based](#simple-counter-based)
-The intuition behind this approach of ranking is to increase the rank of a domain name whenever we visit it.
+    The intuition behind this approach of ranking is to increase the rank of a domain name whenever we visit it.
 - [PageRank algorithm](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
-The intuition behind our pagerank algorithm is as follows. Suppose there is a random surfer which randomly chooses a starting website. After that it chooses next website from all the linked website with current chosen website with probability of 0.85 or it chooses next website from all available websites with a probability of 0.15. 
+    The intuition behind our pagerank algorithm is as follows. Suppose there is a random surfer which randomly chooses a starting website. After that it chooses next website from all the linked website with current chosen website with probability of 0.85 or it chooses next website from all available websites with a probability of 0.15. 
+    
+    In this way, the importance of a website is measured by how repetitively a random surfer visits a website. Hence, a website is important if it is linked to more number of important websites.
 
-In this way, the importance of a website is measured by how repetitively a random surfer visits a website. Hence, a website is important if it is linked to more number of important websites.
-
-There are two ways to implement this algorithm
-- [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
-- [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
+    There are two ways to implement this algorithm
+    - [Iterative based PageRank algorithm](#iterative-based-pagerank-algorithm)
+    - [Sampling based PageRank algorithm](#sampling-based-pagerank-algorithm)
 
 ### [Simple counter based](#simple-counter-based)
 
@@ -312,19 +314,37 @@ _[Back to Table of Contents](#table-of-contents)_
          - Reader Writer locks
        - Condition Variables
  - Matplotlib
-    - Plotting
-
-## [Creadits](credits)
- - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
- - [DOWNLOADING A WEB PAGE IN C USING A SOCKET](http://www.martinbroadhurst.com/downloading-a-web-page-in-c-using-a-socket.html)
- - [std::condition_variable](https://www.cplusplus.com/reference/condition_variable/condition_variable/)
- - [Scrapy](https://scrapy.org/)
- 
+    - Plotting the graphs
 
 ## [Future extension of project](#future-extension-of-project)
 - Efficient downloader to download all websites
 - Efficient parser to parse large websites
 - Creating a search engine by using web indexing and web scraping
+
+## [Repo structure](#repo-structure)
+- Three main branches:
+    - `main`: contains the multithreaded using threadsafe data structure web crawler
+    - `MT_singlelock`: contains the multithreaded using single lock web crawler
+    - `single_threaded`: contains the single threaded web crawler
+
+## [How to reuse this repo](#how-to-reuse-this-repo)
+- `fork` the repo from top right corner of this page
+- Run following in your terminal
+<pre><code>
+    $ git clone https://github.com/[USERNAME]/Web-Crawler
+    $ cd Web-Crawler
+    $ make
+</pre></code>
+- Pull requests are highly appreciated
+
+** All the codes are well commented, in case of query feel free to contact @ shruti.katpara@iitgn.ac.in
+
+## [Credits](#credits)
+ - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
+ - [DOWNLOADING A WEB PAGE IN C USING A SOCKET](http://www.martinbroadhurst.com/downloading-a-web-page-in-c-using-a-socket.html)
+ - [std::condition_variable](https://www.cplusplus.com/reference/condition_variable/condition_variable/)
+ - [Scrapy](https://scrapy.org/)
+ - [PageRank](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
 
 ## [Contributors](#contributors)
 - [Anupam Kumar](https://github.com/akcgjc007)
