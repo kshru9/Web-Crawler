@@ -9,8 +9,7 @@ The goal of this project is to create a multi-threaded web crawler. A Web crawle
 
 ## Features/Deliverables
  - Part 1: Multi-threaded web-crawler
- - Part 2: Tool for Web scraping
- - Part 3: (Extended scope) Web Ranking
+ - Part 2: (Extended scope) Web Ranking
  
 ## Simple Crawler Flowchart
 ![flowchart](https://github.com/ShrutiKatpara/Web-Crawler/blob/main/UTILS/flowchart.jfif)
