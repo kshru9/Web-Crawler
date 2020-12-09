@@ -327,46 +327,7 @@ _[Back to Table of Contents](#table-of-contents)_
     - `main`: contains the multithreaded using threadsafe data structure web crawler
     - `MT_singlelock`: contains the multithreaded using single lock web crawler
     - `single_threaded`: contains the single threaded web crawler
-
-- `main` branch structure looks like
-<pre><code>
-├─ Makefile
-├─ README.md
-├─ ranker.py
-├─ test_bench.cpp
-├─ test_bench.py
-├─ th_timings.py
-├─ main.cpp
-├─ Crawler.h
-├─ Crawler.cpp
-├─ INPUT
-│  └─ initialLinks.txt
-├─ OUTPUT
-│  ├─ crawler_analytics.png
-│  ├─ crawler_timings.csv
-│  ├─ graph_10.png
-│  ├─ graph_20.png
-│  ├─ graph_30.png
-│  ├─ graph_40.png
-│  ├─ graph_50.png
-│  ├─ graph_60.png
-│  ├─ graph_70.png
-│  ├─ graph_80.png
-│  ├─ graph_90.png
-│  ├─ graph_100.png
-│  ├─ pagerank.csv
-│  └─ th_timings.csv
-├─ thread_safe
-│  ├─ int_ts.cpp
-│  ├─ map_ts.cpp
-│  └─ queue_ts.cpp
-└─ UTILS
-   ├─ crawler_analytics.png
-   ├─ flowchart.jfif
-   ├─ pagelimitvstime.png
-   └─ PRiterative.png
-</pre></code>
-
+    
 _[Back to Table of Contents](#table-of-contents)_
 
 ## [How to reuse this repo](#how-to-reuse-this-repo)
