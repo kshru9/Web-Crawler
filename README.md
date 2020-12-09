@@ -379,7 +379,7 @@ _[Back to Table of Contents](#table-of-contents)_
 </pre></code>
 - Pull requests are highly appreciated
 
-** All the codes are well commented, in case of query feel free to contact @ shruti.katpara@iitgn.ac.in
+** All the codes are well commented, in case of query feel free to contact @ {anupam.kumar, shruti.katpara, preeti.chiluveru, vivek.modi}@iitgn.ac.in
 
 ## [Credits](#credits)
  - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
