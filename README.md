@@ -1,6 +1,6 @@
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+![image](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![image](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![image](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
 
 # Multi Threaded Web-Crawler
 
@@ -340,7 +340,15 @@ _[Back to Table of Contents](#table-of-contents)_
 </pre></code>
 - Pull requests are highly appreciated
 
-** All the codes are well commented, in case of query feel free to contact @ {anupam.kumar, shruti.katpara, preeti.chiluveru, vivek.modi}@iitgn.ac.in
+- All the codes are well commented, in case of query feel free to contact
+  - anupam.kumar@iitgn.ac.in
+  - shruti.katpara@iitgn.ac.in
+  - preeti.chiluveru@iitgn.ac.in
+  - vivek.modi@iitgn.ac.in
+
+
+## Presentation link
+ - [Google slides](https://docs.google.com/presentation/d/1hry5oK9I8fozkhN13xgKqUBYKl4Ul3y4EI6qeO2szV0/edit?usp=sharing)_
 
 ## [Credits](#credits)
  - [How to write a multi-threaded webcrawler](http://www.andreas-hess.info/programming/webcrawler/index.html)
@@ -349,11 +357,39 @@ _[Back to Table of Contents](#table-of-contents)_
  - [Scrapy](https://scrapy.org/)
  - [PageRank](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)
 
-## [Contributors](#contributors)
-- [Anupam Kumar](https://github.com/akcgjc007)
-- [Preeti Chiluveru](https://github.com/Preeti29-bot)
-- [Shruti Katpara](https://github.com/ShrutiKatpara)
-- [Vivek Modi](https://github.com/viper-vm)
+## Contributors
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/akcgjc007">
+          <img src="https://avatars2.githubusercontent.com/u/56300182" width="100;" alt="anupam"/>
+          <br />
+          <sub><b>Anupam Kumar</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Preeti29-bot">
+          <img src="https://avatars.githubusercontent.com/u/68664353" width="100;" alt="anupam"/>
+          <br />
+          <sub><b>Preeti Chiluveru</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ShrutiKatpara">
+          <img src="https://avatars.githubusercontent.com/u/45987734" width="100;" alt="anupam"/>
+          <br />
+          <sub><b>Shruti Katpara</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/viper-vm">
+          <img src="https://avatars.githubusercontent.com/u/45145119" width="100;" alt="anupam"/>
+          <br />
+          <sub><b>Vivek Modi</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
-** This project was made as a academic project as a part of Operating Systems course
-_[Link to presentation](https://docs.google.com/presentation/d/1hry5oK9I8fozkhN13xgKqUBYKl4Ul3y4EI6qeO2szV0/edit?usp=sharing)_
+[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Naereen/)
+[![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
